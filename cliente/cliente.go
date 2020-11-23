@@ -13,7 +13,7 @@ import(
         "time"
         "golang.org/x/net/context"
         "google.golang.org/grpc"
-        "github.com/432i/T1SisDistribuidos/logistica/chat"
+        "github.com/432i/T2SistemasDistribuidos/dependencias"
 )
 
 
@@ -100,7 +100,7 @@ func main(){
 
                                 //enviamos el chunk correspondiente
 
-                                message := chat.Chunk{
+                                message := connclidn.Chunk{
                                         Datos: fileName,
                                 }
                                 response, err := c.EnviarChunk(context.Background(), &message)
