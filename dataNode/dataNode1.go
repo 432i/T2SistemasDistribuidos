@@ -12,8 +12,6 @@ import(
         "github.com/432i/T1SisDistribuidos/logistica/chat"
 )
 
-
-
 func main(){
 
 }
