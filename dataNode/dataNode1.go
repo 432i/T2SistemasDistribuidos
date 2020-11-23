@@ -1,18 +1,23 @@
 package main
 import(
-        "os"
-        "strings"
-        "io"
-        "encoding/csv"
+    	//"os"
+        //"strings"
+        //"io"
+        //"encoding/csv"
         "log"
         "fmt"
-        "time"
+		//"time"
+		"net"
         "golang.org/x/net/context"
         "google.golang.org/grpc"
-	pb "github.com/432i/T2SistemasDistribuidos/dependencias/serverclidn"
+		pb "github.com/432i/T2SistemasDistribuidos/dependencias/serverclidn"
 )
 
-func (s *server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*Message, error) {
+type Server struct {
+	pb.UnimplementedChatCliDnServer
+}
+
+func (s *Server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message, error) {
 	/*
 	// write to disk
 	fileName := "./out/" + in.GetFileName() + "_part_" + string(in.GetChunkPart())
@@ -35,7 +40,7 @@ func (s *server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*Message, e
 
 	//fmt.Println("Split to : ", fileName)
 	*/
-	msj := Message{
+	msj := pb.Message{
 		Body: "ok",
 	}
 	return &msj, nil
@@ -49,12 +54,25 @@ func serverDN1() {
 		log.Fatalf("failed to listen2: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterChatCliDnServer(s, &server{})
+	pb.RegisterChatCliDnServer(s, &Server{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve s2: %v", err)
 	}
 }
 
 func main(){
-	go serverDN1()
+	fmt.Print("Creando conexion...")
+	lis, err := net.Listen("tcp", ":50001")
+	if err != nil {
+		log.Fatalf("failed to listen2: %v", err)
+	}
+	fmt.Println("hola")
+	s := grpc.NewServer()
+	pb.RegisterChatCliDnServer(s, &Server{})
+	fmt.Println("hola2")
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve s2: %v", err)
+	}
+	fmt.Println("hola3")
+	//go serverDN1()
 }
