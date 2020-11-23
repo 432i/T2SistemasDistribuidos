@@ -9,8 +9,8 @@ import(
         "time"
         "golang.org/x/net/context"
         "google.golang.org/grpc"
-		"github.com/432i/T2SistemasDistribuidos/dependencias/serverCliDN"
-		pb "connclidn"
+		"github.com/432i/T2SistemasDistribuidos/dependencias/serverclidn"
+		pb "serverclidn"
 )
 
 func (s *server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*Message, error) {

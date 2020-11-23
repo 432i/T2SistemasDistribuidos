@@ -13,7 +13,7 @@ import(
         "time"
         "golang.org/x/net/context"
         "google.golang.org/grpc"
-        "github.com/432i/T2SistemasDistribuidos/dependencias/serverCliDN"
+        "github.com/432i/T2SistemasDistribuidos/dependencias/serverclidn"
 )
 
 
@@ -25,7 +25,7 @@ func main(){
         }
         defer conn.Close()
 
-        c := connclidn.NewChatServiceClient(conn)
+        c := serverclidn.NewChatServiceClient(conn)
 
         //response, err := c.SayHello(context.Background(), &chat.Message{Body: "Hello From Client!"})
         //if err != nil {
@@ -100,7 +100,7 @@ func main(){
 
                                 //enviamos el chunk correspondiente
 
-                                message := connclidn.Chunk{
+                                message := serverclidn.Chunk{
                                         Datos: partBuffer,
                                 }
                                 response, err := c.ChunkaDN(context.Background(), &message)

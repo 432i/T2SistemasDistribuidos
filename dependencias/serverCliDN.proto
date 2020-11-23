@@ -1,6 +1,6 @@
 syntax = "proto3";
-option go_package = ".;connclidn";
-package connclidn;
+option go_package = ".;serverclidn";
+package serverclidn;
 
 message Chunk{
     bytes datos = 1;
