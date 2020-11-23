@@ -10,5 +10,5 @@ message Message {
 }
 
 service ChatCliDn {
-    rpc EnviarChunk(Chunk) returns (Message){}
+    rpc ChunkaDN(Chunk) returns (Message){}
 }

@@ -101,9 +101,9 @@ func main(){
                                 //enviamos el chunk correspondiente
 
                                 message := connclidn.Chunk{
-                                        Datos: fileName,
+                                        Datos: partBuffer,
                                 }
-                                response, err := c.EnviarChunk(context.Background(), &message)
+                                response, err := c.ChunkaDN(context.Background(), &message)
                                 if err != nil{
                                         fmt.Println("Error al enviar el chunk")
                                         log.Fatalf("%s", err)
