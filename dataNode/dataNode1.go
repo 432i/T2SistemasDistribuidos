@@ -9,11 +9,11 @@ import(
         "time"
         "golang.org/x/net/context"
         "google.golang.org/grpc"
-		"github.com/432i/T2SistemasDistribuidos/dependencias/chatclidn"
+		"github.com/432i/T2SistemasDistribuidos/dependencias/serverCliDN"
 		pb "connclidn"
 )
 
-func (s *server) ReceiveChunk(ctx context.Context, chunkcito *pb.Chunk) (*Message, error) {
+func (s *server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*Message, error) {
 	/*
 	// write to disk
 	fileName := "./out/" + in.GetFileName() + "_part_" + string(in.GetChunkPart())
