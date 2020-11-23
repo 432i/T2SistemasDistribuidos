@@ -1,0 +1,14 @@
+syntax = "proto3";
+package chat;
+
+message Chunk{
+    bytes datos = 1;
+}
+
+message Message {
+  string body = 1;
+}
+
+service ChatService {
+    rpc EnviarChunk(Chunk) returns (Message){}
+}

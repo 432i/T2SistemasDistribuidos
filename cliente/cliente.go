@@ -1,5 +1,9 @@
 package main
 import(
+        "bufio"
+        "io/ioutil"
+        "math"
+        "strconv"
         "os"
         "strings"
         "io"
@@ -11,6 +15,7 @@ import(
         "google.golang.org/grpc"
         "github.com/432i/T1SisDistribuidos/logistica/chat"
 )
+
 
 func main(){
         var conn *grpc.ClientConn
@@ -42,7 +47,70 @@ func main(){
 
 
                 if strings.Compare("1", respuesta) == 0{
-                        fmt.Println("xd")
+                        var nombre string
+                        fmt.Println("Ingrese el nombre del archivo que desea subir en formato 'archivo.pdf'")
+                        _, err := fmt.Scanln(&nombre)
+                        if err != nil {
+                                fmt.Fprintln(os.Stderr, err)
+                                return
+                        }
+                        fileToBeChunked := nombre // change here!
+
+                        file, err := os.Open(fileToBeChunked)
+
+                        if err != nil {
+                                fmt.Println(err)
+                                os.Exit(1)
+                        }
+
+                        defer file.Close()
+
+                        fileInfo, _ := file.Stat()
+
+                        var fileSize int64 = fileInfo.Size()
+
+                        const fileChunk = 250000*8 // 1 MB, change this to your requirement
+
+                        // calculate total number of parts the file will be chunked into
+
+                        totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
+
+                        fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
+
+                        for i := uint64(0); i < totalPartsNum; i++ {
+
+                                partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
+                                partBuffer := make([]byte, partSize)
+
+                                file.Read(partBuffer)
+
+                                // write to disk
+                                fileName := "bigfile_" + strconv.FormatUint(i, 10)
+                                _, err := os.Create(fileName)
+
+                                if err != nil {
+                                        fmt.Println(err)
+                                        os.Exit(1)
+                                }
+
+                                // write/save buffer to disk
+                                ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
+
+                                fmt.Println("Split to : ", fileName)
+
+                                //enviamos el chunk correspondiente
+
+                                message := chat.Chunk{
+                                        Datos: fileName,
+                                }
+                                response, err := c.EnviarChunk(context.Background(), &message)
+                                if err != nil{
+                                        fmt.Println("Error al enviar el chunk")
+                                        log.Fatalf("%s", err)
+                                        break
+                                }
+                                log.Printf("%s", response.Body)
+                        }
 
                 }
 
