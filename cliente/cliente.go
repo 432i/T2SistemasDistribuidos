@@ -1,4 +1,4 @@
-package main
+package serverclidn
 import(
         "bufio"
         "io/ioutil"
@@ -19,7 +19,7 @@ import(
 
 func main(){
         var conn *grpc.ClientConn
-        conn, err := grpc.Dial("10.6.40.149:9000", grpc.WithInsecure())
+        conn, err := grpc.Dial("10.6.40.149:50001", grpc.WithInsecure())
         if err != nil {
                 log.Fatalf("did not connect: %s", err)
         }
@@ -100,7 +100,7 @@ func main(){
 
                                 //enviamos el chunk correspondiente
 
-                                message := pb.Chunk{
+                                message := &pb.Chunk{
                                         Datos: partBuffer,
                                 }
                                 response, err := c.ChunkaDN(context.Background(), &message)
