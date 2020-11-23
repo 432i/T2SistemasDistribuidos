@@ -1,18 +1,22 @@
 package main
 import(
-        "os"
-        "strings"
-        "io"
-        "encoding/csv"
+    	//"os"
+        //"strings"
+        //"io"
+        //"encoding/csv"
         "log"
         "fmt"
-        "time"
+        //"time"
         "golang.org/x/net/context"
         "google.golang.org/grpc"
-	pb "github.com/432i/T2SistemasDistribuidos/dependencias/serverclidn"
+		pb "github.com/432i/T2SistemasDistribuidos/dependencias/serverclidn"
 )
 
-func (s *server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*Message, error) {
+type Server struct {
+	pb.UnimplementedChatCliDnServer
+}
+
+func (s *Server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*Message, error) {
 	/*
 	// write to disk
 	fileName := "./out/" + in.GetFileName() + "_part_" + string(in.GetChunkPart())
