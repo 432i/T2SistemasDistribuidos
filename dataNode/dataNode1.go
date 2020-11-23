@@ -61,5 +61,18 @@ func serverDN1() {
 }
 
 func main(){
-	go serverDN1()
+	fmt.Print("Creando conexion...")
+	lis, err := net.Listen("tcp", ":50001")
+	if err != nil {
+		log.Fatalf("failed to listen2: %v", err)
+	}
+	fmt.Println("hola")
+	s := grpc.NewServer()
+	pb.RegisterChatCliDnServer(s, &Server{})
+	fmt.Println("hola2")
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve s2: %v", err)
+	}
+	fmt.Println("hola3")
+	//go serverDN1()
 }
