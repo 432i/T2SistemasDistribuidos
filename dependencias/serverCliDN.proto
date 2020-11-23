@@ -1,5 +1,5 @@
 syntax = "proto3";
-package chat;
+package connclidn;
 
 message Chunk{
     bytes datos = 1;
@@ -9,6 +9,6 @@ message Message {
   string body = 1;
 }
 
-service ChatService {
+service ChatCliDn {
     rpc EnviarChunk(Chunk) returns (Message){}
 }
