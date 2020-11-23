@@ -8,7 +8,6 @@ import(
         "fmt"
 		//"time"
 		"net"
-		"server"
         "golang.org/x/net/context"
         "google.golang.org/grpc"
 		pb "github.com/432i/T2SistemasDistribuidos/dependencias/serverclidn"
