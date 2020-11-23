@@ -54,7 +54,7 @@ func serverDN1() {
 		log.Fatalf("failed to listen2: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterChatCliDnServer(s, &server{})
+	pb.RegisterChatCliDnServer(s, &Server{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve s2: %v", err)
 	}
