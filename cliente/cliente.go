@@ -100,7 +100,7 @@ func main(){
 
                                 //enviamos el chunk correspondiente
 
-                                message := &pb.Chunk{
+                                message := pb.Chunk{
                                         Datos: partBuffer,
                                 }
                                 response, err := c.ChunkaDN(context.Background(), &message)
