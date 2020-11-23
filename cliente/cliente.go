@@ -1,4 +1,4 @@
-package serverclidn
+package main
 import(
         "bufio"
         "io/ioutil"
