@@ -25,7 +25,7 @@ func main(){
         }
         defer conn.Close()
 
-        c := chat.NewChatServiceClient(conn)
+        c := connclidn.NewChatServiceClient(conn)
 
         //response, err := c.SayHello(context.Background(), &chat.Message{Body: "Hello From Client!"})
         //if err != nil {
