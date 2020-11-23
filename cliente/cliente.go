@@ -13,7 +13,7 @@ import(
         "time"
         "golang.org/x/net/context"
         "google.golang.org/grpc"
-        "github.com/432i/T2SistemasDistribuidos/dependencias"
+        "github.com/432i/T2SistemasDistribuidos/dependencias/serverCliDN"
 )
 
 
