@@ -6,7 +6,9 @@ import(
         //"encoding/csv"
         "log"
         "fmt"
-        //"time"
+		//"time"
+		"net"
+		"server"
         "golang.org/x/net/context"
         "google.golang.org/grpc"
 		pb "github.com/432i/T2SistemasDistribuidos/dependencias/serverclidn"
@@ -16,7 +18,7 @@ type Server struct {
 	pb.UnimplementedChatCliDnServer
 }
 
-func (s *Server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*Message, error) {
+func (s *Server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message, error) {
 	/*
 	// write to disk
 	fileName := "./out/" + in.GetFileName() + "_part_" + string(in.GetChunkPart())
@@ -39,7 +41,7 @@ func (s *Server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*Message, e
 
 	//fmt.Println("Split to : ", fileName)
 	*/
-	msj := Message{
+	msj := pb.Message{
 		Body: "ok",
 	}
 	return &msj, nil
