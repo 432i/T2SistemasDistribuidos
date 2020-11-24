@@ -23,7 +23,7 @@ func crearTxt(){
             fmt.Println(err)
             return
         }
-      }
+}
 
 
 var numLibros = 1
