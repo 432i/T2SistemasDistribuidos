@@ -59,7 +59,7 @@ func main(){
         for _, s := range nombresLibros { 
                 escribirLog(s, "3", "1", "1.66.6", 1)
                 for i := 0; i < 3; i++ {
-                 escribirLog(s, "3", strconv.Itoa(i+1), "1.66.6", 0)
+                        escribirLog(s, "3", strconv.Itoa(i+1), "1.66.6", 0)
 
 	        }
         numLibros += 1
