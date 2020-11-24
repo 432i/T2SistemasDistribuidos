@@ -18,28 +18,7 @@ type Server struct {
 }
 
 func (s *Server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message, error) {
-	/*
-	// write to disk
-	fileName := "./out/" + in.GetFileName() + "_part_" + string(in.GetChunkPart())
-	_, err := os.Create(fileName)
-
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	tempBook := books{
-		name:   in.GetFileName(),
-		parts:  in.GetPart(),
-		stored: 0,
-	}
-	storeInLibrary(tempBook)
-
-	// write/save buffer to disk
-	ioutil.WriteFile(fileName, []byte(in.GetChunk()), os.ModeAppend)
-
-	//fmt.Println("Split to : ", fileName)
-	*/
+	
 	msj := pb.Message{
 		Body: "ok",
 	}

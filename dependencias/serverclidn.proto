@@ -15,4 +15,5 @@ message Message {
 
 service ChatCliDn {
     rpc ChunkaDN(Chunk) returns (Message){}
+    rpc ChunksDirecciones(Message) returns (Message){}
 }
