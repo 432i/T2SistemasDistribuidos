@@ -48,42 +48,32 @@ func main(){
 
                 if strings.Compare("1", respuesta) == 0{
                         var nombre string
-                        fmt.Println("Ingrese el nombre del archivo que desea subir en formato 'archivo.pdf'")
+                        fmt.Println("Ingrese el nombre del archivo que desea subir sin extension y presione Enter")
                         _, err := fmt.Scanln(&nombre)
                         if err != nil {
                                 fmt.Fprintln(os.Stderr, err)
                                 return
                         }
-                        fileToBeChunked := nombre // change here!
 
+                        //convertir en chunks
+
+                        fileToBeChunked := nombre + ".pdf"
                         file, err := os.Open(fileToBeChunked)
-
                         if err != nil {
                                 fmt.Println(err)
                                 os.Exit(1)
                         }
-
                         defer file.Close()
-
                         fileInfo, _ := file.Stat()
-
                         var fileSize int64 = fileInfo.Size()
-
-                        const fileChunk = 250000 // 1 MB, change this to your requirement
-
+                        const fileChunk = 250000
                         // calculate total number of parts the file will be chunked into
-
                         totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
-
-                        fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
-
+                        fmt.Printf("El libro se dividio en %d piezas, subiendo a los servidores. . .\n", totalPartsNum)
                         for i := uint64(0); i < totalPartsNum; i++ {
-
                                 partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
                                 partBuffer := make([]byte, partSize)
-
                                 file.Read(partBuffer)
-
                                 // write to disk
                                 fileName := "bigfile_" + strconv.FormatUint(i, 10)
                                 _, err := os.Create(fileName)
@@ -92,15 +82,16 @@ func main(){
                                         fmt.Println(err)
                                         os.Exit(1)
                                 }
-
                                 // write/save buffer to disk
                                 ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
-
-                                fmt.Println("Split to : ", fileName)
+                                //fmt.Println("Split to : ", fileName)
 
                                 //enviamos el chunk correspondiente
 
                                 message := pb.Chunk{
+                                        NombreLibro: nombre,
+                                        TotalPartes: strconv.Itoa(totalPartsNum),
+                                        Parte: strconv.Itoa(i+1),
                                         Datos: partBuffer,
                                 }
                                 response, err := c.ChunkaDN(context.Background(), &message)

@@ -3,7 +3,10 @@ option go_package = ".;serverclidn";
 package serverclidn;
 
 message Chunk{
-    bytes datos = 1;
+    string nombreLibro = 1;
+    string totalPartes = 2;
+    string parte = 3;
+    bytes datos = 4;
 }
 
 message Message {

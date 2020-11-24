@@ -47,8 +47,7 @@ func (s *Server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message
 }
 
 func serverDN1() {
-	//--------------------------------------------------------------> Server1
-	fmt.Print("Creando conexion...")
+	//-----------------------------------------------------------------> Server1
 	lis, err := net.Listen("tcp", ":50001")
 	if err != nil {
 		log.Fatalf("failed to listen2: %v", err)
@@ -61,18 +60,20 @@ func serverDN1() {
 }
 
 func main(){
-	fmt.Print("Creando conexion...")
-	lis, err := net.Listen("tcp", ":50001")
-	if err != nil {
-		log.Fatalf("failed to listen2: %v", err)
+	var respuesta string
+	go serverDN1()
+	fmt.Print("El servidor de Data Node 1 esta activo\n")
+	fmt.Println("Ingrese 432 y presione Enter para salir del programa")
+	for{
+		_, err := fmt.Scanln(&respuesta)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return
+		}
+		if strings.Compare("432", respuesta) == 0{
+			fmt.Println("Saliendo del programa. . . ")
+			break
+		}
+		fmt.Println("que")
 	}
-	fmt.Println("hola")
-	s := grpc.NewServer()
-	pb.RegisterChatCliDnServer(s, &Server{})
-	fmt.Println("hola2")
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve s2: %v", err)
-	}
-	fmt.Println("hola3")
-	//go serverDN1()
 }
