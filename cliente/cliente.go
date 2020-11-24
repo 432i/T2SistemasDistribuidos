@@ -87,19 +87,19 @@ func enviarChunks(nombreLibro string, c pb.NewChatCliDnClient){
                 log.Printf("%s", response.Body)
         }
 }
-func pedirDirecciones(nombre, c pb.NewChatCliDnClient){
+func pedirDirecciones(nombreLibro, c pb.NewChatCliDnClient) []string{
         msj := pb.Message{
-		Body: nombre,
+		Body: nombreLibro,
         }
-        response, err := c.ChunksDirecciones(context.Background(), &ms)
+        response, err := c.ChunksDirecciones(context.Background(), &msj)
         if err != nil{
                 fmt.Println("Error al enviar la orden")
                 log.Fatalf("%s", err)
                 break
         }
-        direcciones := response.Body
-        //
-        //
+        partesIPS := strings.Split(response.Body, "-")
+        partesIPS = partesIPS[:len(partesIPS)-1] //parte 1 en la ip de la posicion 0, parte 2 en la posicion 1, etc
+        return partesIPS
 }
 
 func main(){
@@ -122,7 +122,7 @@ func main(){
 
                 if strings.Compare("1", respuesta) == 0{
                         var nombre string
-                        fmt.Println("Ingrese el nombre del archivo sin extension y presione Enter")
+                        fmt.Println("Ingrese el nombre del libro sin extension y presione Enter")
                         _, err := fmt.Scanln(&nombre)
                         if err != nil {
                                 fmt.Fprintln(os.Stderr, err)
@@ -144,14 +144,17 @@ func main(){
 
                 if strings.Compare("2", respuesta) == 0{
                         var nombre string
-                        fmt.Println("Ingrese el nombre del archivo sin extension y presione Enter")
+                        fmt.Println("Ingrese el nombre del libro sin extension y presione Enter")
                         _, err := fmt.Scanln(&nombre)
                         if err != nil {
                                 fmt.Fprintln(os.Stderr, err)
                                 return
                         }
                         direcciones := pedirDirecciones(nombre, cNN)
-                        
+                        //recorrer las direcciones ips para ir pidiendo los chunks
+                        for _, direccion := range direcciones {
+                                fmt.Printf(direccion)
+                        }
                         
 
                 }
