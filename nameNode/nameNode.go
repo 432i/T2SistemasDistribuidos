@@ -52,6 +52,19 @@ func escribirLog(nombre string, cantPartes string, parte string, ip string, flag
       }
 }
 
+func serverNN() {
+	//-----------------------------------------------------------------> Server1
+	lis, err := net.Listen("tcp", ":50001")
+	if err != nil {
+		log.Fatalf("failed to listen2: %v", err)
+	}
+	s := grpc.NewServer()
+	pb.RegisterChatCliDnServer(s, &Server{})
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve s2: %v", err)
+	}
+}
+
 func main(){
         crearTxt()
 
