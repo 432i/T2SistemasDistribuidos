@@ -74,10 +74,16 @@ func propuesta() {
 	return proposal
 }
 
+func generarPropuesta(prop int) {
+	
+}
+
 func chunksRecibidos() {
+	var prop int
 	for { 
 		if ultima_parte == 1 {
-			propuesta
+			prop = propuesta()
+			generarPropuesta(prop)
 		}
 	}
 }
