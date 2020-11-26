@@ -19,7 +19,7 @@ import(
 /*
 Funcion: conexionDN
 Parametro:
-	- ip
+	- ip: ip en formato string para hacer conexion
 Descripcion:
 	- Recibe una ip en formato string y genera una conexion gRPC con ese Data Node
 Retorno:
