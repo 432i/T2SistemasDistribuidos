@@ -7,6 +7,7 @@ message Chunk{
     string totalPartes = 2;
     string parte = 3;
     bytes datos = 4;
+    string algoritmo = 5;
 }
 
 message Message {
@@ -14,7 +15,7 @@ message Message {
 }
 
 service ChatCliDn {
-    rpc ChunkaDN(Chunk) returns (Message){}
+    rpc ChunkaDN(stream Chunk) returns (Message){}
     rpc ChunksDirecciones(Message) returns (Message){}
     rpc PropDNDN(Message) returns (Message) {}
 }

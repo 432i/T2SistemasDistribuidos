@@ -16,6 +16,7 @@ import(
 type Server struct {
 	pb.UnimplementedChatCliDnServer
 }
+/*
 
 type ChunkInterno struct {
 	NombreLibro string
@@ -60,6 +61,20 @@ func (s *Server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message
 		Body: "Chunk recibido:\n    {nombreLibro: " + trozo.nombreLibro + ",\n    totalPartes: " + trozo.totalPartes + ",\n    parte: " + trozo.parte + ",\n    datos: " + trozo.datos + "}",
 	}
 	return &msj, nil
+}*/
+func (s *Server) ChunkaDN(stream pb.Chunk) error {
+
+	for {
+	  chunk, err := stream.Recv()
+	  if err == io.EOF {
+		return stream.SendAndClose(&pb.Message{
+		  body: "ok",
+		})
+	  }
+	  if err != nil {
+		return err
+	  }
+	}
 }
 
 func propuesta() {
