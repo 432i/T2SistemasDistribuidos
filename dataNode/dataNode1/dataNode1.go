@@ -74,8 +74,16 @@ func propuesta() {
 	return proposal
 }
 
-func generarPropuesta(prop int) {
-	
+func generarPropuesta(prop int, direccion string) {
+	var connDN2 *grpc.ClientConn
+	connDN2, err := grpc.Dial(direccion, grpc.WithInsecure())
+	if err != nil {
+			return "no"
+	}
+	defer conn.Close()
+	c := pb.NewChatCliDnClient(connDN2)
+	fmt.Println("Conexion realizada correctamente con el Data Node de IP "+ip+"\n")
+	return c
 }
 
 func chunksRecibidos() {
@@ -83,7 +91,7 @@ func chunksRecibidos() {
 	for { 
 		if ultima_parte == 1 {
 			prop = propuesta()
-			generarPropuesta(prop)
+			generarPropuesta(prop, "10.6.40.150:50001")
 		}
 	}
 }
