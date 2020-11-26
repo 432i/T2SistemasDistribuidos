@@ -25,7 +25,7 @@ Descripcion:
 Retorno:
 	- Retorna la conexion con el Data Node de la ip recibida
 */
-func conexionDN(ip){
+func conexionDN(ip) pb.NewChatCliDnClient{
         var conn *grpc.ClientConn
         puerto := ":50001"
         conn, err := grpc.Dial(ip+puerto, grpc.WithInsecure())
@@ -46,7 +46,7 @@ Descripcion:
 Retorno:
 	- Retorna la conexion con el Name Node
 */
-func conexionNN(){
+func conexionNN() pb.NewChatCliDnClient{
         var conn *grpc.ClientConn
         conn, err := grpc.Dial("10.6.40.152:50001", grpc.WithInsecure())
         if err != nil {

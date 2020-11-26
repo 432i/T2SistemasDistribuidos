@@ -18,4 +18,5 @@ service ChatCliDn {
     rpc ChunkaDN(stream Chunk) returns (Message){}
     rpc ChunksDirecciones(Message) returns (Message){}
     rpc PropDNDN(Message) returns (Message) {}
+    rpc escribirLog(Message) returns (Message){}
 }

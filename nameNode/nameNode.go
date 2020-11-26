@@ -61,6 +61,25 @@ func recuperarLibro(nombreLibro string) string{
         
         return ips
 }
+//funcion que recibe la solicitud de escribir en el log 
+//recibe un string con los datos del chunk que se guardó en tal data node
+func (s *Server) escribirLog(ctx context.Context, message *Message) (*Message, error){
+        split := strings.Split(message.GetBody(), " ")
+        nombreLibro := split[0]
+        cantPartes := split[1]
+        parte := split[2]
+        ip :=  split[3]
+
+        if parte ==1{
+                escribirTXT(nombreLibro, cantPartes, parte, ip, 1)
+        }else{
+                escribirTXT(nombreLibro, cantPartes, parte, ip, 0)
+        }
+        msj := Message{
+                Body: "Chunk guardado en el log correctamente",
+        }
+        return &msj, nil
+}
 
 func (s *Server) ChunksDirecciones(ctx context.Context, message *pb.Message) (*pb.Message, error){
         nombreLibro := message.GetBody()
@@ -86,7 +105,7 @@ func crearTxt(){
 
 
 var numLibros = 1
-func escribirLog(nombre string, cantPartes string, parte string, ip string, flag int){
+func escribirTXT(nombre string, cantPartes string, parte string, ip string, flag int){
         archivo, err := os.OpenFile("log.txt", os.O_APPEND|os.O_WRONLY, 0644)
         if err != nil {
                 fmt.Println(err)
@@ -95,6 +114,13 @@ func escribirLog(nombre string, cantPartes string, parte string, ip string, flag
         if flag == 1{ //primera vez que se escribe el libro
                 str := nombre+"_"+strconv.Itoa(numLibros)+" "+cantPartes+"_"+strconv.Itoa(numLibros)+"\n"
                 _, err := archivo.WriteString(str)
+                if err != nil {
+                        fmt.Println(err)
+                        archivo.Close()
+                return
+                }
+                str = "parte_"+strconv.Itoa(numLibros)+"_"+parte+" "+ ip+"\n"
+                _, err = archivo.WriteString(str)
                 if err != nil {
                         fmt.Println(err)
                         archivo.Close()
@@ -127,14 +153,4 @@ func serverNN() {
 func main(){
         crearTxt()
 
-        nombresLibros := []string{"Foo", "Bar", "ETHIEL"}
-        ips := []string{"1.1.1.1", "2.2.2.2", "3.3.3.3"}
-        for _, s := range nombresLibros { 
-                escribirLog(s, "3", "1", "1.66.6", 1)
-                for i := 0; i < 3; i++ {
-                        escribirLog(s, "3", strconv.Itoa(i+1), ips[i], 0)
-
-	        }
-        numLibros += 1
-        }
 }

@@ -24,6 +24,23 @@ func (s *Server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message
 	}
 	return &msj, nil
 }
+//sirve para obtener la ip de la maquina
+func obtenerIP() string{
+	ipDN="10.6.40.150"
+	return ipDN
+}
+//envia los datos del chunk para que se escriban en el log
+func escribirLogNN(nombre string, cantPartes string, parte string, ip string, c pb.NewChatCliDnClient){
+	msj = Message{
+		Body: nombre+" "+cantPartes+" "+parte+" "+ip,
+	}
+	response, err := c.escribirLog(context.Background(), &msj)
+    if err != nil{
+        fmt.Println("Error al enviar la informacion del chunk para escribir en el log")
+        break
+    }
+    log.Printf("%s", response.Body)
+}
 
 func serverDN1() {
 	//-----------------------------------------------------------------> Server2
