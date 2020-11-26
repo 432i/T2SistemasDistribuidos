@@ -65,18 +65,7 @@ func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.NewChatCliDnCli
                 partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
                 partBuffer := make([]byte, partSize)
                 file.Read(partBuffer)
-                // write to disk
-                fileName := "bigfile_" + strconv.FormatUint(i, 10)
-                _, err := os.Create(fileName)
-
-                if err != nil {
-                        fmt.Println(err)
-                        os.Exit(1)
-                }
-                // write/save buffer to disk
-                ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
-                //fmt.Println("Split to : ", fileName)
-
+                
                 //enviamos el chunk correspondiente
 
                 chunko := pb.Chunk{
@@ -87,7 +76,7 @@ func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.NewChatCliDnCli
                         Algoritmo: tipoAlgoritmo,
                 }
                 if err := stream.Send(chunko); err != nil { //envio por stream de chunks
-                        log.Fatalf("%v.Send(%v) = %v", stream, point, err)
+                        log.Fatalf("%v.Send(%v) = %v", stream, chunko, err)
                 }
         }
 

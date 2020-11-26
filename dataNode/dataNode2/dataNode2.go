@@ -26,11 +26,13 @@ func (s *Server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message
 }
 
 func serverDN1() {
-	//-----------------------------------------------------------------> Server1
+	//-----------------------------------------------------------------> Server2
+	fmt.Fprintln("Creando conexión...")
 	lis, err := net.Listen("tcp", ":50001")
 	if err != nil {
 		log.Fatalf("failed to listen2: %v", err)
 	}
+	fmt.Fprintln("Conexión creada satisfactoriamente")
 	s := grpc.NewServer()
 	pb.RegisterChatCliDnServer(s, &Server{})
 	if err := s.Serve(lis); err != nil {
@@ -41,7 +43,7 @@ func serverDN1() {
 func main(){
 	var respuesta string
 	go serverDN1()
-	fmt.Print("El servidor de Data Node 1 esta activo\n")
+	fmt.Print("El servidor de Data Node 2 esta activo\n")
 	fmt.Println("Ingrese 432 y presione Enter para salir del programa")
 	for{
 		_, err := fmt.Scanln(&respuesta)
