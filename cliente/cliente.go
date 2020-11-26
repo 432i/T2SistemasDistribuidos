@@ -40,7 +40,7 @@ func conexionNN(){
         return c
 }
 
-func enviarChunks(nombreLibro string, c pb.NewChatCliDnClient){
+func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.NewChatCliDnClient){
         fileToBeChunked := nombreLibro + ".pdf"
         file, err := os.Open(fileToBeChunked)
         if err != nil {
@@ -54,6 +54,13 @@ func enviarChunks(nombreLibro string, c pb.NewChatCliDnClient){
         // calculate total number of parts the file will be chunked into
         totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
         fmt.Printf("El libro se dividio en %d piezas, subiendo al Data Node. . .\n", totalPartsNum)
+
+        //creamos el stream
+        stream, err := c.ChunkaDN(context.Background()) 
+        if err != nil {
+                log.Fatalf("%v.RecordRoute(_) = _, %v", c, err)
+        }
+        //creamos los chunks y los mandamos por stream
         for i := uint64(0); i < totalPartsNum; i++ {
                 partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
                 partBuffer := make([]byte, partSize)
@@ -72,21 +79,27 @@ func enviarChunks(nombreLibro string, c pb.NewChatCliDnClient){
 
                 //enviamos el chunk correspondiente
 
-                message := pb.Chunk{
+                chunko := pb.Chunk{
                         NombreLibro: nombreLibro,
                         TotalPartes: strconv.Itoa(totalPartsNum),
                         Parte: strconv.Itoa(i+1),
                         Datos: partBuffer,
+                        Algoritmo: tipoAlgoritmo,
                 }
-                response, err := c.ChunkaDN(context.Background(), &message)
-                if err != nil{
-                        fmt.Println("Error al enviar el chunk")
-                        log.Fatalf("%s", err)
-                        break
+                if err := stream.Send(chunko); err != nil { //envio por stream de chunks
+                        log.Fatalf("%v.Send(%v) = %v", stream, point, err)
                 }
-                log.Printf("%s", response.Body)
         }
+
+        reply, err := stream.CloseAndRecv()
+        if err != nil {
+                log.Fatalf("%v.CloseAndRecv() tuvo el error %v, quiero %v", stream, err, nil)
+        }
+        log.Printf("Route summary: %v", reply)
+
 }
+
+
 func pedirDirecciones(nombreLibro, c pb.NewChatCliDnClient) []string{
         msj := pb.Message{
 		Body: nombreLibro,
@@ -122,8 +135,15 @@ func main(){
 
                 if strings.Compare("1", respuesta) == 0{
                         var nombre string
+                        var tipoAlgoritmo string
                         fmt.Println("Ingrese el nombre del libro sin extension y presione Enter")
                         _, err := fmt.Scanln(&nombre)
+                        if err != nil {
+                                fmt.Fprintln(os.Stderr, err)
+                                return
+                        }
+                        fmt.Println("Ingrese el algoritmo que desea usar: 'centralizado' o 'distribuido' y presione Enter")
+                        _, err := fmt.Scanln(&tipoAlgoritmo)
                         if err != nil {
                                 fmt.Fprintln(os.Stderr, err)
                                 return
@@ -131,12 +151,12 @@ func main(){
                         //DN elegido aleatoriamente
                         i := rand.Intn(3)
                         if i == 0{
-                                enviarChunks(nombre, cDN1)
+                                enviarChunks(tipoAlgoritmo, nombre, cDN1)
                         }
                         if i == 1{
-                                enviarChunks(nombre, cDN2)
+                                enviarChunks(tipoAlgoritmo, nombre, cDN2)
                         }else{
-                                enviarChunks(nombre, cDN3)
+                                enviarChunks(tipoAlgoritmo, nombre, cDN3)
                         }
 
                 }

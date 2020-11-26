@@ -16,13 +16,27 @@ import(
 type Server struct {
 	pb.UnimplementedChatCliDnServer
 }
-
+/*
 func (s *Server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message, error) {
 	
 	msj := pb.Message{
 		Body: "ok",
 	}
 	return &msj, nil
+}*/
+func (s *Server) ChunkaDN(stream pb.Chunk) error {
+
+	for {
+	  chunk, err := stream.Recv()
+	  if err == io.EOF {
+		return stream.SendAndClose(&pb.Message{
+		  body: "ok",
+		})
+	  }
+	  if err != nil {
+		return err
+	  }
+	}
 }
 
 func serverDN1() {
