@@ -16,6 +16,15 @@ import(
         "google.golang.org/grpc"
         pb "github.com/432i/T2SistemasDistribuidos/dependencias/serverclidn"
 )
+/*
+Funcion: conexionDN
+Parametro:
+	- ip
+Descripcion:
+	- Recibe una ip en formato string y genera una conexion gRPC con ese Data Node
+Retorno:
+	- Retorna la conexion con el Data Node de la ip recibida
+*/
 func conexionDN(ip){
         var conn *grpc.ClientConn
         puerto := ":50001"
@@ -28,6 +37,15 @@ func conexionDN(ip){
         fmt.Println("Conexion realizada correctamente con el Data Node de IP "+ip+"\n")
         return c
 }
+/*
+Funcion: conexionNN
+Parametro:
+	- Nada
+Descripcion:
+	- Realiza la conexion gRPC con el Name Node
+Retorno:
+	- Retorna la conexion con el Name Node
+*/
 func conexionNN(){
         var conn *grpc.ClientConn
         conn, err := grpc.Dial("10.6.40.152:50001", grpc.WithInsecure())
@@ -39,7 +57,17 @@ func conexionNN(){
         fmt.Println("Conexion realizada correctamente con el Name Node\n")
         return c
 }
-
+/*
+Funcion: enviarChunks
+Parametro:
+        - tipoAlgoritmo: string que indica el algoritmo a utilizar (centralizado o distribuido)
+        - nombreLibro: el nombre del libro a subir
+        - c: conexion gRPC
+Descripcion:
+	- Recibe la información del libro a subir para mandarselo a un Data Node
+Retorno:
+	- Nada
+*/
 func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.NewChatCliDnClient){
         fileToBeChunked := nombreLibro + ".pdf"
         file, err := os.Open(fileToBeChunked)
@@ -88,8 +116,17 @@ func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.NewChatCliDnCli
 
 }
 
-
-func pedirDirecciones(nombreLibro, c pb.NewChatCliDnClient) []string{
+/*
+Funcion: pedirDirecciones
+Parametro:
+        - nombreLibro: string con el nombre del libro a descargar
+        - c: conexion gRPC
+Descripcion:
+	- Recibe el nombre del libro y la conexion del name node para buscar las ips en donde estan repartidas las partes del libro
+Retorno:
+	- Retorna las ips de los data nodes en donde están las partes
+*/
+func pedirDirecciones(nombreLibro string, c pb.NewChatCliDnClient) []string{
         msj := pb.Message{
 		Body: nombreLibro,
         }
