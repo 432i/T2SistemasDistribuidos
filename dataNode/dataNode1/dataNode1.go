@@ -21,6 +21,16 @@ var cola_espera []string
 estado := "liberada"
 timestamp := " "
 
+/*
+Funcion: Find
+Parametro:
+    - slice: arreglo de string, contiene las peticiones en cola recibidas de la forma <tiempo>_DN<i>, donde i es el DN que hizo la peticion
+    - val: string a buscar
+Descripcion:
+	- Busca si una peticion se encuentra en la cola
+Retorno:
+	- Retorna verdadero si ya se encuentra, o falso cuando se puede insertar la peticion
+*/
 func Find(slice []string, val string) (int, bool) {
     for i, item := range slice {
         if item == val {
@@ -30,6 +40,15 @@ func Find(slice []string, val string) (int, bool) {
     return -1, false
 }
 
+/*
+Funcion: escribirLogNN
+Parametro:
+    - nombre, cantPartes, parte, ip: strings con la informacion para escribir en el log
+Descripcion:
+	- Genera la conexion con el NameNode, el mensaje que contiene la informacion de un chunk y solicita al NN que lo escriba
+Retorno:
+	- No hay
+*/
 func escribirLogNN(nombre string, cantPartes string, parte string, ip string) {
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial("10.6.40.152:50001", grpc.WithInsecure())
@@ -51,6 +70,15 @@ func escribirLogNN(nombre string, cantPartes string, parte string, ip string) {
     log.Printf("%s", response.Body)
 }
 
+/*
+Funcion: almacenarChunk
+Parametro:
+    - chunkcito: Contiene la info de un Chunk
+Descripcion:
+	- Genera el archivo del chunk y escribe la info que contiene
+Retorno:
+	- No hay
+*/
 func almacenarChunk(chunkcito pb.Chunk) {
 	fileName := chunkcito.nombreLibro + "#" + chunkcito.Parte
 	_, err := os.Create(fileName)
@@ -61,6 +89,15 @@ func almacenarChunk(chunkcito pb.Chunk) {
 	ioutil.WriteFile(fileName, chunkcito.Datos, os.ModeAppend)
 }
 
+/*
+Funcion: propuestaEntreTres
+Parametro:
+    - c2, c3: Conexiones del DN con los otros dos
+Descripcion:
+	- Le envía al DN correspondiente el chunk (o a sí mismo no sortea), dependiendo del sorteo que se hace
+Retorno:
+	- No hay
+*/
 func propuestaEntreTres(c2 pb.NewChatCliDnClient, c3 pb.NewChatCliDnClient) {
 	msg2 := pb.Message {
 		body: "m",
@@ -108,6 +145,15 @@ func propuestaEntreTres(c2 pb.NewChatCliDnClient, c3 pb.NewChatCliDnClient) {
 	}
 }
 
+/*
+Funcion: propuestaEntreDos
+Parametro:
+    - c: Conexion con un DN dado
+Descripcion:
+	- Le envía al DN correspondiente el chunk (o a sí mismo no sortea), dependiendo del sorteo que se hace
+Retorno:
+	- No hay
+*/
 func propuestaEntreDos(c pb.NewChatCliDnClient) {
 	msg := pb.Message {
 		body: "m",
@@ -144,6 +190,16 @@ func propuestaEntreDos(c pb.NewChatCliDnClient) {
 	}
 }
 
+/*
+Funcion: generarPropuesta
+Parametro:
+	- cantPartes: string que indica cuantos chunks tiene un libro
+	- tiempo: instante en que se hizo la solicitud para generar la distribución del libro y escribir en el log del NN
+Descripcion:
+	- Intenta generar conexiones con los demas DNs, si alguno falla se detecta y se genera un nuevo plan de accion para poder distribuir los chunks entre los DNs que esten vivos
+Retorno:
+	- No hay
+*/
 func generarPropuesta(cantPartes string, tiempo string) {
 	var se_pudo2, se_pudo3 bool
 	se_pudo2 = true
@@ -229,6 +285,15 @@ func generarPropuesta(cantPartes string, tiempo string) {
 	estado = "liberada"
 }
 
+/*
+Funcion: propuestaEntreDos
+Parametro:
+    - No tiene
+Descripcion:
+	- Observa la cola de stream de chunks de los libros enviados por un cliente uploader, cuando detecta que se subió el libro comienza con la ejecución del proceso de distribucion y escritura
+Retorno:
+	- No hay
+*/
 func escucharListaChunks() {
 	var prop int
 	for { 
@@ -241,6 +306,15 @@ func escucharListaChunks() {
 	}
 }
 
+/*
+Funcion: serverDN1
+Parametro:
+    - No tiene
+Descripcion:
+	- Crea la conexion de servidor
+Retorno:
+	- No hay
+*/
 func serverDN1() { //Comunicacion con cliente
 	//-----------------------------------------------------------------> Server1
 	fmt.Println("Creando conexión...")
@@ -256,6 +330,15 @@ func serverDN1() { //Comunicacion con cliente
 	}
 }
 
+/*
+Funcion: EnviarPeticion
+Parametro:
+    - msj: Mensaje que contiene el instante en que el DN emisor genera la petición de escritura junto con su identificador
+Descripcion:
+	- Un DN receptor chequeara mediante la implementacion del algoritmo de Ricart y Agrawala si acepta o deja en cola la peticion recibida
+Retorno:
+	- Retorna un mensaje, cuando este es "ok", la peticion se acepta, en cualquier otro caso se manda un string vacio
+*/
 func (s *Server) EnviarPeticion(ctx context.Context, msj *pb.Message) (*pb.Message, error) {
 	if estado == "liberada" {
 		msg := pb.Message {
@@ -295,6 +378,7 @@ func (s *Server) EnviarPeticion(ctx context.Context, msj *pb.Message) (*pb.Messa
 	}
 }
 
+
 func (s *Server) pedirChunk(ctx context.Context, msj *pb.Message) (*pb.Chunk, error) {
 	split := strings.Split(msj.GetBody(), "#")
 	nombreLibro := split[0]
@@ -331,6 +415,16 @@ func (s *Server) pedirChunk(ctx context.Context, msj *pb.Message) (*pb.Chunk, er
 	return &chunko, nil
 }
 
+
+/*
+Funcion: ChunkADN
+Parametro:
+    - stream: Stream que contiene el libro trozado en chunks
+Descripcion:
+	- Inserta cada chunk en una cola para que sean procesados
+Retorno:
+	- Retorna un stream de exito cuando se recibe o un error si falla la recuperacion del stream
+*/
 func (s *Server) ChunkaDN(stream pb.Chunk) error {
 	for {
 		chunk, err := stream.Recv()
@@ -346,6 +440,15 @@ func (s *Server) ChunkaDN(stream pb.Chunk) error {
 	}
 }
 
+/*
+Funcion: ChunkEntreDN
+Parametro:
+    - chunkcito: Recibe un chunk con su informacion respectiva
+Descripcion:
+	- Pide almacenar el chunk en su archivo, llamando a la funcion almacenarChunk()
+Retorno:
+	- Retorna un mensaje de exito junto a la ip del DN que almaceno el chunk
+*/
 func (s *Server) ChunkEntreDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message, error) {
 	almacenarChunk(chunkcito)
 	fnt.Println("Se ha almacenado el chunk:\n    {nombreLibro: " + chunkcito.nombreLibro + ",\n    totalPartes: " + chunkcito.totalPartes + ",\n    parte: " + chunkcito.parte + ",\n    datos: " + chunkcito.datos + "}",
