@@ -140,7 +140,105 @@ func pedirDirecciones(nombreLibro string, c pb.NewChatCliDnClient) []string{
         partesIPS = partesIPS[:len(partesIPS)-1] //parte 1 en la ip de la posicion 0, parte 2 en la posicion 1, etc
         return partesIPS
 }
+/*
+Funcion: rearmarLibro
+Parametro:
+        - nombreLibro: string con el nombre del libro a rearmar
+        - cantPartes: cantidad de chunks alojados en el directorio
+Descripcion:
+	- Recibe el nombre del libro y la cantidad de partes del libro para rearmarlo
+Retorno:
+	- Sin retorno
+*/
+func rearmarLibro(nombreLibro string, cantPartes int){
+        newFileName := nombreLibro+"RECUPERADO"+".pdf"
+        _, err = os.Create(newFileName)
 
+        if err != nil {
+                fmt.Println(err)
+                os.Exit(1)
+        }
+
+        //set the newFileName file to APPEND MODE!!
+        // open files r and w
+
+        file, err = os.OpenFile(newFileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+
+        if err != nil {
+                fmt.Println(err)
+                os.Exit(1)
+        }
+
+        // IMPORTANT! do not defer a file.Close when opening a file for APPEND mode!
+        // defer file.Close()
+
+        // just information on which part of the new file we are appending
+        var writePosition int64 = 0
+
+        for j := uint64(0); j < cantPartes; j++ {
+
+                //read a chunk
+                currentChunkFileName := nombreLibro + "#" + strconv.FormatUint(j+1, 10)
+
+                newFileChunk, err := os.Open(currentChunkFileName)
+
+                if err != nil {
+                        fmt.Println(err)
+                        os.Exit(1)
+                }
+
+                defer newFileChunk.Close()
+
+                chunkInfo, err := newFileChunk.Stat()
+
+                if err != nil {
+                        fmt.Println(err)
+                        os.Exit(1)
+                }
+
+                // calculate the bytes size of each chunk
+                // we are not going to rely on previous data and constant
+
+                var chunkSize int64 = chunkInfo.Size()
+                chunkBufferBytes := make([]byte, chunkSize)
+
+                //fmt.Println("Appending at position : [", writePosition, "] bytes")
+                writePosition = writePosition + chunkSize
+
+                // read into chunkBufferBytes
+                reader := bufio.NewReader(newFileChunk)
+                _, err = reader.Read(chunkBufferBytes)
+
+                if err != nil {
+                        fmt.Println(err)
+                        os.Exit(1)
+                }
+
+                // DON't USE ioutil.WriteFile -- it will overwrite the previous bytes!
+                // write/save buffer to disk
+                //ioutil.WriteFile(newFileName, chunkBufferBytes, os.ModeAppend)
+
+                n, err := file.Write(chunkBufferBytes)
+
+                if err != nil {
+                        fmt.Println(err)
+                                        os.Exit(1)
+                }
+
+                file.Sync() //flush to disk
+
+                // free up the buffer for next cycle
+                // should not be a problem if the chunk size is small, but
+                // can be resource hogging if the chunk size is huge.
+                // also a good practice to clean up your own plate after eating
+
+                chunkBufferBytes = nil // reset or empty our buffer
+        }
+
+        fmt.Println("Libro rearmado correctamente")
+        // now, we close the newFileName
+        file.Close()
+}
 func main(){
         cDN1 := conexionDN("10.6.40.149") //conexion Data Node 1
         cDN2 := conexionDN("10.6.40.150") //conexion Data Node 2
@@ -202,15 +300,23 @@ func main(){
                         for _, direccion := range direcciones {
                                 if direccion == "10.6.40.149"{
                                         msj = Message{
-                                                Body: nombre+"_"+cont, //nombreLibro#parte
+                                                Body: nombre+"#"+cont, //nombreLibro#parte
                                         }
                                         response, err := cDN1.pedirChunk(context.Background(), &msj)
                                         if err != nil{
                                                 fmt.Println("Error al enviar la solicitud del chunk")
                                                 break
                                         }
+
                                         //escribir chunk en disco
-                                       
+                                        fileName := nombre+"#"+cont
+                                        _, err := os.Create(fileName)
+                                        if err != nil {
+                                                fmt.Println(err)
+                                                os.Exit(1)
+                                        }
+                                        // write/save buffer to disk
+                                        ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
                                         
                                 }
                                 if direccion == "10.6.40.150"{
@@ -222,24 +328,44 @@ func main(){
                                                 fmt.Println("Error al enviar la solicitud del chunk")
                                                 break
                                         }
+
+                                        //escribir chunk en disco
+                                        fileName := nombre+"#"+cont
+                                        _, err := os.Create(fileName)
+                                        if err != nil {
+                                                fmt.Println(err)
+                                                os.Exit(1)
+                                        }
+                                        // write/save buffer to disk
+                                        ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
                                         
                                 }else{
                                         msj = Message{
-                                                Body: nombre+"_"+cont, //nombreLibro#parte
+                                                Body: nombre+"#"+cont, //nombreLibro#parte
                                         }
                                         response, err := cDN3.pedirChunk(context.Background(), &msj)
                                         if err != nil{
                                                 fmt.Println("Error al enviar la solicitud del chunk")
                                                 break
                                         }
+
+                                        //escribir chunk en disco
+                                        fileName := nombre+"#"+cont
+                                        _, err := os.Create(fileName)
+                                        if err != nil {
+                                                fmt.Println(err)
+                                                os.Exit(1)
+                                        }
+                                        // write/save buffer to disk
+                                        ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
                                         
                                 }
                                 cont += 1
 
                         }
-                        //juntar partes
 
-                }
+                        // just for fun, let's recombine back the chunked files in a new file
+                        rearmarLibro(nombre, cont)
 
                 if strings.Compare("432", respuesta) == 0{
                         fmt.Println("Saliendo del programa. . . ")
