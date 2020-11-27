@@ -202,41 +202,42 @@ func main(){
                         for _, direccion := range direcciones {
                                 if direccion == "10.6.40.149"{
                                         msj = Message{
-                                                Body: nombre+"_"+cont, //nombreLibro_parte
+                                                Body: nombre+"_"+cont, //nombreLibro#parte
                                         }
                                         response, err := cDN1.pedirChunk(context.Background(), &msj)
                                         if err != nil{
-                                                fmt.Println("Error la direccion IP")
+                                                fmt.Println("Error al enviar la solicitud del chunk")
                                                 break
                                         }
-                                        
+                                        //escribir chunk en disco
+                                       
                                         
                                 }
                                 if direccion == "10.6.40.150"{
                                         msj = Message{
-                                                Body: nombre+"#"+cont, //nombreLibro_parte
+                                                Body: nombre+"#"+cont, //nombreLibro#parte
                                         }
                                         response, err := cDN2.pedirChunk(context.Background(), &msj)
                                         if err != nil{
-                                                fmt.Println("Error la direccion IP")
+                                                fmt.Println("Error al enviar la solicitud del chunk")
                                                 break
                                         }
                                         
                                 }else{
                                         msj = Message{
-                                                Body: nombre+"_"+cont, //nombreLibro_parte
+                                                Body: nombre+"_"+cont, //nombreLibro#parte
                                         }
                                         response, err := cDN3.pedirChunk(context.Background(), &msj)
                                         if err != nil{
-                                                fmt.Println("Error la direccion IP")
+                                                fmt.Println("Error al enviar la solicitud del chunk")
                                                 break
                                         }
                                         
                                 }
-                                cont +=1
+                                cont += 1
 
                         }
-                        
+                        //juntar partes
 
                 }
 

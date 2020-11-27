@@ -16,7 +16,7 @@ import(
 type Server struct {
 	pb.UnimplementedChatCliDnServer
 }
-
+//le piden un chunk y lo devuelve
 func (s *Server) pedirChunk(ctx context.Context, msj *pb.Message) (*pb.Chunk, error) {
 	split := strings.Split(msj.GetBody(), "#")
 	nombreLibro := split[0]

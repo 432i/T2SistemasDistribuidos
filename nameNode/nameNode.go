@@ -80,7 +80,7 @@ func (s *Server) escribirLog(ctx context.Context, message *Message) (*Message, e
         }
         return &msj, nil
 }
-
+//recibe el nombre del libro y retorna las ips de los data nodes donde estan
 func (s *Server) ChunksDirecciones(ctx context.Context, message *pb.Message) (*pb.Message, error){
         nombreLibro := message.GetBody()
         ips := recuperarLibro(nombreLibro)
