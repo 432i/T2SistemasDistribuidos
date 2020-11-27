@@ -15,6 +15,7 @@ type Server struct {
 	pb.UnimplementedChatCliDnServer
 }
 
+mi_ip = "10.6.40.149"
 var cola_chunks_de_cliente []pb.Chunk
 var cola_espera []string
 estado := "liberada"
@@ -29,7 +30,7 @@ func Find(slice []string, val string) (int, bool) {
     return -1, false
 }
 
-func escribirLogNN(nombre string, cantPartes string, parte string, ip string, c pb.NewChatCliDnClient){
+func escribirLogNN(nombre string, cantPartes string, parte string, ip string) {
 	msj = Message{
 		Body: nombre + " " + cantPartes + " " + parte + " " + ip,
 	}
@@ -113,10 +114,13 @@ func propuestaEntreDos(c pb.NewChatCliDnClient) {
 
 	if cola_chunks_de_cliente[0].parte == "1" {
 		almacenarChunk(chunkcito)
+		escribirLogNN(chunkcito.nombreLibro, chunkcito.totalPartes, chunkcito.parte, "10.6.40.149")
 	}
 	if cola_chunks_de_cliente[0].parte == "2" {
 		msg, _ = c.ChunkEntreDN(context.Background(), &chunkcito)
-		fmt.Println(msg.body)
+		el_split := strings.Split(msg.body, "#")
+		fmt.Println(el_split[0])
+		escribirLogNN(chunkcito.nombreLibro, chunkcito.totalPartes, chunkcito.parte, el_split[1])
 	}
 	if i > 2 {
 		j := rand.Intn(2)
@@ -124,7 +128,9 @@ func propuestaEntreDos(c pb.NewChatCliDnClient) {
 			almacenarChunk(chunkcito)
 		} else {
 			msg, _ = c.ChunkEntreDN(context.Background(), &chunkcito)
-			fmt.Println(msg.body)
+			el_split := strings.Split(msg.body, "#")
+			fmt.Println(el_split[0])
+			escribirLogNN(chunkcito.nombreLibro, chunkcito.totalPartes, chunkcito.parte, el_split[1])
 		}
 	}
 }
@@ -336,7 +342,7 @@ func (s *Server) ChunkEntreDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Mes
 	fnt.Println("Se ha almacenado el chunk:\n    {nombreLibro: " + chunkcito.nombreLibro + ",\n    totalPartes: " + chunkcito.totalPartes + ",\n    parte: " + chunkcito.parte + ",\n    datos: " + chunkcito.datos + "}",
 
 	msj := pb.Message{
-		Body: "Chunk recibido y almacenado:\n    {nombreLibro: " + chunkcito.nombreLibro + ",\n    totalPartes: " + chunkcito.totalPartes + ",\n    parte: " + chunkcito.parte + ",\n    datos: " + chunkcito.datos + "}",
+		body: "Chunk recibido y almacenado#" + mi_ip,
 	}
 	return &msj, nil
 }
