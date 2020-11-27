@@ -20,4 +20,5 @@ service ChatCliDn {
     rpc escribirLog(Message) returns (Message){}
     rpc ChunkEntreDN(Chunk) returns (Message) {}
     rpc pedirChunk(Message) returns (Chunk){}
+    rpc pedirCatalogo(Message) returns (Message){}
 }

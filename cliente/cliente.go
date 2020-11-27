@@ -240,6 +240,7 @@ func rearmarLibro(nombreLibro string, cantPartes int){
         file.Close()
 }
 func main(){
+
         cDN1 := conexionDN("10.6.40.149") //conexion Data Node 1
         cDN2 := conexionDN("10.6.40.150") //conexion Data Node 2
         cDN3 := conexionDN("10.6.40.151") //conexion Data Node 3
@@ -287,6 +288,8 @@ func main(){
 
 
                 if strings.Compare("2", respuesta) == 0{
+
+
                         for{
                                 var respuesta2 string
                                 fmt.Println("1 Mostrar catalogo de libros disponibles para descargar\n")
@@ -298,10 +301,15 @@ func main(){
                                         return
                                 }
                                 if respuesta2 == "1"{
-                                        
-
-
-
+                                        msj = pb.Message{
+                                                Body: "TOY XATO",
+                                        }
+                                        response, err := cDNN.pedirCatalogo(context.Background(), &msj)
+                                        if err != nil{
+                                                fmt.Println("Error al enviar la solicitud del catalogo")
+                                                break
+                                        }
+                                        log.Printf("%s", response.Body)
 
                                 }
                                 if respuesta2 == "2"{
@@ -317,7 +325,7 @@ func main(){
                                         cont := 1
                                         for _, direccion := range direcciones {
                                                 if direccion == "10.6.40.149"{
-                                                        msj = Message{
+                                                        msj = pb.Message{
                                                                 Body: nombre+"#"+cont, //nombreLibro#parte
                                                         }
                                                         response, err := cDN1.pedirChunk(context.Background(), &msj)
@@ -338,7 +346,7 @@ func main(){
                                                         
                                                 }
                                                 if direccion == "10.6.40.150"{
-                                                        msj = Message{
+                                                        msj = pb.Message{
                                                                 Body: nombre+"#"+cont, //nombreLibro#parte
                                                         }
                                                         response, err := cDN2.pedirChunk(context.Background(), &msj)
@@ -358,7 +366,7 @@ func main(){
                                                         ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
                                                         
                                                 }else{
-                                                        msj = Message{
+                                                        msj = pb.Message{
                                                                 Body: nombre+"#"+cont, //nombreLibro#parte
                                                         }
                                                         response, err := cDN3.pedirChunk(context.Background(), &msj)
@@ -395,6 +403,8 @@ func main(){
                         }
 
                 }
+
+                
                 if strings.Compare("432", respuesta) == 0{
                         fmt.Println("Saliendo del programa. . . ")
                         break
