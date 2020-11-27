@@ -190,7 +190,7 @@ func main(){
 
                 if strings.Compare("2", respuesta) == 0{
                         var nombre string
-                        fmt.Println("Ingrese el nombre del libro sin extension y presione Enter")
+                        fmt.Println("Ingrese el nombre del libro que desea descargar sin extension y presione Enter")
                         _, err := fmt.Scanln(&nombre)
                         if err != nil {
                                 fmt.Fprintln(os.Stderr, err)
@@ -198,8 +198,43 @@ func main(){
                         }
                         direcciones := pedirDirecciones(nombre, cNN)
                         //recorrer las direcciones ips para ir pidiendo los chunks
+                        cont := 1
                         for _, direccion := range direcciones {
-                                fmt.Printf(direccion)
+                                if direccion == "10.6.40.149"{
+                                        msj = Message{
+                                                Body: nombre+"_"+cont, //nombreLibro_parte
+                                        }
+                                        response, err := cDN1.pedirChunk(context.Background(), &msj)
+                                        if err != nil{
+                                                fmt.Println("Error la direccion IP")
+                                                break
+                                        }
+                                        
+                                        
+                                }
+                                if direccion == "10.6.40.150"{
+                                        msj = Message{
+                                                Body: nombre+"#"+cont, //nombreLibro_parte
+                                        }
+                                        response, err := cDN2.pedirChunk(context.Background(), &msj)
+                                        if err != nil{
+                                                fmt.Println("Error la direccion IP")
+                                                break
+                                        }
+                                        
+                                }else{
+                                        msj = Message{
+                                                Body: nombre+"_"+cont, //nombreLibro_parte
+                                        }
+                                        response, err := cDN3.pedirChunk(context.Background(), &msj)
+                                        if err != nil{
+                                                fmt.Println("Error la direccion IP")
+                                                break
+                                        }
+                                        
+                                }
+                                cont +=1
+
                         }
                         
 

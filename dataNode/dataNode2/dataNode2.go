@@ -17,6 +17,45 @@ type Server struct {
 	pb.UnimplementedChatCliDnServer
 }
 
+func (s *Server) pedirChunk(ctx context.Context, msj *pb.Message) (*pb.Chunk, error) {
+	split := strings.Split(msj.GetBody(), "#")
+	nombreLibro := split[0]
+	parte := split[1]
+
+
+	//seleccionamos el archivo del directorio
+	 //read a chunk
+	 newFileChunk, err := os.Open(msj.GetBody())
+	 if err != nil {
+			 fmt.Println(err)
+			 os.Exit(1)
+	 }
+	 defer newFileChunk.Close()
+	 chunkInfo, err := newFileChunk.Stat()
+	 if err != nil {
+			 fmt.Println(err)
+			 os.Exit(1)
+	 }
+	 // calculate the bytes size of each chunk
+	 // we are not going to rely on previous data and constant
+	 var chunkSize int64 = chunkInfo.Size()
+	 chunkBufferBytes := make([]byte, chunkSize)
+
+
+	chunko := pb.Chunk{
+		NombreLibro: nombreLibro,
+		TotalPartes: "0",
+		Parte: parte,
+		Datos: chunkBufferBytes,
+		Algoritmo: "0",
+	}
+
+	chunkBufferBytes = nil
+
+
+	return &chunko, nil
+}
+
 func (s *Server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message, error) {
 	
 	msj := pb.Message{
