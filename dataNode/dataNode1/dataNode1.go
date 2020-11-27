@@ -31,6 +31,15 @@ func Find(slice []string, val string) (int, bool) {
 }
 
 func escribirLogNN(nombre string, cantPartes string, parte string, ip string) {
+	var conn *grpc.ClientConn
+	conn, err := grpc.Dial("10.6.40.152:50001", grpc.WithInsecure())
+	if err != nil {
+		fmt.Println("Error al establecer conexion con el NameNode")
+	}
+	defer conn.Close()
+	c2 := pb.NewChatCliDnClient(conn)
+	fmt.Println("Conexion realizada correctamente con el Name Node de IP 10.6.40.152")
+
 	msj = Message{
 		Body: nombre + " " + cantPartes + " " + parte + " " + ip,
 	}
