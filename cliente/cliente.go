@@ -247,8 +247,8 @@ func main(){
         for{    
                 var respuesta string
                 fmt.Println("\n Quiere subir o descargar un libro? Ingrese la opcion correpsondiente y presione Enter: \n")
-                fmt.Println("1 Subir un libro a la red \n")
-                fmt.Println("2 Descargar un libro de la red \n")
+                fmt.Println("1 Client Uploader \n")
+                fmt.Println("2 Client Downloader \n")
                 fmt.Println("432 para salir")
                 _, err := fmt.Scanln(&respuesta)
                 if err != nil {
@@ -287,86 +287,114 @@ func main(){
 
 
                 if strings.Compare("2", respuesta) == 0{
-                        var nombre string
-                        fmt.Println("Ingrese el nombre del libro que desea descargar sin extension y presione Enter")
-                        _, err := fmt.Scanln(&nombre)
-                        if err != nil {
-                                fmt.Fprintln(os.Stderr, err)
-                                return
-                        }
-                        direcciones := pedirDirecciones(nombre, cNN)
-                        //recorrer las direcciones ips para ir pidiendo los chunks
-                        cont := 1
-                        for _, direccion := range direcciones {
-                                if direccion == "10.6.40.149"{
-                                        msj = Message{
-                                                Body: nombre+"#"+cont, //nombreLibro#parte
-                                        }
-                                        response, err := cDN1.pedirChunk(context.Background(), &msj)
-                                        if err != nil{
-                                                fmt.Println("Error al enviar la solicitud del chunk")
-                                                break
-                                        }
-
-                                        //escribir chunk en disco
-                                        fileName := nombre+"#"+cont
-                                        _, err := os.Create(fileName)
-                                        if err != nil {
-                                                fmt.Println(err)
-                                                os.Exit(1)
-                                        }
-                                        // write/save buffer to disk
-                                        ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
-                                        
+                        for{
+                                var respuesta2 string
+                                fmt.Println("1 Mostrar catalogo de libros disponibles para descargar\n")
+                                fmt.Println("2 Descargar un libro \n")
+                                fmt.Println("432 para salir")
+                                _, err := fmt.Scanln(&respuesta2)
+                                if err != nil {
+                                        fmt.Fprintln(os.Stderr, err)
+                                        return
                                 }
-                                if direccion == "10.6.40.150"{
-                                        msj = Message{
-                                                Body: nombre+"#"+cont, //nombreLibro#parte
-                                        }
-                                        response, err := cDN2.pedirChunk(context.Background(), &msj)
-                                        if err != nil{
-                                                fmt.Println("Error al enviar la solicitud del chunk")
-                                                break
-                                        }
-
-                                        //escribir chunk en disco
-                                        fileName := nombre+"#"+cont
-                                        _, err := os.Create(fileName)
-                                        if err != nil {
-                                                fmt.Println(err)
-                                                os.Exit(1)
-                                        }
-                                        // write/save buffer to disk
-                                        ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
+                                if respuesta2 == "1"{
                                         
-                                }else{
-                                        msj = Message{
-                                                Body: nombre+"#"+cont, //nombreLibro#parte
-                                        }
-                                        response, err := cDN3.pedirChunk(context.Background(), &msj)
-                                        if err != nil{
-                                                fmt.Println("Error al enviar la solicitud del chunk")
-                                                break
-                                        }
 
-                                        //escribir chunk en disco
-                                        fileName := nombre+"#"+cont
-                                        _, err := os.Create(fileName)
-                                        if err != nil {
-                                                fmt.Println(err)
-                                                os.Exit(1)
-                                        }
-                                        // write/save buffer to disk
-                                        ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
-                                        
+
+
+
                                 }
-                                cont += 1
+                                if respuesta2 == "2"{
+                                        var nombre string
+                                        fmt.Println("Ingrese el nombre del libro que desea descargar sin extension y presione Enter")
+                                        _, err := fmt.Scanln(&nombre)
+                                        if err != nil {
+                                                fmt.Fprintln(os.Stderr, err)
+                                                return
+                                        }
+                                        direcciones := pedirDirecciones(nombre, cNN)
+                                        //recorrer las direcciones ips para ir pidiendo los chunks
+                                        cont := 1
+                                        for _, direccion := range direcciones {
+                                                if direccion == "10.6.40.149"{
+                                                        msj = Message{
+                                                                Body: nombre+"#"+cont, //nombreLibro#parte
+                                                        }
+                                                        response, err := cDN1.pedirChunk(context.Background(), &msj)
+                                                        if err != nil{
+                                                                fmt.Println("Error al enviar la solicitud del chunk")
+                                                                break
+                                                        }
+                
+                                                        //escribir chunk en disco
+                                                        fileName := nombre+"#"+cont
+                                                        _, err := os.Create(fileName)
+                                                        if err != nil {
+                                                                fmt.Println(err)
+                                                                os.Exit(1)
+                                                        }
+                                                        // write/save buffer to disk
+                                                        ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
+                                                        
+                                                }
+                                                if direccion == "10.6.40.150"{
+                                                        msj = Message{
+                                                                Body: nombre+"#"+cont, //nombreLibro#parte
+                                                        }
+                                                        response, err := cDN2.pedirChunk(context.Background(), &msj)
+                                                        if err != nil{
+                                                                fmt.Println("Error al enviar la solicitud del chunk")
+                                                                break
+                                                        }
+                
+                                                        //escribir chunk en disco
+                                                        fileName := nombre+"#"+cont
+                                                        _, err := os.Create(fileName)
+                                                        if err != nil {
+                                                                fmt.Println(err)
+                                                                os.Exit(1)
+                                                        }
+                                                        // write/save buffer to disk
+                                                        ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
+                                                        
+                                                }else{
+                                                        msj = Message{
+                                                                Body: nombre+"#"+cont, //nombreLibro#parte
+                                                        }
+                                                        response, err := cDN3.pedirChunk(context.Background(), &msj)
+                                                        if err != nil{
+                                                                fmt.Println("Error al enviar la solicitud del chunk")
+                                                                break
+                                                        }
+                
+                                                        //escribir chunk en disco
+                                                        fileName := nombre+"#"+cont
+                                                        _, err := os.Create(fileName)
+                                                        if err != nil {
+                                                                fmt.Println(err)
+                                                                os.Exit(1)
+                                                        }
+                                                        // write/save buffer to disk
+                                                        ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
+                                                        
+                                                }
+                                                cont += 1
+                
+                                        }
+                
+                                        // just for fun, let's recombine back the chunked files in a new file
+                                        rearmarLibro(nombre, cont)
+                                }
+                                if respuesta2 == "432"{
+                                        fmt.Println("Saliendo del Client Downloader. . . ")
+                                        break
+                                }
 
+                                
+                                
                         }
 
-                        // just for fun, let's recombine back the chunked files in a new file
-                        rearmarLibro(nombre, cont)
-
+                }
                 if strings.Compare("432", respuesta) == 0{
                         fmt.Println("Saliendo del programa. . . ")
                         break

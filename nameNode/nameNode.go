@@ -31,7 +31,7 @@ func recuperarLibro(nombreLibro string) []string{
         for scanner.Scan() {
             //fmt.Println(scanner.Text())
             linea := scanner.Text()
-            if flag ==1{
+            if flag == 1{
                 split := strings.Split(linea, " ")
                 ip := split[1]
                 ips = ips+ip+" - "
