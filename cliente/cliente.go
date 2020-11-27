@@ -1,6 +1,6 @@
 package main
 import(
-        //"bufio"
+        "bufio"
         "io/ioutil"
         "math/rand"
         "math"
@@ -25,7 +25,7 @@ Descripcion:
 Retorno:
 	- Retorna la conexion con el Data Node de la ip recibida
 */
-func conexionDN(ip) pb.NewChatCliDnClient{
+func conexionDN(ip string) pb.NewChatCliDnClient{
         var conn *grpc.ClientConn
         puerto := ":50001"
         conn, err := grpc.Dial(ip+puerto, grpc.WithInsecure())
@@ -98,8 +98,8 @@ func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.NewChatCliDnCli
 
                 chunko := pb.Chunk{
                         NombreLibro: nombreLibro,
-                        TotalPartes: strconv.Itoa(totalPartsNum),
-                        Parte: strconv.Itoa(i+1),
+                        TotalPartes: strconv.Itoa(int(totalPartsNum)),
+                        Parte: strconv.Itoa(int(i+1)),
                         Datos: partBuffer,
                         Algoritmo: tipoAlgoritmo,
                 }
@@ -134,7 +134,7 @@ func pedirDirecciones(nombreLibro string, c pb.NewChatCliDnClient) []string{
         if err != nil{
                 fmt.Println("Error al enviar la orden")
                 log.Fatalf("%s", err)
-                break
+                //break
         }
         partesIPS := strings.Split(response.Body, "-")
         partesIPS = partesIPS[:len(partesIPS)-1] //parte 1 en la ip de la posicion 0, parte 2 en la posicion 1, etc
@@ -152,7 +152,7 @@ Retorno:
 */
 func rearmarLibro(nombreLibro string, cantPartes int){
         newFileName := nombreLibro+"RECUPERADO"+".pdf"
-        _, err = os.Create(newFileName)
+        _, err := os.Create(newFileName)
 
         if err != nil {
                 fmt.Println(err)
@@ -162,7 +162,7 @@ func rearmarLibro(nombreLibro string, cantPartes int){
         //set the newFileName file to APPEND MODE!!
         // open files r and w
 
-        file, err = os.OpenFile(newFileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+        file, err := os.OpenFile(newFileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 
         if err != nil {
                 fmt.Println(err)
@@ -175,7 +175,7 @@ func rearmarLibro(nombreLibro string, cantPartes int){
         // just information on which part of the new file we are appending
         var writePosition int64 = 0
 
-        for j := uint64(0); j < cantPartes; j++ {
+        for j := uint64(0); j < uint64(cantPartes); j++ {
 
                 //read a chunk
                 currentChunkFileName := nombreLibro + "#" + strconv.FormatUint(j+1, 10)
@@ -268,8 +268,8 @@ func main(){
                                 return
                         }
                         fmt.Println("Ingrese el algoritmo que desea usar: 'centralizado' o 'distribuido' y presione Enter")
-                        _, err := fmt.Scanln(&tipoAlgoritmo)
-                        if err != nil {
+                        _, err1 := fmt.Scanln(&tipoAlgoritmo)
+                        if err1 != nil {
                                 fmt.Fprintln(os.Stderr, err)
                                 return
                         }
@@ -301,10 +301,10 @@ func main(){
                                         return
                                 }
                                 if respuesta2 == "1"{
-                                        msj = pb.Message{
+                                        msj := pb.Message{
                                                 Body: "TOY XATO",
                                         }
-                                        response, err := cDNN.pedirCatalogo(context.Background(), &msj)
+                                        response, err := cNN.pedirCatalogo(context.Background(), &msj)
                                         if err != nil{
                                                 fmt.Println("Error al enviar la solicitud del catalogo")
                                                 break
@@ -325,8 +325,8 @@ func main(){
                                         cont := 1
                                         for _, direccion := range direcciones {
                                                 if direccion == "10.6.40.149"{
-                                                        msj = pb.Message{
-                                                                Body: nombre+"#"+cont, //nombreLibro#parte
+                                                        msj := pb.Message{
+                                                                Body: nombre+"#"+strconv.Itoa(cont), //nombreLibro#parte
                                                         }
                                                         response, err := cDN1.pedirChunk(context.Background(), &msj)
                                                         if err != nil{
@@ -335,9 +335,9 @@ func main(){
                                                         }
                 
                                                         //escribir chunk en disco
-                                                        fileName := nombre+"#"+cont
-                                                        _, err := os.Create(fileName)
-                                                        if err != nil {
+                                                        fileName := nombre+"#"+strconv.Itoa(cont)
+                                                        _, err3 := os.Create(fileName)
+                                                        if err3 != nil {
                                                                 fmt.Println(err)
                                                                 os.Exit(1)
                                                         }
@@ -346,8 +346,8 @@ func main(){
                                                         
                                                 }
                                                 if direccion == "10.6.40.150"{
-                                                        msj = pb.Message{
-                                                                Body: nombre+"#"+cont, //nombreLibro#parte
+                                                        msj := pb.Message{
+                                                                Body: nombre+"#"+strconv.Itoa(cont), //nombreLibro#parte
                                                         }
                                                         response, err := cDN2.pedirChunk(context.Background(), &msj)
                                                         if err != nil{
@@ -356,9 +356,9 @@ func main(){
                                                         }
                 
                                                         //escribir chunk en disco
-                                                        fileName := nombre+"#"+cont
-                                                        _, err := os.Create(fileName)
-                                                        if err != nil {
+                                                        fileName := nombre+"#"+strconv.Itoa(cont)
+                                                        _, err4 := os.Create(fileName)
+                                                        if err4 != nil {
                                                                 fmt.Println(err)
                                                                 os.Exit(1)
                                                         }
@@ -366,8 +366,8 @@ func main(){
                                                         ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
                                                         
                                                 }else{
-                                                        msj = pb.Message{
-                                                                Body: nombre+"#"+cont, //nombreLibro#parte
+                                                        msj := pb.Message{
+                                                                Body: nombre+"#"+strconv.Itoa(cont), //nombreLibro#parte
                                                         }
                                                         response, err := cDN3.pedirChunk(context.Background(), &msj)
                                                         if err != nil{
@@ -376,9 +376,9 @@ func main(){
                                                         }
                 
                                                         //escribir chunk en disco
-                                                        fileName := nombre+"#"+cont
-                                                        _, err := os.Create(fileName)
-                                                        if err != nil {
+                                                        fileName := nombre+"#"+strconv.Itoa(cont)
+                                                        _, err5 := os.Create(fileName)
+                                                        if err5 != nil {
                                                                 fmt.Println(err)
                                                                 os.Exit(1)
                                                         }
