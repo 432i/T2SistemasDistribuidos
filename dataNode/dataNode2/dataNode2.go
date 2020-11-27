@@ -22,7 +22,6 @@ func (s *Server) pedirChunk(ctx context.Context, msj *pb.Message) (*pb.Chunk, er
 	nombreLibro := split[0]
 	parte := split[1]
 
-
 	//seleccionamos el archivo del directorio
 	 //read a chunk
 	 newFileChunk, err := os.Open(msj.GetBody())
@@ -41,7 +40,6 @@ func (s *Server) pedirChunk(ctx context.Context, msj *pb.Message) (*pb.Chunk, er
 	 var chunkSize int64 = chunkInfo.Size()
 	 chunkBufferBytes := make([]byte, chunkSize)
 
-
 	chunko := pb.Chunk{
 		NombreLibro: nombreLibro,
 		TotalPartes: "0",
@@ -52,26 +50,13 @@ func (s *Server) pedirChunk(ctx context.Context, msj *pb.Message) (*pb.Chunk, er
 
 	chunkBufferBytes = nil
 
-
 	return &chunko, nil
 }
 
-func (s *Server) ChunkaDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message, error) {
-	
-	msj := pb.Message{
-		Body: "ok",
-	}
-	return &msj, nil
-}
-//sirve para obtener la ip de la maquina
-func obtenerIP() string{
-	ipDN="10.6.40.150"
-	return ipDN
-}
 //envia los datos del chunk para que se escriban en el log
 func escribirLogNN(nombre string, cantPartes string, parte string, ip string, c pb.NewChatCliDnClient){
 	msj = Message{
-		Body: nombre+" "+cantPartes+" "+parte+" "+ip,
+		Body: nombre + " " + cantPartes + " " + parte + " " + ip,
 	}
 	response, err := c.escribirLog(context.Background(), &msj)
     if err != nil{
