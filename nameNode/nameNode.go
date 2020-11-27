@@ -56,9 +56,49 @@ func recuperarLibro(nombreLibro string) []string{
         if err := scanner.Err(); err != nil {
                 log.Fatal(err)
         }
-        xd := strings.Split(ips,"-")
-        return xd
+        final := strings.Split(ips,"-")
+        return final
 }
+
+func pedirCatalogo() string{
+        catalogo := "Libros disponibles: \n"
+        file, err := os.Open("log.txt")
+        if err != nil {
+            log.Fatal(err)
+        }
+        defer file.Close()
+    
+        scanner := bufio.NewScanner(file)
+        for scanner.Scan() {
+                linea := scanner.Text()
+                //fmt.Println(scanner.Text())
+                if strings.Contains(linea, "parte_") && strings.Contains(linea, "."){
+                        catalogo = catalogo
+                }else{
+                        split := strings.Split(linea, " ")
+                        nombreLibro := split[0]
+                        catalogo = catalogo + nombreLibro + "\n"
+                }
+            
+        }
+    
+        if err := scanner.Err(); err != nil {
+                log.Fatal(err)
+        }
+
+        return catalogo
+}
+
+func (s *Server) pedirCatalogo(ctx context.Context, message *Message) (*Message, error){
+        catalogo := obtenerCatalogo()
+        msj := pb.Message{
+		Body: catalogo,
+	}
+        return &msj, nil
+
+}
+
+
 //funcion que recibe la solicitud de escribir en el log 
 //recibe un string con los datos del chunk que se guardó en tal data node
 func (s *Server) escribirLog(ctx context.Context, message *Message) (*Message, error){
@@ -78,6 +118,8 @@ func (s *Server) escribirLog(ctx context.Context, message *Message) (*Message, e
         }
         return &msj, nil
 }
+
+
 //recibe el nombre del libro y retorna las ips de los data nodes donde estan
 func (s *Server) ChunksDirecciones(ctx context.Context, message *pb.Message) (*pb.Message, error){
         nombreLibro := message.GetBody()
