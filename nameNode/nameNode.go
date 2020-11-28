@@ -15,7 +15,15 @@ import(
 type Server struct {
 	pb.UnimplementedChatCliDnServer
 }
-
+/*
+Funcion: recuperarLibro
+Parametro:
+	- nombreLibro: nombre del libro que se quiere sacar de log.txt
+Descripcion:
+	- Busca en el log.txt el libro y recupera sus partes y las ip en donde se encuentran
+Retorno:
+	- Un slice con las ip en donde estan las partes del libro
+*/
 func recuperarLibro(nombreLibro string) []string{
         ips := ""
         flag := 0
@@ -59,7 +67,15 @@ func recuperarLibro(nombreLibro string) []string{
         final := strings.Split(ips,"-")
         return final
 }
-
+/*
+Funcion: pedirCatalogo
+Parametro:
+	- Nada
+Descripcion:
+	- Genera un string con todos los libros disponibles en log.txt (catalogo)
+Retorno:
+	- Retorna un string con el catalogo de libros disponibles
+*/
 func pedirCatalogo() string{
         catalogo := "Libros disponibles: \n"
         file, err := os.Open("log.txt")
@@ -88,7 +104,15 @@ func pedirCatalogo() string{
 
         return catalogo
 }
-
+/*
+Funcion: pedirCatalogo
+Parametro:
+	- Nada
+Descripcion:
+	- Pide el catalogo a la funcion pedirCatalogo y lo devuelve al cliente
+Retorno:
+	- Un Message con el catalogo
+*/
 func (s *Server) pedirCatalogo(ctx context.Context, message *Message) (*Message, error){
         catalogo := obtenerCatalogo()
         msj := pb.Message{
@@ -97,8 +121,15 @@ func (s *Server) pedirCatalogo(ctx context.Context, message *Message) (*Message,
         return &msj, nil
 
 }
-
-
+/*
+Funcion: propuestaCentralizado
+Parametro:
+	- Message: con el nodo que envia la propuesta y su propuesta
+Descripcion:
+	- Recibe la propuesta del data node emisor y la acepta o propone otra
+Retorno:
+	- Message con la respuesta
+*/
 func (s *Server) propuestaCentralizado(ctx context.Context, message *Message) (*Message, error){
         var se_pudo2, se_pudo3, se_pudo1 bool
         se_pudo1 = true
@@ -216,8 +247,15 @@ func (s *Server) propuestaCentralizado(ctx context.Context, message *Message) (*
 
 }
 
-//funcion que recibe la solicitud de escribir en el log 
-//recibe un string con los datos del chunk que se guardó en tal data node
+/*
+Funcion: escribirLog
+Parametro:
+	- Message: string con la informacion del chunk a guardar en el log
+Descripcion:
+	- Recibe la solicitud de escribir en el log con los datos del chunk a escribir
+Retorno:
+	- String de exito
+*/
 func (s *Server) escribirLog(ctx context.Context, message *Message) (*Message, error){
         split := strings.Split(message.GetBody(), " ")
         nombreLibro := split[0]
@@ -235,9 +273,15 @@ func (s *Server) escribirLog(ctx context.Context, message *Message) (*Message, e
         }
         return &msj, nil
 }
-
-
-//recibe el nombre del libro y retorna las ips de los data nodes donde estan
+/*
+Funcion: ChunksDirecciones
+Parametro:
+	- Message: string con el nombre del libro a recuperar las ip de sus partes
+Descripcion:
+	- Recibe el nombre del libro, busca sus partes e ips en el log.txt y las devuelve
+Retorno:
+	- String con las ip de las partes
+*/
 func (s *Server) ChunksDirecciones(ctx context.Context, message *pb.Message) (*pb.Message, error){
         nombreLibro := message.GetBody()
         ips := recuperarLibro(nombreLibro)
@@ -246,7 +290,15 @@ func (s *Server) ChunksDirecciones(ctx context.Context, message *pb.Message) (*p
 	}
 	return &msj, nil
 }
-
+/*
+Funcion: crearTxt
+Parametro:
+	- Nada
+Descripcion:
+	- Crea el archivo log.txt
+Retorno:
+	- Nada
+*/
 func crearTxt(){
         archivo, err := os.Create("log.txt")
         if err != nil {
@@ -259,8 +311,16 @@ func crearTxt(){
             return
         }
 }
-
-
+/*
+Funcion: escribirTXT
+Parametro:
+        - nombre, cantPartes, parte, ip: informacion del chunk a guardar
+        - flag: 1 si es primera vez que se escribe el libro y 0 si no
+Descripcion:
+	- Guarda la info del libro y sus chunks en el txt
+Retorno:
+	- Nada
+*/
 func escribirTXT(nombre string, cantPartes string, parte string, ip string, flag int){
         archivo, err := os.OpenFile("log.txt", os.O_APPEND|os.O_WRONLY, 0644)
         if err != nil {
@@ -287,7 +347,15 @@ func escribirTXT(nombre string, cantPartes string, parte string, ip string, flag
                 }
         }
 }
-
+/*
+Funcion: serverNN
+Parametro:
+	- Nada
+Descripcion:
+	- Levanta el servidor de name node
+Retorno:
+	- Nada
+*/
 func serverNN() {
 	//-----------------------------------------------------------------> Server1
 	lis, err := net.Listen("tcp", ":50001")
@@ -303,5 +371,18 @@ func serverNN() {
 
 func main(){
         crearTxt()
-
+        go serverNN()
+        fmt.Println("Ingrese 432 y presione Enter para salir del programa")
+	for{
+		_, err := fmt.Scanln(&respuesta)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return
+		}
+		if strings.Compare("432", respuesta) == 0{
+			fmt.Println("Saliendo del programa. . . ")
+			break
+		}
+		fmt.Println("que")
+	}
 }
