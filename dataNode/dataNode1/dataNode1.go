@@ -202,10 +202,9 @@ Retorno:
 	- No hay
 */
 func generarPropuesta(cantPartes string, tiempo string) {
-	var se_pudo2, se_pudo3, se_pudoNN bool
+	var se_pudo2, se_pudo3 bool
 	se_pudo2 = true
 	se_pudo3 = true
-	se_pudoNN = true
 	partes, _:= strconv.Atoi(cantPartes)
 	var connDN2, connDN3 *grpc.ClientConn
 
@@ -215,7 +214,7 @@ func generarPropuesta(cantPartes string, tiempo string) {
 			body: timestamp + "_DN1",
 		}
 		entrarZona := false
-		connDN2, err2 := grpc.Dial("10.6.40.150", grpc.WithInsecure())
+		connDN2, err2 := grpc.Dial(direccion, grpc.WithInsecure())
 		if err2 != nil {
 			se_pudo2 = false
 		}
@@ -223,7 +222,7 @@ func generarPropuesta(cantPartes string, tiempo string) {
 		c2 := pb.NewChatCliDnClient(connDN2)
 		fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
 
-		connDN3, err3 := grpc.Dial("10.6.40.151", grpc.WithInsecure())
+		connDN3, err3 := grpc.Dial(direccion, grpc.WithInsecure())
 		if err3 != nil {
 			se_pudo3 = false
 		}
@@ -231,106 +230,50 @@ func generarPropuesta(cantPartes string, tiempo string) {
 		c3 := pb.NewChatCliDnClient(connDN2)
 		fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
 
-		connNN, err4 := grpc.Dial("10.6.40.152", grpc.WithInsecure())
-		if err4 != nil {
-			se_pudoNN = false
-		}
-		defer connDN3.Close()
-		cNN := pb.NewChatCliDnClient(connNN)
-		fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.152")
-
 		
 		if (se_pudo2 == true && se_pudo3 == true) {
-			if tipoAlgoritmo == "distribuido" {
-				if estado == "buscada" {
-					msj2, _ := c2.EnviarPeticion(context.Background(), &mensajito)
-					for msj2 != "ok" {
-						msj2, _ = c2.EnviarPeticion(context.Background(), &mensajito)
-					}
-					msj3, _ := c3.EnviarPeticion(context.Background(), &mensajito)
-					for msj3 != "ok" {
-						msj3, _ = c3.EnviarPeticion(context.Background(), &mensajito)
-					}
-					estado = "tomada"
-					propuestaEntreTres(c2, c3)
+			if estado == "buscada" {
+				msj2, _ := c2.EnviarPeticion(context.Background(), &mensajito)
+				for msj2 != "ok" {
+					msj2, _ = c2.EnviarPeticion(context.Background(), &mensajito)
 				}
-				if estado == "tomada" {
-					propuestaEntreTres(c2, c3)
+				msj3, _ := c3.EnviarPeticion(context.Background(), &mensajito)
+				for msj3 != "ok" {
+					msj3, _ = c3.EnviarPeticion(context.Background(), &mensajito)
 				}
-			} else {
-				//Codigo para centralizado
-				//KAJSDHGKASJDHGAKSDJHAGSKDJHGASDKJAHGSDKJAGSHDKAJDSH
-
-				
-				if se_pudoNN == true{ //si el name node acepta la propuesta (no esta caido)
-
-				}else{ //si el name node esta caido
-
-				}
-
-
+				estado = "tomada"
+				propuestaEntreTres(c2, c3)
+			}
+			if estado == "tomada" {
+				propuestaEntreTres(c2, c3)
 			}
 		} else if (se_pudo2 == true && se_pudo3 == false) {
-			if tipoAlgoritmo == "distribuido" {
-				if estado == "buscada" {
-					msj2, _ := c2.EnviarPeticion(context.Background(), &mensajito)
-					for msj2 != "ok" {
-						msj2, _ = c2.EnviarPeticion(context.Background(), &mensajito)
-					}
-					estado = "tomada"
-					propuestaEntreDos(c2)
+			if estado == "buscada" {
+				msj2, _ := c2.EnviarPeticion(context.Background(), &mensajito)
+				for msj2 != "ok" {
+					msj2, _ = c2.EnviarPeticion(context.Background(), &mensajito)
 				}
-				if estado == "tomada" {
-					propuestaEntreDos(c2)
-				}
-			} else {
-				//Codigo para centralizado
-				//KAJSDHGKASJDHGAKSDJHAGSKDJHGASDKJAHGSDKJAGSHDKAJDSH
-
-				if se_pudoNN == true{ //si el name node acepta la propuesta (no esta caido)
-
-					}else{ //si el name node esta caido
-	
-				}
+				estado = "tomada"
+				propuestaEntreDos(c2)
+			}
+			if estado == "tomada" {
+				propuestaEntreDos(c2)
 			}
 		} else if (se_pudo2 == false && se_pudo3 == true) {
-			if tipoAlgoritmo == "distribuido" {
-				if estado == "buscada" {
-					msj3, _ := c3.EnviarPeticion(context.Background(), &mensajito)
-					for msj3 != "ok" {
-						msj3, _ = c3.EnviarPeticion(context.Background(), &mensajito)
-					}
-					estado = "tomada"
-					propuestaEntreDos(c3)
+			if estado == "buscada" {
+				msj3, _ := c3.EnviarPeticion(context.Background(), &mensajito)
+				for msj3 != "ok" {
+					msj3, _ = c3.EnviarPeticion(context.Background(), &mensajito)
 				}
-				if estado == "tomada" {
-					propuestaEntreDos(c3)
-				}
-			} else {
-				//Codigo para centralizado
-				//KAJSDHGKASJDHGAKSDJHAGSKDJHGASDKJAHGSDKJAGSHDKAJDSH
-
-				if se_pudoNN == true{ //si el name node acepta la propuesta (no esta caido)
-
-					}else{ //si el name node esta caido
-	
-				}
+				estado = "tomada"
+				propuestaEntreDos(c3)
+			}
+			if estado == "tomada" {
+				propuestaEntreDos(c3)
 			}
 		} else {
-			if tipoAlgoritmo == "distribuido" {
-				estado = "tomada"
-				almacenarChunk(cola_chunks_de_cliente[0])
-			} else {
-				//Codigo para centralizado
-				//KAJSDHGKASJDHGAKSDJHAGSKDJHGASDKJAHGSDKJAGSHDKAJDSH
-
-				if se_pudoNN == true{ //si el name node acepta la propuesta (no esta caido)
-
-					}else{ //si el name node esta caido
-	
-				}
-			
-			}
+			estado = "tomada"
+			almacenarChunk(cola_chunks_de_cliente[0])
 		}
 		if len(cola_chunks_de_cliente) == 1 {
 			cola_chunks_de_cliente = make([]pb.Chunk, 0)
@@ -357,10 +300,15 @@ func escucharListaChunks() {
 	var prop int
 	for { 
 		if len(cola_chunks_de_cliente) != 0 {
-			tiempoactual := time.Now()
-			timestamp = tiempoactual.Format("02-01-2006 15:04")
-			estado = "buscada"
-			generarPropuesta(cola_chunks_de_cliente[0].totalPartes)
+			if tipoAlgoritmo == "distribuido" {
+				tiempoactual := time.Now()
+				timestamp = tiempoactual.Format("02-01-2006 15:04")
+				estado = "buscada"
+				generarPropuesta(cola_chunks_de_cliente[0].totalPartes)
+			}
+			if tipoAlgoritmo == "centralizado" {
+				//aksdjhalsdj
+			}
 		}
 	}
 }
