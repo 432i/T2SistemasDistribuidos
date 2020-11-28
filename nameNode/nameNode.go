@@ -243,8 +243,6 @@ func (s *Server) propuestaCentralizado(ctx context.Context, message *Message) (*
                 }
         }
         
-        
-
 }
 
 /*

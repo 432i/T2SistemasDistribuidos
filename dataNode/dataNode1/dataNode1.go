@@ -1,8 +1,11 @@
 package main
 import(
     	"os"
-        "strings"
-        "log"
+		"strings"
+		"math/rand"
+		"log"
+		"io/ioutil"
+		"strconv"
         "fmt"
 		"time"
 		"net"
@@ -60,13 +63,12 @@ func escribirLogNN(nombre string, cantPartes string, parte string, ip string) {
 	c2 := pb.NewChatCliDnClient(conn)
 	fmt.Println("Conexion realizada correctamente con el Name Node de IP 10.6.40.152")
 
-	msj = Message{
+	msj := pb.Message{
 		Body: nombre + " " + cantPartes + " " + parte + " " + ip,
 	}
-	response, err := c.escribirLog(context.Background(), &msj)
+	response, err := c2.escribirLog(context.Background(), &msj)
     if err != nil{
         fmt.Println("Error al enviar la informacion del chunk para escribir en el log")
-        break
 	}
     log.Printf("%s", response.Body)
 }
@@ -213,7 +215,7 @@ func generarPropuesta(cantPartes string, tiempo string) {
 		mensajito := pb.Message {
 			body: timestamp + "_DN1",
 		}
-		entrarZona := false
+		//entrarZona := false
 		connDN2, err2 := grpc.Dial("10.6.40.150", grpc.WithInsecure())
 		if err2 != nil {
 			se_pudo2 = false
@@ -312,7 +314,6 @@ func generarPropuestaCentralizado(){
 	response, err := c.propuestaCentralizado(context.Background(), &msj)
 	if err != nil{
 			fmt.Println("Error al enviar la propuesta")
-			break
 	}
 
 	if response.Body == "aceptada"{ //se reparte entre los 3 nodos
@@ -340,7 +341,7 @@ Retorno:
 	- No hay
 */
 func escucharListaChunks() {
-	var prop int
+	//var prop int
 	for { 
 		if len(cola_chunks_de_cliente) != 0 {
 			if tipoAlgoritmo == "distribuido" {
@@ -510,7 +511,7 @@ Retorno:
 */
 func (s *Server) ChunkEntreDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message, error) {
 	almacenarChunk(chunkcito)
-	fnt.Println("Se ha almacenado el chunk:\n    {nombreLibro: " + chunkcito.nombreLibro + ",\n    totalPartes: " + chunkcito.totalPartes + ",\n    parte: " + chunkcito.parte + ",\n    datos: " + chunkcito.datos + "}",
+	fmt.Println("Se ha almacenado el chunk:\n    {nombreLibro: " + chunkcito.nombreLibro + ",\n    totalPartes: " + chunkcito.totalPartes + ",\n    parte: " + chunkcito.parte + ",\n    datos: " + chunkcito.datos + "}")
 
 	msj := pb.Message{
 		body: "Chunk recibido y almacenado#" + mi_ip,
