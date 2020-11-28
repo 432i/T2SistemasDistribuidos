@@ -99,6 +99,123 @@ func (s *Server) pedirCatalogo(ctx context.Context, message *Message) (*Message,
 }
 
 
+func (s *Server) propuestaCentralizado(ctx context.Context, message *Message) (*Message, error){
+        var se_pudo2, se_pudo3, se_pudo1 bool
+        se_pudo1 = true
+        se_pudo2 = true
+        se_pudo3 = true
+
+        split := strings.Split(message.GetBody(), "#")
+        emisor := split[0]                              //de donde se envia la propuesta
+
+        connDN1, err1 := grpc.Dial("10.6.40.149", grpc.WithInsecure())
+        if err1 != nil {
+                se_pudo1 = false
+        }
+        defer connDN1.Close()
+        c1 := pb.NewChatCliDnClient(connDN1)
+        
+        connDN2, err2 := grpc.Dial("10.6.40.150", grpc.WithInsecure())
+        if err2 != nil {
+                se_pudo2 = false
+        }
+        defer connDN2.Close()
+        c2 := pb.NewChatCliDnClient(connDN2)
+
+        connDN3, err3 := grpc.Dial("10.6.40.151", grpc.WithInsecure())
+        if err3 != nil {
+                se_pudo3 = false
+        }
+        defer connDN3.Close()
+        c3 := pb.NewChatCliDnClient(connDN3)
+
+        if emisor == "DN1"{
+
+                if se_pudo2 && se_pudo3{
+                        msj := pb.Message{
+                                Body: "aceptada",
+                        }
+                        return &msj, nil
+                }
+                if se_pudo2 == true && se_pudo3 == false{
+                        msj := pb.Message{
+                                Body: "DN2",
+                        }
+                        return &msj, nil
+                }
+                if se_pudo3 == true && se_pudo2 == false{
+                        msj := pb.Message{
+                                Body: "DN3",
+                        }
+                        return &msj, nil
+                }else{
+                        msj := pb.Message{
+                                Body: "tu",
+                        }
+                        return &msj, nil
+                }
+        }
+
+        if emisor == "DN2"{
+
+                if se_pudo1 && se_pudo3{
+ 
+                        msj := pb.Message{
+                                Body: "aceptada",
+                        }
+                        return &msj, nil
+                }
+                if se_pudo1 == true && se_pudo3 == false{
+                        msj := pb.Message{
+                                Body: "DN1",
+                        }
+                        return &msj, nil
+                }
+                if se_pudo3 == true && se_pudo1 == false{
+                        msj := pb.Message{
+                                Body: "DN3",
+                        }
+                        return &msj, nil
+                }else{
+                        msj := pb.Message{
+                                Body: "tu",
+                        }
+                        return &msj, nil
+                }
+        }
+        
+        if emisor == "DN3"{
+
+                if se_pudo2 && se_pudo1{
+ 
+                        msj := pb.Message{
+                                Body: "aceptada",
+                        }
+                        return &msj, nil
+                }
+                if se_pudo2 == true && se_pudo1 == false{
+                        msj := pb.Message{
+                                Body: "DN2",
+                        }
+                        return &msj, nil
+                }
+                if se_pudo1 == true && se_pudo2 == false{
+                        msj := pb.Message{
+                                Body: "DN1",
+                        }
+                        return &msj, nil
+                }else{
+                        msj := pb.Message{
+                                Body: "tu",
+                        }
+                        return &msj, nil
+                }
+        }
+        
+        
+
+}
+
 //funcion que recibe la solicitud de escribir en el log 
 //recibe un string con los datos del chunk que se guardó en tal data node
 func (s *Server) escribirLog(ctx context.Context, message *Message) (*Message, error){

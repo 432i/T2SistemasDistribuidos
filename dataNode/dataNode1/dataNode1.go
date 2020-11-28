@@ -214,7 +214,7 @@ func generarPropuesta(cantPartes string, tiempo string) {
 			body: timestamp + "_DN1",
 		}
 		entrarZona := false
-		connDN2, err2 := grpc.Dial(direccion, grpc.WithInsecure())
+		connDN2, err2 := grpc.Dial("10.6.40.150", grpc.WithInsecure())
 		if err2 != nil {
 			se_pudo2 = false
 		}
@@ -222,7 +222,7 @@ func generarPropuesta(cantPartes string, tiempo string) {
 		c2 := pb.NewChatCliDnClient(connDN2)
 		fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
 
-		connDN3, err3 := grpc.Dial(direccion, grpc.WithInsecure())
+		connDN3, err3 := grpc.Dial("10.6.40.151", grpc.WithInsecure())
 		if err3 != nil {
 			se_pudo3 = false
 		}
@@ -286,7 +286,50 @@ func generarPropuesta(cantPartes string, tiempo string) {
 	}
 	estado = "liberada"
 }
+/*
+Funcion: generarPropuestaCentralizado
+Parametro:
+	- Nada
+Descripcion:
+	- Le envia propuesta al Name Node, este la acepta o le entrega una nueva y distribuye los chunks
+Retorno:
+	- No hay
+*/
+func generarPropuestaCentralizado(){
+	var conn *grpc.ClientConn
+	conn, err := grpc.Dial("10.6.40.152:50001", grpc.WithInsecure())
+	if err != nil {
+			log.Fatalf("did not connect: %s", err)
+	}
+	defer conn.Close()
+	c := pb.NewChatCliDnClient(conn)
+	
+	propuesta := "DN1#DN2DN3" //le enviamos la propuesta inicial donde asumimos q los demas datanodes estan activos
+	//Formato: De_Donde_Envia#Demas_Nodos
+	msj := pb.Message {
+		body: propuesta,
+	}
+	response, err := c.propuestaCentralizado(context.Background(), &msj)
+	if err != nil{
+			fmt.Println("Error al enviar la propuesta")
+			break
+	}
 
+	if response.Body == "aceptada"{ //se reparte entre los 3 nodos
+
+	}
+	if response.Body == "DN2"{ //se reparte entre 2 y 1
+
+	}
+	if response.Body == "DN3"{ //se reparte entre 3 y 1
+
+	}
+	if response.Body == "tu"{ //te dejas todos los chunks
+
+	}
+
+
+}
 /*
 Funcion: propuestaEntreDos
 Parametro:
@@ -307,7 +350,7 @@ func escucharListaChunks() {
 				generarPropuesta(cola_chunks_de_cliente[0].totalPartes)
 			}
 			if tipoAlgoritmo == "centralizado" {
-				//aksdjhalsdj
+				generarPropuestaCentralizado()
 			}
 		}
 	}
