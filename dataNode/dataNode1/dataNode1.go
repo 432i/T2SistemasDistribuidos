@@ -202,9 +202,10 @@ Retorno:
 	- No hay
 */
 func generarPropuesta(cantPartes string, tiempo string) {
-	var se_pudo2, se_pudo3 bool
+	var se_pudo2, se_pudo3, se_pudoNN bool
 	se_pudo2 = true
 	se_pudo3 = true
+	se_pudoNN = true
 	partes, _:= strconv.Atoi(cantPartes)
 	var connDN2, connDN3 *grpc.ClientConn
 
@@ -214,7 +215,7 @@ func generarPropuesta(cantPartes string, tiempo string) {
 			body: timestamp + "_DN1",
 		}
 		entrarZona := false
-		connDN2, err2 := grpc.Dial(direccion, grpc.WithInsecure())
+		connDN2, err2 := grpc.Dial("10.6.40.150", grpc.WithInsecure())
 		if err2 != nil {
 			se_pudo2 = false
 		}
@@ -222,13 +223,21 @@ func generarPropuesta(cantPartes string, tiempo string) {
 		c2 := pb.NewChatCliDnClient(connDN2)
 		fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
 
-		connDN3, err3 := grpc.Dial(direccion, grpc.WithInsecure())
+		connDN3, err3 := grpc.Dial("10.6.40.151", grpc.WithInsecure())
 		if err3 != nil {
 			se_pudo3 = false
 		}
 		defer connDN3.Close()
 		c3 := pb.NewChatCliDnClient(connDN2)
 		fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
+
+		connNN, err4 := grpc.Dial("10.6.40.152", grpc.WithInsecure())
+		if err4 != nil {
+			se_pudoNN = false
+		}
+		defer connDN3.Close()
+		cNN := pb.NewChatCliDnClient(connNN)
+		fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.152")
 
 		
 		if (se_pudo2 == true && se_pudo3 == true) {
@@ -252,6 +261,13 @@ func generarPropuesta(cantPartes string, tiempo string) {
 				//Codigo para centralizado
 				//KAJSDHGKASJDHGAKSDJHAGSKDJHGASDKJAHGSDKJAGSHDKAJDSH
 
+				
+				if se_pudoNN == true{ //si el name node acepta la propuesta (no esta caido)
+
+				}else{ //si el name node esta caido
+
+				}
+
 
 			}
 		} else if (se_pudo2 == true && se_pudo3 == false) {
@@ -270,6 +286,12 @@ func generarPropuesta(cantPartes string, tiempo string) {
 			} else {
 				//Codigo para centralizado
 				//KAJSDHGKASJDHGAKSDJHAGSKDJHGASDKJAHGSDKJAGSHDKAJDSH
+
+				if se_pudoNN == true{ //si el name node acepta la propuesta (no esta caido)
+
+					}else{ //si el name node esta caido
+	
+				}
 			}
 		} else if (se_pudo2 == false && se_pudo3 == true) {
 			if tipoAlgoritmo == "distribuido" {
@@ -287,6 +309,12 @@ func generarPropuesta(cantPartes string, tiempo string) {
 			} else {
 				//Codigo para centralizado
 				//KAJSDHGKASJDHGAKSDJHAGSKDJHGASDKJAHGSDKJAGSHDKAJDSH
+
+				if se_pudoNN == true{ //si el name node acepta la propuesta (no esta caido)
+
+					}else{ //si el name node esta caido
+	
+				}
 			}
 		} else {
 			if tipoAlgoritmo == "distribuido" {
@@ -295,6 +323,13 @@ func generarPropuesta(cantPartes string, tiempo string) {
 			} else {
 				//Codigo para centralizado
 				//KAJSDHGKASJDHGAKSDJHAGSKDJHGASDKJAHGSDKJAGSHDKAJDSH
+
+				if se_pudoNN == true{ //si el name node acepta la propuesta (no esta caido)
+
+					}else{ //si el name node esta caido
+	
+				}
+			
 			}
 		}
 		if len(cola_chunks_de_cliente) == 1 {
