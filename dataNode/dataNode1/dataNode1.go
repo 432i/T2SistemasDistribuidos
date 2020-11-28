@@ -20,6 +20,7 @@ var cola_chunks_de_cliente []pb.Chunk
 var cola_espera []string
 estado := "liberada"
 timestamp := " "
+tipoAlgoritmo := ""
 
 /*
 Funcion: Find
@@ -228,6 +229,7 @@ func generarPropuesta(cantPartes string, tiempo string) {
 		defer connDN3.Close()
 		c3 := pb.NewChatCliDnClient(connDN2)
 		fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
+
 		
 		if (se_pudo2 == true && se_pudo3 == true) {
 			if estado == "buscada" {
@@ -428,6 +430,7 @@ Retorno:
 func (s *Server) ChunkaDN(stream pb.Chunk) error {
 	for {
 		chunk, err := stream.Recv()
+		tipoAlgoritmo = chunk.algoritmo
 		if err == io.EOF {
 			return stream.SendAndClose(&pb.Message {
 			body: "Stream recibido",
