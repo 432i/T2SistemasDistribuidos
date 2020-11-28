@@ -15,12 +15,12 @@ type Server struct {
 	pb.UnimplementedChatCliDnServer
 }
 
-mi_ip = "10.6.40.149"
+var mi_ip = "10.6.40.149"
 var cola_chunks_de_cliente []pb.Chunk
 var cola_espera []string
-estado := "liberada"
-timestamp := " "
-tipoAlgoritmo := ""
+var estado = "liberada"
+var timestamp = " "
+var tipoAlgoritmo = ""
 
 /*
 Funcion: Find
