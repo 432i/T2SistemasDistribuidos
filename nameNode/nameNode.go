@@ -371,6 +371,7 @@ func serverNN() {
 
 func main(){
         crearTxt()
+        var respuesta string
         go serverNN()
         fmt.Println("Ingrese 432 y presione Enter para salir del programa")
 	for{
