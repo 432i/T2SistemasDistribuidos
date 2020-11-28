@@ -20,7 +20,7 @@ var cola_chunks_de_cliente []pb.Chunk
 var cola_espera []string
 var estado = "liberada"
 var timestamp = " "
-var tipoAlgoritmo = ""
+var tipoAlgoritmo = "" //centralizado o distribuido
 
 /*
 Funcion: Find
@@ -251,6 +251,8 @@ func generarPropuesta(cantPartes string, tiempo string) {
 			} else {
 				//Codigo para centralizado
 				//KAJSDHGKASJDHGAKSDJHAGSKDJHGASDKJAHGSDKJAGSHDKAJDSH
+
+
 			}
 		} else if (se_pudo2 == true && se_pudo3 == false) {
 			if tipoAlgoritmo == "distribuido" {
@@ -400,7 +402,15 @@ func (s *Server) EnviarPeticion(ctx context.Context, msj *pb.Message) (*pb.Messa
 	}
 }
 
-
+/*
+Funcion: pedirChunk
+Parametro:
+    - msj: chunk que pide el cliente
+Descripcion:
+	- Recibe un mensaje con el chunk que quiere el cliente y retorna el chunk
+Retorno:
+	- Un chunk
+*/
 func (s *Server) pedirChunk(ctx context.Context, msj *pb.Message) (*pb.Chunk, error) {
 	split := strings.Split(msj.GetBody(), "#")
 	nombreLibro := split[0]
