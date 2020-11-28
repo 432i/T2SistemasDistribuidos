@@ -232,48 +232,68 @@ func generarPropuesta(cantPartes string, tiempo string) {
 
 		
 		if (se_pudo2 == true && se_pudo3 == true) {
-			if estado == "buscada" {
-				msj2, _ := c2.EnviarPeticion(context.Background(), &mensajito)
-				for msj2 != "ok" {
-					msj2, _ = c2.EnviarPeticion(context.Background(), &mensajito)
+			if tipoAlgoritmo == "distribuido" {
+				if estado == "buscada" {
+					msj2, _ := c2.EnviarPeticion(context.Background(), &mensajito)
+					for msj2 != "ok" {
+						msj2, _ = c2.EnviarPeticion(context.Background(), &mensajito)
+					}
+					msj3, _ := c3.EnviarPeticion(context.Background(), &mensajito)
+					for msj3 != "ok" {
+						msj3, _ = c3.EnviarPeticion(context.Background(), &mensajito)
+					}
+					estado = "tomada"
+					propuestaEntreTres(c2, c3)
 				}
-				msj3, _ := c3.EnviarPeticion(context.Background(), &mensajito)
-				for msj3 != "ok" {
-					msj3, _ = c3.EnviarPeticion(context.Background(), &mensajito)
+				if estado == "tomada" {
+					propuestaEntreTres(c2, c3)
 				}
-				estado = "tomada"
-				propuestaEntreTres(c2, c3)
-			}
-			if estado == "tomada" {
-				propuestaEntreTres(c2, c3)
+			} else {
+				//Codigo para centralizado
+				//KAJSDHGKASJDHGAKSDJHAGSKDJHGASDKJAHGSDKJAGSHDKAJDSH
 			}
 		} else if (se_pudo2 == true && se_pudo3 == false) {
-			if estado == "buscada" {
-				msj2, _ := c2.EnviarPeticion(context.Background(), &mensajito)
-				for msj2 != "ok" {
-					msj2, _ = c2.EnviarPeticion(context.Background(), &mensajito)
+			if tipoAlgoritmo == "distribuido" {
+				if estado == "buscada" {
+					msj2, _ := c2.EnviarPeticion(context.Background(), &mensajito)
+					for msj2 != "ok" {
+						msj2, _ = c2.EnviarPeticion(context.Background(), &mensajito)
+					}
+					estado = "tomada"
+					propuestaEntreDos(c2)
 				}
-				estado = "tomada"
-				propuestaEntreDos(c2)
-			}
-			if estado == "tomada" {
-				propuestaEntreDos(c2)
+				if estado == "tomada" {
+					propuestaEntreDos(c2)
+				}
+			} else {
+				//Codigo para centralizado
+				//KAJSDHGKASJDHGAKSDJHAGSKDJHGASDKJAHGSDKJAGSHDKAJDSH
 			}
 		} else if (se_pudo2 == false && se_pudo3 == true) {
-			if estado == "buscada" {
-				msj3, _ := c3.EnviarPeticion(context.Background(), &mensajito)
-				for msj3 != "ok" {
-					msj3, _ = c3.EnviarPeticion(context.Background(), &mensajito)
+			if tipoAlgoritmo == "distribuido" {
+				if estado == "buscada" {
+					msj3, _ := c3.EnviarPeticion(context.Background(), &mensajito)
+					for msj3 != "ok" {
+						msj3, _ = c3.EnviarPeticion(context.Background(), &mensajito)
+					}
+					estado = "tomada"
+					propuestaEntreDos(c3)
 				}
-				estado = "tomada"
-				propuestaEntreDos(c3)
-			}
-			if estado == "tomada" {
-				propuestaEntreDos(c3)
+				if estado == "tomada" {
+					propuestaEntreDos(c3)
+				}
+			} else {
+				//Codigo para centralizado
+				//KAJSDHGKASJDHGAKSDJHAGSKDJHGASDKJAHGSDKJAGSHDKAJDSH
 			}
 		} else {
-			estado = "tomada"
-			almacenarChunk(cola_chunks_de_cliente[0])
+			if tipoAlgoritmo == "distribuido" {
+				estado = "tomada"
+				almacenarChunk(cola_chunks_de_cliente[0])
+			} else {
+				//Codigo para centralizado
+				//KAJSDHGKASJDHGAKSDJHAGSKDJHGASDKJAHGSDKJAGSHDKAJDSH
+			}
 		}
 		if len(cola_chunks_de_cliente) == 1 {
 			cola_chunks_de_cliente = make([]pb.Chunk, 0)
