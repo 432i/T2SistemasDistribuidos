@@ -235,15 +235,15 @@ func generarPropuesta(cantPartes string) {
 		if (se_pudo1 == true && se_pudo2 == true) {
 			if estado == "buscada" {
 				msj1, _ := c1.EnviarPeticion(context.Background(), &mensajito)
-				for msj1 != "ok" {
+				for msj1.Body != "ok" {
 					msj1, _ = c1.EnviarPeticion(context.Background(), &mensajito)
 				}
-				fmt.Println(msj1)
+				fmt.Println(msj1.Body)
 				msj2, _ := c2.EnviarPeticion(context.Background(), &mensajito)
-				for msj2 != "ok" {
+				for msj2.Body != "ok" {
 					msj2, _ = c2.EnviarPeticion(context.Background(), &mensajito)
 				}
-				fmt.Println(msj2)
+				fmt.Println(msj2.Body)
 				estado = "tomada"
 				propuestaEntreTres(c1, c2)
 			}
@@ -253,10 +253,10 @@ func generarPropuesta(cantPartes string) {
 		} else if (se_pudo1 == true && se_pudo2 == false) {
 			if estado == "buscada" {
 				msj1, _ := c1.EnviarPeticion(context.Background(), &mensajito)
-				for msj1 != "ok" {
+				for msj1.Body != "ok" {
 					msj1, _ = c1.EnviarPeticion(context.Background(), &mensajito)
 				}
-				fmt.Println(msj1)
+				fmt.Println(msj1.Body)
 				estado = "tomada"
 				propuestaEntreDos(c1)
 			}
@@ -266,10 +266,10 @@ func generarPropuesta(cantPartes string) {
 		} else if (se_pudo1 == false && se_pudo2 == true) {
 			if estado == "buscada" {
 				msj2, _ := c2.EnviarPeticion(context.Background(), &mensajito)
-				for msj2 != "ok" {
+				for msj2.Body != "ok" {
 					msj2, _ = c2.EnviarPeticion(context.Background(), &mensajito)
 				}
-				fmt.Println(msj2)
+				fmt.Println(msj2.Body)
 				estado = "tomada"
 				propuestaEntreDos(c2)
 			}
