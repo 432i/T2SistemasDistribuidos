@@ -119,12 +119,12 @@ func propuestaEntreTres(c1 pb.NewChatCliDnClient, c3 pb.NewChatCliDnClient) {
 
 	if cola_chunks_de_cliente[0].GetParte() == "1" {
 		almacenarChunk(chunkcito)
-		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.149")
+		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.150")
 	}
 	if cola_chunks_de_cliente[0].GetParte() == "2" {
 		msg2, _ = c1.ChunkEntreDN(context.Background(), &chunkcito)
 		fmt.Println(msg2.Body)
-		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.150")
+		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.149")
 	}
 	if cola_chunks_de_cliente[0].GetParte() == "3" {
 		msg3, _ = c3.ChunkEntreDN(context.Background(), &chunkcito)
@@ -135,11 +135,11 @@ func propuestaEntreTres(c1 pb.NewChatCliDnClient, c3 pb.NewChatCliDnClient) {
 		j := rand.Intn(3)
 		if j == 0 {
 			almacenarChunk(chunkcito)
-			escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.149")
+			escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.150")
 		} else if j == 1 {
 			msg2, _ = c1.ChunkEntreDN(context.Background(), &chunkcito)
 			fmt.Println(msg2.Body)
-			escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.150")
+			escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.149")
 		} else {
 			msg3, _ = c3.ChunkEntreDN(context.Background(), &chunkcito)
 			fmt.Println(msg3.Body)
@@ -172,7 +172,7 @@ func propuestaEntreDos(c pb.NewChatCliDnClient) {
 
 	if cola_chunks_de_cliente[0].GetParte() == "1" {
 		almacenarChunk(chunkcito)
-		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.149")
+		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.150")
 	}
 	if cola_chunks_de_cliente[0].GetParte() == "2" {
 		msg, _ = c.ChunkEntreDN(context.Background(), &chunkcito)
