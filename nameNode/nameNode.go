@@ -126,6 +126,9 @@ func (s *Server) pedirCatalogo(ctx context.Context, message *pb.Message) (*pb.Me
         return &msj, nil
 
 }
+func mensajeExito(c1 pb.ChatCliDnClient, c2 pb.ChatCliDnClient, c3 pb.ChatCliDnClient){
+        fmt.Println("Conexion realizada")
+}
 /*
 Funcion: propuestaCentralizado
 Parametro:
@@ -172,6 +175,7 @@ func (s *Server) propuestaCentralizado(ctx context.Context, message *pb.Message)
         }
         defer connDN3.Close()
         c3 := pb.NewChatCliDnClient(connDN3)
+        mensajeExito()
 
         cont +=1
 
