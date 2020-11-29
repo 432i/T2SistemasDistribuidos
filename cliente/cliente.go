@@ -328,7 +328,7 @@ func main(){
                                                         msj := pb.Message{
                                                                 Body: nombre+"#"+strconv.Itoa(cont), //nombreLibro#parte
                                                         }
-                                                        response, err := cDN1.pedirChunk(context.Background(), &msj)
+                                                        response, err := cDN1.PedirChunk(context.Background(), &msj)
                                                         if err != nil{
                                                                 fmt.Println("Error al enviar la solicitud del chunk")
                                                                 break
@@ -349,7 +349,7 @@ func main(){
                                                         msj := pb.Message{
                                                                 Body: nombre+"#"+strconv.Itoa(cont), //nombreLibro#parte
                                                         }
-                                                        response, err := cDN2.pedirChunk(context.Background(), &msj)
+                                                        response, err := cDN2.PedirChunk(context.Background(), &msj)
                                                         if err != nil{
                                                                 fmt.Println("Error al enviar la solicitud del chunk")
                                                                 break
@@ -369,7 +369,7 @@ func main(){
                                                         msj := pb.Message{
                                                                 Body: nombre+"#"+strconv.Itoa(cont), //nombreLibro#parte
                                                         }
-                                                        response, err := cDN3.pedirChunk(context.Background(), &msj)
+                                                        response, err := cDN3.PedirChunk(context.Background(), &msj)
                                                         if err != nil{
                                                                 fmt.Println("Error al enviar la solicitud del chunk")
                                                                 break
