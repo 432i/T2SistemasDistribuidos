@@ -376,7 +376,7 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 				se_pudo3 = false
 			}
 			defer connDN3.Close()
-			c3 := pb.NewChatCliDnClient(connDN2)
+			c3 := pb.NewChatCliDnClient(connDN3)
 			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
 
 			propuestaEntreDos(c3)
@@ -436,7 +436,7 @@ func serverDN1() { //Comunicacion con cliente
 	}
 	fmt.Println("Conexión creada satisfactoriamente")
 	s := grpc.NewServer()
-	pb.RegisterChatCliDnServer(s, &Server{})
+	pb.RegisterChatCliDnServer(s, Server{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve s2: %v", err)
 	}
@@ -488,6 +488,10 @@ func (s *Server) EnviarPeticion(ctx context.Context, msj *pb.Message) (*pb.Messa
 			return &msg, nil
 		}
 	}
+	msg := pb.Message {
+		Body: "Si te retorno esta wea xd po",
+	}
+	return &msg, nil
 }
 
 /*
