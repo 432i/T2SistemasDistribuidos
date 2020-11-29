@@ -163,11 +163,11 @@ func propuestaEntreDos(c pb.NewChatCliDnClient) {
 	}
 	i, _ := strconv.Atoi(cola_chunks_de_cliente[0].parte)
 	chunkcito := pb.Chunk {
-		nombreLibro: cola_chunks_de_cliente[0].nombreLibro,
-		totalPartes: cola_chunks_de_cliente[0].totalPartes,
-		parte: cola_chunks_de_cliente[0].parte,
-		datos: cola_chunks_de_cliente[0].datos,
-		algoritmo: cola_chunks_de_cliente[0].algoritmo,
+		NombreLibro: cola_chunks_de_cliente[0].nombreLibro,
+		TotalPartes: cola_chunks_de_cliente[0].totalPartes,
+		Parte: cola_chunks_de_cliente[0].parte,
+		Datos: cola_chunks_de_cliente[0].datos,
+		Algoritmo: cola_chunks_de_cliente[0].algoritmo,
 	}
 
 	if cola_chunks_de_cliente[0].parte == "1" {
