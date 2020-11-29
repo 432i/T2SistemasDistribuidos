@@ -59,7 +59,7 @@ func escribirLogNN(nombre string, cantPartes string, parte string, ip string) {
 	if err != nil {
 		fmt.Println("Error al establecer conexion con el NameNode")
 	}
-	defer conn.Close()
+	defer conn.Close() 
 	c2 := pb.NewChatCliDnClient(conn)
 	fmt.Println("Conexion realizada correctamente con el Name Node de IP 10.6.40.152")
 
@@ -83,13 +83,13 @@ Retorno:
 	- No hay
 */
 func almacenarChunk(chunkcito pb.Chunk) {
-	fileName := chunkcito.nombreLibro + "#" + chunkcito.Parte
+	fileName := chunkcito.GetNombreLibro() + "#" + chunkcito.GetParte()
 	_, err := os.Create(fileName)
 	if err != nil {
 			fmt.Println("Error al crear el archivo del chunk")
 			os.Exit(1)
 	}
-	ioutil.WriteFile(fileName, chunkcito.Datos, os.ModeAppend)
+	ioutil.WriteFile(fileName, chunkcito.GetDatos(), os.ModeAppend)
 }
 
 /*
@@ -103,47 +103,47 @@ Retorno:
 */
 func propuestaEntreTres(c2 pb.NewChatCliDnClient, c3 pb.NewChatCliDnClient) {
 	msg2 := pb.Message {
-		body: "m",
+		Body: "m",
 	}
 	msg3 := pb.Message {
-		body: "m",
+		Body: "m",
 	}
-	i, _ := strconv.Atoi(cola_chunks_de_cliente[0].parte)
+	i, _ := strconv.Atoi(cola_chunks_de_cliente[0].GetParte())
 	chunkcito := pb.Chunk {
-		nombreLibro: cola_chunks_de_cliente[0].nombreLibro,
-		totalPartes: cola_chunks_de_cliente[0].totalPartes,
-		parte: cola_chunks_de_cliente[0].parte,
-		datos: cola_chunks_de_cliente[0].datos,
-		algoritmo: cola_chunks_de_cliente[0].algoritmo,
+		NombreLibro: cola_chunks_de_cliente[0].GetNombreLibro(),
+		TotalPartes: cola_chunks_de_cliente[0].GetTotalPartes(),
+		Parte: cola_chunks_de_cliente[0].GetParte(),
+		Datos: cola_chunks_de_cliente[0].GetDatos(),
+		Algoritmo: cola_chunks_de_cliente[0].GetAlgoritmo(),
 	}
 
-	if cola_chunks_de_cliente[0].parte == "1" {
+	if cola_chunks_de_cliente[0].GetParte() == "1" {
 		almacenarChunk(chunkcito)
-		escribirLogNN(chunkcito.nombreLibro, chunkcito.totalPartes, chunkcito.parte, "10.6.40.149")
+		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.149")
 	}
-	if cola_chunks_de_cliente[0].parte == "2" {
+	if cola_chunks_de_cliente[0].GetParte() == "2" {
 		msg2, _ = c2.ChunkEntreDN(context.Background(), &chunkcito)
-		fmt.Println(msg2.body)
-		escribirLogNN(chunkcito.nombreLibro, chunkcito.totalPartes, chunkcito.parte, "10.6.40.150")
+		fmt.Println(msg2.Body)
+		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.150")
 	}
-	if cola_chunks_de_cliente[0].parte == "3" {
+	if cola_chunks_de_cliente[0].GetParte() == "3" {
 		msg3, _ = c3.ChunkEntreDN(context.Background(), &chunkcito)
-		fmt.Println(msg3.body)
-		escribirLogNN(chunkcito.nombreLibro, chunkcito.totalPartes, chunkcito.parte, "10.6.40.151")
+		fmt.Println(msg3.Body)
+		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.151")
 	}
 	if i > 3 {
 		j := rand.Intn(3)
 		if j == 0 {
 			almacenarChunk(chunkcito)
-			escribirLogNN(chunkcito.nombreLibro, chunkcito.totalPartes, chunkcito.parte, "10.6.40.149")
+			escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.149")
 		} else if j == 1 {
 			msg2, _ = c2.ChunkEntreDN(context.Background(), &chunkcito)
-			fmt.Println(msg2.body)
-			escribirLogNN(chunkcito.nombreLibro, chunkcito.totalPartes, chunkcito.parte, "10.6.40.150")
+			fmt.Println(msg2.Body)
+			escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.150")
 		} else {
 			msg3, _ = c3.ChunkEntreDN(context.Background(), &chunkcito)
-			fmt.Println(msg3.body)
-			escribirLogNN(chunkcito.nombreLibro, chunkcito.totalPartes, chunkcito.parte, "10.6.40.151")
+			fmt.Println(msg3.Body)
+			escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.151")
 		}
 	}
 }
@@ -159,26 +159,26 @@ Retorno:
 */
 func propuestaEntreDos(c pb.NewChatCliDnClient) {
 	msg := pb.Message {
-		body: "m",
+		Body: "m",
 	}
-	i, _ := strconv.Atoi(cola_chunks_de_cliente[0].parte)
+	i, _ := strconv.Atoi(cola_chunks_de_cliente[0].GetParte())
 	chunkcito := pb.Chunk {
-		NombreLibro: cola_chunks_de_cliente[0].nombreLibro,
-		TotalPartes: cola_chunks_de_cliente[0].totalPartes,
-		Parte: cola_chunks_de_cliente[0].parte,
-		Datos: cola_chunks_de_cliente[0].datos,
-		Algoritmo: cola_chunks_de_cliente[0].algoritmo,
+		NombreLibro: cola_chunks_de_cliente[0].GetNombreLibro(),
+		TotalPartes: cola_chunks_de_cliente[0].GetTotalPartes(),
+		Parte: cola_chunks_de_cliente[0].GetParte(),
+		Datos: cola_chunks_de_cliente[0].GetDatos(),
+		Algoritmo: cola_chunks_de_cliente[0].GetAlgoritmo(),
 	}
 
-	if cola_chunks_de_cliente[0].parte == "1" {
+	if cola_chunks_de_cliente[0].GetParte() == "1" {
 		almacenarChunk(chunkcito)
-		escribirLogNN(chunkcito.nombreLibro, chunkcito.totalPartes, chunkcito.parte, "10.6.40.149")
+		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.149")
 	}
-	if cola_chunks_de_cliente[0].parte == "2" {
+	if cola_chunks_de_cliente[0].GetParte() == "2" {
 		msg, _ = c.ChunkEntreDN(context.Background(), &chunkcito)
-		el_split := strings.Split(msg.body, "#")
+		el_split := strings.Split(msg.Body, "#")
 		fmt.Println(el_split[0])
-		escribirLogNN(chunkcito.nombreLibro, chunkcito.totalPartes, chunkcito.parte, el_split[1])
+		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), el_split[1])
 	}
 	if i > 2 {
 		j := rand.Intn(2)
@@ -186,9 +186,9 @@ func propuestaEntreDos(c pb.NewChatCliDnClient) {
 			almacenarChunk(chunkcito)
 		} else {
 			msg, _ = c.ChunkEntreDN(context.Background(), &chunkcito)
-			el_split := strings.Split(msg.body, "#")
+			el_split := strings.Split(msg.Body, "#")
 			fmt.Println(el_split[0])
-			escribirLogNN(chunkcito.nombreLibro, chunkcito.totalPartes, chunkcito.parte, el_split[1])
+			escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), el_split[1])
 		}
 	}
 }
@@ -213,7 +213,7 @@ func generarPropuesta(cantPartes string, tiempo string) {
 	i := 0
 	for i < partes {
 		mensajito := pb.Message {
-			body: timestamp + "_DN1",
+			Body: timestamp + "_DN1",
 		}
 		//entrarZona := false
 		connDN2, err2 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
@@ -309,7 +309,7 @@ func generarPropuestaCentralizado(){
 	propuesta := "DN1#DN2DN3" //le enviamos la propuesta inicial donde asumimos q los demas datanodes estan activos
 	//Formato: De_Donde_Envia#Demas_Nodos
 	msj := pb.Message {
-		body: propuesta,
+		Body: propuesta,
 	}
 	response, err := c.propuestaCentralizado(context.Background(), &msj)
 	if err != nil{
@@ -348,7 +348,7 @@ func escucharListaChunks() {
 				tiempoactual := time.Now()
 				timestamp = tiempoactual.Format("02-01-2006 15:04")
 				estado = "buscada"
-				generarPropuesta(cola_chunks_de_cliente[0].totalPartes)
+				generarPropuesta(cola_chunks_de_cliente[0].GetTotalPartes())
 			}
 			if tipoAlgoritmo == "centralizado" {
 				generarPropuestaCentralizado()
@@ -393,36 +393,36 @@ Retorno:
 func (s *Server) EnviarPeticion(ctx context.Context, msj *pb.Message) (*pb.Message, error) {
 	if estado == "liberada" {
 		msg := pb.Message {
-			body: "ok",
+			Body: "ok",
 		}
 		return &msg, nil
 	}
 	if estado == "tomada" {
-		_, esta := Find(cola_espera, msj.body)
+		_, esta := Find(cola_espera, msj.GetBody())
 		if esta == false {
-			cola_espera = append(cola_espera, msj.body)
+			cola_espera = append(cola_espera, msj.GetBody())
 		}
 		msg := pb.Message {
-			body: "",
+			Body: "",
 		}
 		return &msg, nil
 	}
 	if estado == "buscada" {
 		mi_fecha, _ := time.Parse("02-01-2006 15:04", timestamp)
-		split_msj := strings.Split(msj.body, "_") 
+		split_msj := strings.Split(msj.GetBody(), "_") 
 		fecha_emisor, _ := time.Parse("02-01-2006 15:04", split_msj[0])
 		if fecha_emisor.Before(mi_fecha) {
 			msg := pb.Message {
-				body: "ok",
+				Body: "ok",
 			}
 			return &msg, nil
 		} else {
-			_, esta := Find(cola_espera, msj.body)
+			_, esta := Find(cola_espera, msj.GetBody())
 			if esta == false {
-				cola_espera = append(cola_espera, msj.body)
+				cola_espera = append(cola_espera, msj.GetBody())
 			}
 			msg := pb.Message {
-				body: "",
+				Body: "",
 			}
 			return &msg, nil
 		}
@@ -487,10 +487,10 @@ Retorno:
 func (s *Server) ChunkaDN(stream pb.Chunk) error {
 	for {
 		chunk, err := stream.Recv()
-		tipoAlgoritmo = chunk.algoritmo
+		tipoAlgoritmo = chunk.GetAlgoritmo()
 		if err == io.EOF {
 			return stream.SendAndClose(&pb.Message {
-			body: "Stream recibido",
+			Body: "Stream recibido",
 			})
 		}
 		if err != nil {
@@ -510,11 +510,11 @@ Retorno:
 	- Retorna un mensaje de exito junto a la ip del DN que almaceno el chunk
 */
 func (s *Server) ChunkEntreDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message, error) {
-	almacenarChunk(chunkcito)
-	fmt.Println("Se ha almacenado el chunk:\n    {nombreLibro: " + chunkcito.nombreLibro + ",\n    totalPartes: " + chunkcito.totalPartes + ",\n    parte: " + chunkcito.parte + ",\n    datos: " + chunkcito.datos + "}")
+	almacenarChunk(&chunkcito)
+	fmt.Println("Se ha almacenado el chunk:\n    {nombreLibro: " + chunkcito.GetNombreLibro() + ",\n    totalPartes: " + chunkcito.GetTotalPartes() + ",\n    parte: " + chunkcito.GetParte() + ",\n    datos: " + chunkcito.GetDatos() + "}")
 
 	msj := pb.Message{
-		body: "Chunk recibido y almacenado#" + mi_ip,
+		Body: "Chunk recibido y almacenado#" + mi_ip,
 	}
 	return &msj, nil
 }
