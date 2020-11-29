@@ -300,7 +300,7 @@ Descripcion:
 Retorno:
 	- No hay
 */
-func generarPropuestaCentralizado(){
+func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial("10.6.40.152:50001", grpc.WithInsecure())
 	if err != nil {
@@ -308,30 +308,85 @@ func generarPropuestaCentralizado(){
 	}
 	defer conn.Close()
 	c := pb.NewChatCliDnClient(conn)
+
+	partes, _:= strconv.Atoi(cantPartes)
+	i := 0
+	for i < partes{
+		propuesta := "DN1#DN2DN3#"+nombreLibro //le enviamos la propuesta inicial donde asumimos q los demas datanodes estan activos
+		//Formato: De_Donde_Envia#Demas_Nodos
+		msj := pb.Message {
+			Body: propuesta,
+		}
+		response, err := c.propuestaCentralizado(context.Background(), &msj)
+		if err != nil{
+				fmt.Println("Error al enviar la propuesta")
+		}
+
+		if response.Body == "espera"{
+			fmt.Println("Espere mientras otro nodo utiliza el sistema")
+			for response.Body == "espera"{
+				response, err := c.propuestaCentralizado(context.Background(), &msj)
+				if err != nil{
+					fmt.Println("Error al enviar la propuesta")
+				}
+			}
+			fmt.Println("Sistema liberado: ahora se continua")
+		}
+
+		if response.Body == "aceptada"{ //se reparte entre los 3 nodos
+
+			connDN2, err2 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
+			if err2 != nil {
+				se_pudo2 = false
+			}
+			defer connDN2.Close()
+			c2 := pb.NewChatCliDnClient(connDN2)
+			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
+
+			connDN3, err3 := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
+			if err3 != nil {
+				se_pudo3 = false
+			}
+			defer connDN3.Close()
+			c3 := pb.NewChatCliDnClient(connDN2)
+			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
+
+			propuestaEntreTres(c2, c3)
+
+		}
+		if response.Body == "DN2"{ //se reparte entre 2 y 1
+
+			connDN2, err2 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
+			if err2 != nil {
+				se_pudo2 = false
+			}
+			defer connDN2.Close()
+			c2 := pb.NewChatCliDnClient(connDN2)
+			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
+
+			propuestaEntreDos(c2)
+		}
+		if response.Body == "DN3"{ //se reparte entre 3 y 1
+
+			connDN3, err3 := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
+			if err3 != nil {
+				se_pudo3 = false
+			}
+			defer connDN3.Close()
+			c3 := pb.NewChatCliDnClient(connDN2)
+			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
+
+			propuestaEntreDos(c3)
+
+		}
+		if response.Body == "tu"{ //te dejas todos los chunks
+
+			almacenarChunk(cola_chunks_de_cliente[0])
+			
+		}
+		i += 1
+	}
 	
-	propuesta := "DN1#DN2DN3" //le enviamos la propuesta inicial donde asumimos q los demas datanodes estan activos
-	//Formato: De_Donde_Envia#Demas_Nodos
-	msj := pb.Message {
-		Body: propuesta,
-	}
-	response, err := c.propuestaCentralizado(context.Background(), &msj)
-	if err != nil{
-			fmt.Println("Error al enviar la propuesta")
-	}
-
-	if response.Body == "aceptada"{ //se reparte entre los 3 nodos
-
-	}
-	if response.Body == "DN2"{ //se reparte entre 2 y 1
-
-	}
-	if response.Body == "DN3"{ //se reparte entre 3 y 1
-
-	}
-	if response.Body == "tu"{ //te dejas todos los chunks
-
-	}
-
 
 }
 /*
@@ -354,7 +409,7 @@ func escucharListaChunks() {
 				generarPropuesta(cola_chunks_de_cliente[0].GetTotalPartes())
 			}
 			if tipoAlgoritmo == "centralizado" {
-				generarPropuestaCentralizado()
+				generarPropuestaCentralizado(cola_chunks_de_cliente[0].GetTotalPartes(), cola_chunks_de_cliente[0].GetNombreLibro())
 			}
 		}
 	}
