@@ -301,6 +301,7 @@ Retorno:
 	- No hay
 */
 func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
+	var se_pudo1, se_pudo3 bool
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial("10.6.40.152:50001", grpc.WithInsecure())
 	if err != nil {
