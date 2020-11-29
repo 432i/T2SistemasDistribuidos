@@ -216,7 +216,7 @@ func generarPropuesta(cantPartes string) {
 			Body: timestamp + "_DN1",
 		}
 		//entrarZona := false
-		connDN2, err2 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
+		connDN2, _ := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
 		defer connDN2.Close()
 		c2 := pb.NewChatCliDnClient(connDN2)
 		fun2, errFunc2 := c2.MaquinaFunciona(context.Background(), &mensajito)
@@ -227,7 +227,7 @@ func generarPropuesta(cantPartes string) {
 			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
 		}
 
-		connDN3, err3 := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
+		connDN3, _ := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
 		defer connDN3.Close()
 		c3 := pb.NewChatCliDnClient(connDN2)
 		fun3, errFunc3 := c3.MaquinaFunciona(context.Background(), &mensajito)
