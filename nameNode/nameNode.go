@@ -11,6 +11,7 @@ import(
         //"time"
         "golang.org/x/net/context"
         "google.golang.org/grpc"
+        "net"
         pb "github.com/432i/T2SistemasDistribuidos/dependencias/serverclidn"
 )
 
@@ -380,7 +381,7 @@ Retorno:
 	- Nada
 */
 func serverNN() {
-	//-----------------------------------------------------------------> Server1
+	//-----------------------------------------------------------------> ServerNN
 	lis, err := net.Listen("tcp", ":50001")
 	if err != nil {
 		log.Fatalf("failed to listen2: %v", err)
