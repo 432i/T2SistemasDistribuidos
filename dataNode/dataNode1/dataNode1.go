@@ -398,7 +398,7 @@ func (s *Server) EnviarPeticion(ctx context.Context, msj *pb.Message) (*pb.Messa
 		return &msg, nil
 	}
 	if estado == "tomada" {
-		pos, esta := Find(cola_espera, msj.body)
+		_, esta := Find(cola_espera, msj.body)
 		if esta == false {
 			cola_espera = append(cola_espera, msj.body)
 		}
@@ -417,7 +417,7 @@ func (s *Server) EnviarPeticion(ctx context.Context, msj *pb.Message) (*pb.Messa
 			}
 			return &msg, nil
 		} else {
-			pos, esta := Find(cola_espera, msj.body)
+			_, esta := Find(cola_espera, msj.body)
 			if esta == false {
 				cola_espera = append(cola_espera, msj.body)
 			}
