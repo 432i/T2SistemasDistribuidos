@@ -34,10 +34,10 @@ func conexionDN(ip string) pb.ChatCliDnClient{
         }else{
                 fmt.Println("Conexion realizada correctamente con el Data Node de IP "+ip+"\n")
         }
-        defer conn.Close()
+        //defer conn.Close()
         c := pb.NewChatCliDnClient(conn)
         
-        return c
+        return c, conn
 }
 /*
 Funcion: conexionNN
@@ -56,10 +56,10 @@ func conexionNN() pb.ChatCliDnClient{
         }else{
                 fmt.Println("Conexion realizada correctamente con el Name Node\n")
         }
-        defer conn.Close()
+        //defer conn.Close()
         c := pb.NewChatCliDnClient(conn)
         
-        return c
+        return c, conn
 }
 /*
 Funcion: enviarChunks
@@ -246,10 +246,10 @@ func rearmarLibro(nombreLibro string, cantPartes int){
 }
 func main(){
 
-        cDN1 := conexionDN("10.6.40.149") //conexion Data Node 1
-        cDN2 := conexionDN("10.6.40.150") //conexion Data Node 2
-        cDN3 := conexionDN("10.6.40.151") //conexion Data Node 3
-        cNN := conexionNN() //conexion Name Node
+        cDN1, conn1 := conexionDN("10.6.40.149") //conexion Data Node 1
+        cDN2, conn2 := conexionDN("10.6.40.150") //conexion Data Node 2
+        cDN3, conn3 := conexionDN("10.6.40.151") //conexion Data Node 3
+        cNN, conn4 := conexionNN() //conexion Name Node
         for{    
                 var respuesta string
                 fmt.Println("\n Quiere subir o descargar un libro? Ingrese la opcion correpsondiente y presione Enter: \n")
@@ -281,7 +281,6 @@ func main(){
                         //DN elegido aleatoriamente
                         i := 0  ////// ÑAKSDÑLASKDLASKDLASKDLÑAAAAAAAAAAAAAAAAAAAAAAAAAAKSD ARREGLAR AKI AL FINAL PORFAVOR!!!!!!!!!!!!!!!!!!!!! rand.Intn(3)rand.Intn(3)rand.Intn(3)rand.Intn(3)
                         if i == 0{
-                                fmt.Println("dxd")
                                 enviarChunks(tipoAlgoritmo, nombre, cDN1)
                         }
                         if i == 1{
@@ -400,6 +399,10 @@ func main(){
                                         rearmarLibro(nombre, cont)
                                 }
                                 if respuesta2 == "432"{
+                                        defer conn1.Close()
+                                        defer conn2.Close()
+                                        defer conn3.Close()
+                                        defer conn4.Close()
                                         fmt.Println("Saliendo del Client Downloader. . . ")
                                         break
                                 }
