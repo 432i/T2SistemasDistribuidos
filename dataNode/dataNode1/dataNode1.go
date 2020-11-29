@@ -197,13 +197,12 @@ func propuestaEntreDos(c pb.NewChatCliDnClient) {
 Funcion: generarPropuesta
 Parametro:
 	- cantPartes: string que indica cuantos chunks tiene un libro
-	- tiempo: instante en que se hizo la solicitud para generar la distribución del libro y escribir en el log del NN
 Descripcion:
 	- Intenta generar conexiones con los demas DNs, si alguno falla se detecta y se genera un nuevo plan de accion para poder distribuir los chunks entre los DNs que esten vivos
 Retorno:
 	- No hay
 */
-func generarPropuesta(cantPartes string, tiempo string) {
+func generarPropuesta(cantPartes string) {
 	var se_pudo2, se_pudo3 bool
 	se_pudo2 = true
 	se_pudo3 = true
