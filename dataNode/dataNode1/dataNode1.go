@@ -62,6 +62,7 @@ func escribirLogNN(nombre string, cantPartes string, parte string, ip string) {
 	}
 	defer conn.Close() 
 	c2 := pb.NewChatCliDnClient(conn)
+	
 	fmt.Println("Conexion realizada correctamente con el Name Node de IP 10.6.40.152")
 
 	msj := pb.Message{
