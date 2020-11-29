@@ -238,10 +238,12 @@ func generarPropuesta(cantPartes string) {
 				for msj2 != "ok" {
 					msj2, _ = c2.EnviarPeticion(context.Background(), &mensajito)
 				}
+				fmt.Println(msj2)
 				msj3, _ := c3.EnviarPeticion(context.Background(), &mensajito)
 				for msj3 != "ok" {
 					msj3, _ = c3.EnviarPeticion(context.Background(), &mensajito)
 				}
+				fmt.Println(msj3)
 				estado = "tomada"
 				propuestaEntreTres(c2, c3)
 			}
@@ -254,6 +256,7 @@ func generarPropuesta(cantPartes string) {
 				for msj2 != "ok" {
 					msj2, _ = c2.EnviarPeticion(context.Background(), &mensajito)
 				}
+				fmt.Println(msj2)
 				estado = "tomada"
 				propuestaEntreDos(c2)
 			}
@@ -266,6 +269,7 @@ func generarPropuesta(cantPartes string) {
 				for msj3 != "ok" {
 					msj3, _ = c3.EnviarPeticion(context.Background(), &mensajito)
 				}
+				fmt.Println(msj3)
 				estado = "tomada"
 				propuestaEntreDos(c3)
 			}
