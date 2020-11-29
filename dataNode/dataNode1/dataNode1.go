@@ -437,7 +437,7 @@ func serverDN1() { //Comunicacion con cliente
 	}
 	fmt.Println("Conexión creada satisfactoriamente")
 	s := grpc.NewServer()
-	pb.RegisterChatCliDnServer(s, Server{})
+	pb.RegisterChatCliDnServer(s, &Server{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve s2: %v", err)
 	}
