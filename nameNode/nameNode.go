@@ -15,6 +15,8 @@ import(
 type Server struct {
 	pb.UnimplementedChatCliDnServer
 }
+var nombreLibroACTUAL = ""
+var cont = 0
 /*
 Funcion: recuperarLibro
 Parametro:
@@ -138,6 +140,14 @@ func (s *Server) propuestaCentralizado(ctx context.Context, message *Message) (*
 
         split := strings.Split(message.GetBody(), "#")
         emisor := split[0]                              //de donde se envia la propuesta
+        nombreLibro := split[2]
+
+        if nombreLibroACTUAL != nombreLibro && cont != 0{
+                msj := pb.Message{
+                        Body: "espera",
+                }
+                return &msj, nil
+        }        
 
         connDN1, err1 := grpc.Dial("10.6.40.149", grpc.WithInsecure())
         if err1 != nil {
@@ -160,8 +170,10 @@ func (s *Server) propuestaCentralizado(ctx context.Context, message *Message) (*
         defer connDN3.Close()
         c3 := pb.NewChatCliDnClient(connDN3)
 
-        if emisor == "DN1"{
+        cont +=1
 
+        if emisor == "DN1"{
+                nombreLibroACTUAL = nombreLibro
                 if se_pudo2 && se_pudo3{
                         msj := pb.Message{
                                 Body: "aceptada",
@@ -188,6 +200,7 @@ func (s *Server) propuestaCentralizado(ctx context.Context, message *Message) (*
         }
 
         if emisor == "DN2"{
+                nombreLibroACTUAL = nombreLibro
 
                 if se_pudo1 && se_pudo3{
  
@@ -216,6 +229,7 @@ func (s *Server) propuestaCentralizado(ctx context.Context, message *Message) (*
         }
         
         if emisor == "DN3"{
+                nombreLibroACTUAL = nombreLibro
 
                 if se_pudo2 && se_pudo1{
  
