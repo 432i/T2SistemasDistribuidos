@@ -216,7 +216,7 @@ func generarPropuesta(cantPartes string) {
 			Body: timestamp + "_DN1",
 		}
 		//entrarZona := false
-		connDN2, err2 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
+		connDN2, err2 = grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
 		if err2 != nil {
 			se_pudo2 = false
 		}
@@ -224,7 +224,7 @@ func generarPropuesta(cantPartes string) {
 		c2 := pb.NewChatCliDnClient(connDN2)
 		fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
 
-		connDN3, err3 := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
+		connDN3, err3 = grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
 		if err3 != nil {
 			se_pudo3 = false
 		}
@@ -303,9 +303,9 @@ Retorno:
 */
 func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 	var conn *grpc.ClientConn
-	var se_pudo2, se_pudo3 bool
-	se_pudo2 = true
-	se_pudo3 = true
+	//var se_pudo2, se_pudo3 bool
+	//se_pudo2 = true
+	//se_pudo3 = true
 	conn, err := grpc.Dial("10.6.40.152:50001", grpc.WithInsecure())
 	if err != nil {
 			log.Fatalf("did not connect: %s", err)
@@ -329,7 +329,7 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 		if response.Body == "espera"{
 			fmt.Println("Espere mientras otro nodo utiliza el sistema")
 			for response.Body == "espera"{
-				response, err := c.PropuestaCentralizado(context.Background(), &msj)
+				response, err = c.PropuestaCentralizado(context.Background(), &msj)
 				if err != nil{
 					fmt.Println("Error al enviar la propuesta")
 				}
@@ -341,7 +341,8 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 
 			connDN2, err2 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
 			if err2 != nil {
-				se_pudo2 = false
+				fmt.Println("Error al conectar.")
+				//se_pudo2 = false
 			}
 			defer connDN2.Close()
 			c2 := pb.NewChatCliDnClient(connDN2)
@@ -349,7 +350,8 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 
 			connDN3, err3 := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
 			if err3 != nil {
-				se_pudo3 = false
+				fmt.Println("Error al conectar.")
+				//se_pudo3 = false
 			}
 			defer connDN3.Close()
 			c3 := pb.NewChatCliDnClient(connDN2)
@@ -362,7 +364,8 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 
 			connDN2, err2 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
 			if err2 != nil {
-				se_pudo2 = false
+				fmt.Println("Error al conectar.")
+				//se_pudo2 = false
 			}
 			defer connDN2.Close()
 			c2 := pb.NewChatCliDnClient(connDN2)
@@ -374,7 +377,8 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 
 			connDN3, err3 := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
 			if err3 != nil {
-				se_pudo3 = false
+				fmt.Println("Error al conectar.")
+				//se_pudo3 = false
 			}
 			defer connDN3.Close()
 			c3 := pb.NewChatCliDnClient(connDN3)
