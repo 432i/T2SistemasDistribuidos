@@ -16,6 +16,7 @@ message Message {
 
 service ChatCliDn {
     rpc ChunkaDN(stream Chunk) returns (Message){}
+    rpc MaquinaFunciona(Message) returns (Message){}
     rpc ChunksDirecciones(Message) returns (Message){}
     rpc escribirLog(Message) returns (Message){}
     rpc ChunkEntreDN(Chunk) returns (Message) {}

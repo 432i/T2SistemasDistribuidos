@@ -217,22 +217,26 @@ func generarPropuesta(cantPartes string) {
 		}
 		//entrarZona := false
 		connDN2, err2 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
-		if err2 != nil {
-			se_pudo2 = false
-		} else {
-			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
-		}
 		defer connDN2.Close()
 		c2 := pb.NewChatCliDnClient(connDN2)
+		fun2, errFunc2 := c2.MaquinaFunciona(context.Background(), &mensajito)
+		if errFunc2 != nil {
+			se_pudo2 = false
+		} else {
+			fmt.Println(fun2.Body)
+			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
+		}
 
 		connDN3, err3 := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
-		if err3 != nil {
-			se_pudo3 = false
-		} else {
-			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
-		}
 		defer connDN3.Close()
 		c3 := pb.NewChatCliDnClient(connDN2)
+		fun3, errFunc3 := c3.MaquinaFunciona(context.Background(), &mensajito)
+		if errFunc3 != nil {
+			se_pudo3 = false
+		} else {
+			fmt.Println(fun3.Body)
+			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
+		}
 		
 		if (se_pudo2 == true && se_pudo3 == true) {
 			if estado == "buscada" {
@@ -446,6 +450,10 @@ func serverDN1() { //Comunicacion con cliente
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve s2: %v", err)
 	}
+}
+
+func (s *Server) MaquinaFunciona(ctx context.Context, msj *pb.Message) (*pb.Message, error) {
+	return &pb.Message{Body: "Exito"}, nil
 }
 
 /*
