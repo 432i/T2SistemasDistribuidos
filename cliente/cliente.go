@@ -140,8 +140,7 @@ func pedirDirecciones(nombreLibro string, c pb.ChatCliDnClient) []string{
                 log.Fatalf("%s", err)
                 //break
         }
-        partesIPS := strings.Split(response.Body, "-")
-        partesIPS = partesIPS[:len(partesIPS)-1] //parte 1 en la ip de la posicion 0, parte 2 en la posicion 1, etc
+        partesIPS := strings.Split(response.Body, " # ") //parte 1 en la ip de la posicion 0, parte 2 en la posicion 1, etc
         return partesIPS
 }
 /*

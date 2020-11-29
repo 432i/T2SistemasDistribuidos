@@ -281,12 +281,12 @@ func (s *Server) escribirLog(ctx context.Context, message *pb.Message) (*pb.Mess
         parte := split[2]
         ip :=  split[3]
 
-        if parte ==1{
+        if parte == "1" {
                 escribirTXT(nombreLibro, cantPartes, parte, ip, 1)
         }else{
                 escribirTXT(nombreLibro, cantPartes, parte, ip, 0)
         }
-        msj := Message{
+        msj := pb.Message{
                 Body: "Chunk guardado en el log correctamente",
         }
         return &msj, nil
@@ -303,8 +303,13 @@ Retorno:
 func (s *Server) ChunksDirecciones(ctx context.Context, message *pb.Message) (*pb.Message, error){
         nombreLibro := message.GetBody()
         ips := recuperarLibro(nombreLibro)
+        respuesta := ""
+        for _, ip := range ips { 
+                respuesta = respuesta + ip + "#"
+        }
+
         msj := pb.Message{
-		Body: ips,
+		Body: respuesta,
 	}
 	return &msj, nil
 }
