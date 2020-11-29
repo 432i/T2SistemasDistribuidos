@@ -576,7 +576,7 @@ Retorno:
 	- Retorna un mensaje de exito junto a la ip del DN que almaceno el chunk
 */
 func (s *Server) ChunkEntreDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message, error) {
-	almacenarChunk(chunkcito)
+	almacenarChunk(*chunkcito)
 	fmt.Println("Se ha almacenado el chunk:\n    {nombreLibro: " + chunkcito.GetNombreLibro() + ",\n    totalPartes: " + chunkcito.GetTotalPartes() + ",\n    parte: " + chunkcito.GetParte() + "}")
 
 	msj := pb.Message{
