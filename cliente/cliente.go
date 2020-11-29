@@ -88,7 +88,7 @@ func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.ChatCliDnClient
         fmt.Printf("El libro se dividio en %d piezas, subiendo al Data Node. . .\n", totalPartsNum)
 
         //creamos el stream
-        stream, err := c.ChunkaDN(context.Background()) 
+        stream, err := c.ChunkaDN(context.Background())
         if err != nil {
                 log.Fatalf("%v.RecordRoute(_) = _, %v", c, err)
         }
@@ -279,6 +279,7 @@ func main(){
                         //DN elegido aleatoriamente
                         i := 0  ////// ÑAKSDÑLASKDLASKDLASKDLÑAAAAAAAAAAAAAAAAAAAAAAAAAAKSD ARREGLAR AKI AL FINAL PORFAVOR!!!!!!!!!!!!!!!!!!!!! rand.Intn(3)rand.Intn(3)rand.Intn(3)rand.Intn(3)
                         if i == 0{
+                                fmt.Println("dxd")
                                 enviarChunks(tipoAlgoritmo, nombre, cDN1)
                         }
                         if i == 1{
