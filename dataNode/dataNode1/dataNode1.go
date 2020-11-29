@@ -66,7 +66,7 @@ func escribirLogNN(nombre string, cantPartes string, parte string, ip string) {
 	msj := pb.Message{
 		Body: nombre + " " + cantPartes + " " + parte + " " + ip,
 	}
-	response, err := c2.escribirLog(context.Background(), &msj)
+	response, err := c2.EscribirLog(context.Background(), &msj)
     if err != nil{
         fmt.Println("Error al enviar la informacion del chunk para escribir en el log")
 	}
