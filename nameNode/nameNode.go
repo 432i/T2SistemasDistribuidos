@@ -175,7 +175,7 @@ func (s *Server) propuestaCentralizado(ctx context.Context, message *pb.Message)
         }
         defer connDN3.Close()
         c3 := pb.NewChatCliDnClient(connDN3)
-        mensajeExito()
+        mensajeExito(c1, c2, c3)
 
         cont +=1
 
