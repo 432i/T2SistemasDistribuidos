@@ -101,7 +101,7 @@ Descripcion:
 Retorno:
 	- No hay
 */
-func propuestaEntreTres(c2 pb.ChatCliDn, c3 pb.ChatCliDn) {
+func propuestaEntreTres(c2 pb.ChatCliDnClient, c3 pb.ChatCliDnClient) {
 	msg2 := pb.Message {
 		Body: "m",
 	}
@@ -157,7 +157,7 @@ Descripcion:
 Retorno:
 	- No hay
 */
-func propuestaEntreDos(c pb.ChatCliDn) {
+func propuestaEntreDos(c pb.ChatCliDnClient) {
 	msg := pb.Message {
 		Body: "m",
 	}
@@ -320,7 +320,7 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 		msj := pb.Message {
 			Body: propuesta,
 		}
-		response, err := c.propuestaCentralizado(context.Background(), &msj)
+		response, err := c.PropuestaCentralizado(context.Background(), &msj)
 		if err != nil{
 				fmt.Println("Error al enviar la propuesta")
 		}
@@ -328,7 +328,7 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 		if response.Body == "espera"{
 			fmt.Println("Espere mientras otro nodo utiliza el sistema")
 			for response.Body == "espera"{
-				response, err := c.propuestaCentralizado(context.Background(), &msj)
+				response, err := c.PropuestaCentralizado(context.Background(), &msj)
 				if err != nil{
 					fmt.Println("Error al enviar la propuesta")
 				}
