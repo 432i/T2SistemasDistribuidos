@@ -11,7 +11,7 @@ import(
         //"encoding/csv"
         "log"
         "fmt"
-        //"time"
+        "time"
         "golang.org/x/net/context"
         "google.golang.org/grpc"
         pb "github.com/432i/T2SistemasDistribuidos/dependencias/serverclidn"
@@ -88,7 +88,8 @@ func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.ChatCliDnClient
         fmt.Printf("El libro se dividio en %d piezas, subiendo al Data Node. . .\n", totalPartsNum)
 
         //creamos el stream
-        stream, err := c.ChunkaDN(context.Background())
+        ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+        stream, err := c.ChunkaDN(ctx)
         if err != nil {
                 log.Fatalf("%v.RecordRoute(_) = _, %v", c, err)
         }
