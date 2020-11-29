@@ -2,11 +2,13 @@ package main
 import(
         "os"
         "strings"
-        "io"
-        "encoding/csv"
+        "bufio"
+        "strconv"
+        //"io"
+        //"encoding/csv"
         "log"
         "fmt"
-        "time"
+        //"time"
         "golang.org/x/net/context"
         "google.golang.org/grpc"
         pb "github.com/432i/T2SistemasDistribuidos/dependencias/serverclidn"
@@ -115,7 +117,7 @@ Descripcion:
 Retorno:
 	- Un Message con el catalogo
 */
-func (s *Server) pedirCatalogo(ctx context.Context, message *Message) (*Message, error){
+func (s *Server) pedirCatalogo(ctx context.Context, message *pb.Message) (*pb.Message, error){
         catalogo := obtenerCatalogo()
         msj := pb.Message{
 		Body: catalogo,
@@ -132,7 +134,7 @@ Descripcion:
 Retorno:
 	- Message con la respuesta
 */
-func (s *Server) propuestaCentralizado(ctx context.Context, message *Message) (*Message, error){
+func (s *Server) propuestaCentralizado(ctx context.Context, message *pb.Message) (*pb.Message, error){
         var se_pudo2, se_pudo3, se_pudo1 bool
         se_pudo1 = true
         se_pudo2 = true
@@ -272,7 +274,7 @@ Descripcion:
 Retorno:
 	- String de exito
 */
-func (s *Server) escribirLog(ctx context.Context, message *Message) (*Message, error){
+func (s *Server) escribirLog(ctx context.Context, message *pb.Message) (*pb.Message, error){
         split := strings.Split(message.GetBody(), " ")
         nombreLibro := split[0]
         cantPartes := split[1]
