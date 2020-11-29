@@ -549,7 +549,7 @@ Descripcion:
 Retorno:
 	- Retorna un stream de exito cuando se recibe o un error si falla la recuperacion del stream
 */
-func (s *Server) ChunkaDN(stream pb.Chunk) error {
+func (s *Server) ChunkaDN(stream pb.ChatCliDn_ChunkaDNServer) error {
 	for {
 		chunk, err := stream.Recv()
 		tipoAlgoritmo = chunk.GetAlgoritmo()
