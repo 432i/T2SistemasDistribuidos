@@ -101,13 +101,13 @@ Descripcion:
 Retorno:
 	- No hay
 */
-func propuestaEntreTres(c2 pb.ChatCliDn, c3 pb.ChatCliDn) {
-	msg2 := pb.Message {
+func propuestaEntreTres(c2 pb.ChatCliDnClient, c3 pb.ChatCliDnClient) {
+	/*msg2 := pb.Message {
 		Body: "m",
 	}
 	msg3 := pb.Message {
 		Body: "m",
-	}
+	}*/
 	i, _ := strconv.Atoi(cola_chunks_de_cliente[0].GetParte())
 	chunkcito := pb.Chunk {
 		NombreLibro: cola_chunks_de_cliente[0].GetNombreLibro(),
@@ -122,12 +122,12 @@ func propuestaEntreTres(c2 pb.ChatCliDn, c3 pb.ChatCliDn) {
 		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.149")
 	}
 	if cola_chunks_de_cliente[0].GetParte() == "2" {
-		msg2, _ = c2.ChunkEntreDN(context.Background(), &chunkcito)
+		msg2, _ := c2.ChunkEntreDN(context.Background(), &chunkcito)
 		fmt.Println(msg2.Body)
 		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.150")
 	}
 	if cola_chunks_de_cliente[0].GetParte() == "3" {
-		msg3, _ = c3.ChunkEntreDN(context.Background(), &chunkcito)
+		msg3, _ := c3.ChunkEntreDN(context.Background(), &chunkcito)
 		fmt.Println(msg3.Body)
 		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.151")
 	}
@@ -137,11 +137,11 @@ func propuestaEntreTres(c2 pb.ChatCliDn, c3 pb.ChatCliDn) {
 			almacenarChunk(chunkcito)
 			escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.149")
 		} else if j == 1 {
-			msg2, _ = c2.ChunkEntreDN(context.Background(), &chunkcito)
+			msg2, _ := c2.ChunkEntreDN(context.Background(), &chunkcito)
 			fmt.Println(msg2.Body)
 			escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.150")
 		} else {
-			msg3, _ = c3.ChunkEntreDN(context.Background(), &chunkcito)
+			msg3, _ := c3.ChunkEntreDN(context.Background(), &chunkcito)
 			fmt.Println(msg3.Body)
 			escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.151")
 		}
@@ -157,10 +157,10 @@ Descripcion:
 Retorno:
 	- No hay
 */
-func propuestaEntreDos(c pb.ChatCliDn) {
-	msg := pb.Message {
+func propuestaEntreDos(c pb.ChatCliDnClient) {
+	/*msg := pb.Message {
 		Body: "m",
-	}
+	}*/
 	i, _ := strconv.Atoi(cola_chunks_de_cliente[0].GetParte())
 	chunkcito := pb.Chunk {
 		NombreLibro: cola_chunks_de_cliente[0].GetNombreLibro(),
@@ -175,7 +175,7 @@ func propuestaEntreDos(c pb.ChatCliDn) {
 		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.149")
 	}
 	if cola_chunks_de_cliente[0].GetParte() == "2" {
-		msg, _ = c.ChunkEntreDN(context.Background(), &chunkcito)
+		msg, _ := c.ChunkEntreDN(context.Background(), &chunkcito)
 		el_split := strings.Split(msg.Body, "#")
 		fmt.Println(el_split[0])
 		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), el_split[1])
@@ -185,7 +185,7 @@ func propuestaEntreDos(c pb.ChatCliDn) {
 		if j == 0 {
 			almacenarChunk(chunkcito)
 		} else {
-			msg, _ = c.ChunkEntreDN(context.Background(), &chunkcito)
+			msg, _ := c.ChunkEntreDN(context.Background(), &chunkcito)
 			el_split := strings.Split(msg.Body, "#")
 			fmt.Println(el_split[0])
 			escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), el_split[1])
@@ -320,7 +320,7 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 		msj := pb.Message {
 			Body: propuesta,
 		}
-		response, err := c.propuestaCentralizado(context.Background(), &msj)
+		response, err := c.PropuestaCentralizado(context.Background(), &msj)
 		if err != nil{
 				fmt.Println("Error al enviar la propuesta")
 		}
@@ -328,7 +328,7 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 		if response.Body == "espera"{
 			fmt.Println("Espere mientras otro nodo utiliza el sistema")
 			for response.Body == "espera"{
-				response, err := c.propuestaCentralizado(context.Background(), &msj)
+				response, err := c.PropuestaCentralizado(context.Background(), &msj)
 				if err != nil{
 					fmt.Println("Error al enviar la propuesta")
 				}
