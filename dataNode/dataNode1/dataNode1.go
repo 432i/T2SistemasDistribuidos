@@ -208,7 +208,7 @@ func generarPropuesta(cantPartes string) {
 	se_pudo2 = true
 	se_pudo3 = true
 	partes, _:= strconv.Atoi(cantPartes)
-	var connDN2, connDN3 *grpc.ClientConn
+	//var connDN2, connDN3 *grpc.ClientConn
 
 	i := 0
 	for i < partes {
@@ -216,7 +216,7 @@ func generarPropuesta(cantPartes string) {
 			Body: timestamp + "_DN1",
 		}
 		//entrarZona := false
-		connDN2, err2 = grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
+		connDN2, err2 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
 		if err2 != nil {
 			se_pudo2 = false
 		}
@@ -224,7 +224,7 @@ func generarPropuesta(cantPartes string) {
 		c2 := pb.NewChatCliDnClient(connDN2)
 		fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
 
-		connDN3, err3 = grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
+		connDN3, err3 := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
 		if err3 != nil {
 			se_pudo3 = false
 		}
