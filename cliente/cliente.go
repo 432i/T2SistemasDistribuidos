@@ -108,9 +108,7 @@ func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.ChatCliDnClient
                         Datos: partBuffer,
                         Algoritmo: tipoAlgoritmo,
                 }
-                if err := stream.Send(&chunko); err != nil { //envio por stream de chunks
-                        log.Fatalf("%v.Send(%v) = %v", stream, chunko, err)
-                }
+                stream.Send(&chunko) //envio del chunk
         }
 
         reply, err := stream.CloseAndRecv()
