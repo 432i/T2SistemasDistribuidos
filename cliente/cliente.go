@@ -218,8 +218,8 @@ func rearmarLibro(nombreLibro string, cantPartes int){
                 // write/save buffer to disk
                 //ioutil.WriteFile(newFileName, chunkBufferBytes, os.ModeAppend)
 
-                _, err := file.Write(chunkBufferBytes)
-
+                n, err := file.Write(chunkBufferBytes)
+                fmt.Println("Written ", n, " bytes")
                 if err != nil {
                         fmt.Println(err)
                                         os.Exit(1)
