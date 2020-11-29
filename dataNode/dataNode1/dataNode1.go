@@ -158,9 +158,9 @@ Retorno:
 	- No hay
 */
 func propuestaEntreDos(c pb.ChatCliDnClient) {
-	msg := pb.Message {
+	/*msg := pb.Message {
 		Body: "m",
-	}
+	}*/
 	i, _ := strconv.Atoi(cola_chunks_de_cliente[0].GetParte())
 	chunkcito := pb.Chunk {
 		NombreLibro: cola_chunks_de_cliente[0].GetNombreLibro(),
@@ -175,7 +175,7 @@ func propuestaEntreDos(c pb.ChatCliDnClient) {
 		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.149")
 	}
 	if cola_chunks_de_cliente[0].GetParte() == "2" {
-		msg, _ = c.ChunkEntreDN(context.Background(), &chunkcito)
+		msg, _ := c.ChunkEntreDN(context.Background(), &chunkcito)
 		el_split := strings.Split(msg.Body, "#")
 		fmt.Println(el_split[0])
 		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), el_split[1])
@@ -185,7 +185,7 @@ func propuestaEntreDos(c pb.ChatCliDnClient) {
 		if j == 0 {
 			almacenarChunk(chunkcito)
 		} else {
-			msg, _ = c.ChunkEntreDN(context.Background(), &chunkcito)
+			msg, _ := c.ChunkEntreDN(context.Background(), &chunkcito)
 			el_split := strings.Split(msg.Body, "#")
 			fmt.Println(el_split[0])
 			escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), el_split[1])
