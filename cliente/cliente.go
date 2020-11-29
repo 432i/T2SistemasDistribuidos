@@ -103,7 +103,7 @@ func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.ChatCliDnClient
                         Datos: partBuffer,
                         Algoritmo: tipoAlgoritmo,
                 }
-                if err := stream.Send(chunko); err != nil { //envio por stream de chunks
+                if err := stream.Send(&chunko); err != nil { //envio por stream de chunks
                         log.Fatalf("%v.Send(%v) = %v", stream, chunko, err)
                 }
         }
@@ -304,7 +304,7 @@ func main(){
                                         msj := pb.Message{
                                                 Body: "TOY XATO",
                                         }
-                                        response, err := cNN.pedirCatalogo(context.Background(), &msj)
+                                        response, err := cNN.PedirCatalogo(context.Background(), &msj)
                                         if err != nil{
                                                 fmt.Println("Error al enviar la solicitud del catalogo")
                                                 break
