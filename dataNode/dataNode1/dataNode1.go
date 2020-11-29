@@ -101,7 +101,7 @@ Descripcion:
 Retorno:
 	- No hay
 */
-func propuestaEntreTres(c2 pb.NewChatCliDnClient, c3 pb.NewChatCliDnClient) {
+func propuestaEntreTres(c2 *pb.NewChatCliDnClient, c3 *pb.NewChatCliDnClient) {
 	msg2 := pb.Message {
 		Body: "m",
 	}
