@@ -2,7 +2,7 @@ package main
 import(
         "bufio"
         "io/ioutil"
-        "math/rand"
+        //"math/rand"
         "math"
         "strconv"
         "os"
@@ -278,7 +278,7 @@ func main(){
                                 return
                         }
                         //DN elegido aleatoriamente
-                        i := rand.Intn(3)
+                        i := 0  ////// ÑAKSDÑLASKDLASKDLASKDLÑAAAAAAAAAAAAAAAAAAAAAAAAAAKSD ARREGLAR AKI AL FINAL PORFAVOR!!!!!!!!!!!!!!!!!!!!! rand.Intn(3)rand.Intn(3)rand.Intn(3)rand.Intn(3)
                         if i == 0{
                                 enviarChunks(tipoAlgoritmo, nombre, cDN1)
                         }
