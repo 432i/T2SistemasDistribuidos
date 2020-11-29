@@ -219,19 +219,20 @@ func generarPropuesta(cantPartes string) {
 		connDN2, err2 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
 		if err2 != nil {
 			se_pudo2 = false
+		} else {
+			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
 		}
 		defer connDN2.Close()
 		c2 := pb.NewChatCliDnClient(connDN2)
-		fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
 
 		connDN3, err3 := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
 		if err3 != nil {
 			se_pudo3 = false
+		} else {
+			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
 		}
 		defer connDN3.Close()
 		c3 := pb.NewChatCliDnClient(connDN2)
-		fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
-
 		
 		if (se_pudo2 == true && se_pudo3 == true) {
 			if estado == "buscada" {
