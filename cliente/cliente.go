@@ -25,7 +25,7 @@ Descripcion:
 Retorno:
 	- Retorna la conexion con el Data Node de la ip recibida
 */
-func conexionDN(ip string) pb.NewChatCliDnClient{
+func conexionDN(ip string) pb.ChatCliDnClient{
         var conn *grpc.ClientConn
         puerto := ":50001"
         conn, err := grpc.Dial(ip+puerto, grpc.WithInsecure())
@@ -46,7 +46,7 @@ Descripcion:
 Retorno:
 	- Retorna la conexion con el Name Node
 */
-func conexionNN() pb.NewChatCliDnClient{
+func conexionNN() pb.ChatCliDnClient{
         var conn *grpc.ClientConn
         conn, err := grpc.Dial("10.6.40.152:50001", grpc.WithInsecure())
         if err != nil {
@@ -68,7 +68,7 @@ Descripcion:
 Retorno:
 	- Nada
 */
-func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.NewChatCliDnClient){
+func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.ChatCliDnClient){
         fileToBeChunked := nombreLibro + ".pdf"
         file, err := os.Open(fileToBeChunked)
         if err != nil {
@@ -126,7 +126,7 @@ Descripcion:
 Retorno:
 	- Retorna las ips de los data nodes en donde están las partes
 */
-func pedirDirecciones(nombreLibro string, c pb.NewChatCliDnClient) []string{
+func pedirDirecciones(nombreLibro string, c pb.ChatCliDnClient) []string{
         msj := pb.Message{
 		Body: nombreLibro,
         }
