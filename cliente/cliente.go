@@ -11,7 +11,7 @@ import(
         //"encoding/csv"
         "log"
         "fmt"
-        //"time"
+        "time"
         "golang.org/x/net/context"
         "google.golang.org/grpc"
         pb "github.com/432i/T2SistemasDistribuidos/dependencias/serverclidn"
@@ -25,7 +25,7 @@ Descripcion:
 Retorno:
 	- Retorna la conexion con el Data Node de la ip recibida
 */
-func conexionDN(ip string) pb.ChatCliDnClient{
+func conexionDN(ip string) (pb.ChatCliDnClient, *grpc.ClientConn){
         var conn *grpc.ClientConn
         puerto := ":50001"
         conn, err := grpc.Dial(ip+puerto, grpc.WithInsecure())
@@ -34,10 +34,10 @@ func conexionDN(ip string) pb.ChatCliDnClient{
         }else{
                 fmt.Println("Conexion realizada correctamente con el Data Node de IP "+ip+"\n")
         }
-        defer conn.Close()
+        //defer conn.Close()
         c := pb.NewChatCliDnClient(conn)
         
-        return c
+        return c, conn
 }
 /*
 Funcion: conexionNN
@@ -48,7 +48,7 @@ Descripcion:
 Retorno:
 	- Retorna la conexion con el Name Node
 */
-func conexionNN() pb.ChatCliDnClient{
+func conexionNN() (pb.ChatCliDnClient, *grpc.ClientConn){
         var conn *grpc.ClientConn
         conn, err := grpc.Dial("10.6.40.152:50001", grpc.WithInsecure())
         if err != nil {
@@ -56,10 +56,10 @@ func conexionNN() pb.ChatCliDnClient{
         }else{
                 fmt.Println("Conexion realizada correctamente con el Name Node\n")
         }
-        defer conn.Close()
+        //defer conn.Close()
         c := pb.NewChatCliDnClient(conn)
         
-        return c
+        return c, conn
 }
 /*
 Funcion: enviarChunks
@@ -88,7 +88,8 @@ func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.ChatCliDnClient
         fmt.Printf("El libro se dividio en %d piezas, subiendo al Data Node. . .\n", totalPartsNum)
 
         //creamos el stream
-        stream, err := c.ChunkaDN(context.Background()) 
+        ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+        stream, err := c.ChunkaDN(ctx)
         if err != nil {
                 log.Fatalf("%v.RecordRoute(_) = _, %v", c, err)
         }
@@ -107,9 +108,7 @@ func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.ChatCliDnClient
                         Datos: partBuffer,
                         Algoritmo: tipoAlgoritmo,
                 }
-                if err := stream.Send(&chunko); err != nil { //envio por stream de chunks
-                        log.Fatalf("%v.Send(%v) = %v", stream, chunko, err)
-                }
+                stream.Send(&chunko) //envio del chunk
         }
 
         reply, err := stream.CloseAndRecv()
@@ -117,6 +116,7 @@ func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.ChatCliDnClient
                 log.Fatalf("%v.CloseAndRecv() tuvo el error %v, quiero %v", stream, err, nil)
         }
         log.Printf("Route summary: %v", reply)
+        cancel()
 
 }
 
@@ -244,10 +244,10 @@ func rearmarLibro(nombreLibro string, cantPartes int){
 }
 func main(){
 
-        cDN1 := conexionDN("10.6.40.149") //conexion Data Node 1
-        cDN2 := conexionDN("10.6.40.150") //conexion Data Node 2
-        cDN3 := conexionDN("10.6.40.151") //conexion Data Node 3
-        cNN := conexionNN() //conexion Name Node
+        cDN1, conn1 := conexionDN("10.6.40.149") //conexion Data Node 1
+        cDN2, conn2 := conexionDN("10.6.40.150") //conexion Data Node 2
+        cDN3, conn3 := conexionDN("10.6.40.151") //conexion Data Node 3
+        cNN, conn4 := conexionNN() //conexion Name Node
         for{    
                 var respuesta string
                 fmt.Println("\n Quiere subir o descargar un libro? Ingrese la opcion correpsondiente y presione Enter: \n")
@@ -397,6 +397,10 @@ func main(){
                                         rearmarLibro(nombre, cont)
                                 }
                                 if respuesta2 == "432"{
+                                        defer conn1.Close()
+                                        defer conn2.Close()
+                                        defer conn3.Close()
+                                        defer conn4.Close()
                                         fmt.Println("Saliendo del Client Downloader. . . ")
                                         break
                                 }
