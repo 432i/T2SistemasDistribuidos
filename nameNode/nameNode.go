@@ -256,6 +256,10 @@ func (s *Server) propuestaCentralizado(ctx context.Context, message *Message) (*
                         return &msj, nil
                 }
         }
+        msj := pb.Message{
+                Body: "DN2",
+        }
+        return &msj, nil
         
 }
 
