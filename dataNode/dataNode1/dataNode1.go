@@ -216,7 +216,7 @@ func generarPropuesta(cantPartes string, tiempo string) {
 			body: timestamp + "_DN1",
 		}
 		//entrarZona := false
-		connDN2, err2 := grpc.Dial("10.6.40.150", grpc.WithInsecure())
+		connDN2, err2 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
 		if err2 != nil {
 			se_pudo2 = false
 		}
@@ -224,7 +224,7 @@ func generarPropuesta(cantPartes string, tiempo string) {
 		c2 := pb.NewChatCliDnClient(connDN2)
 		fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
 
-		connDN3, err3 := grpc.Dial("10.6.40.151", grpc.WithInsecure())
+		connDN3, err3 := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
 		if err3 != nil {
 			se_pudo3 = false
 		}
@@ -408,9 +408,9 @@ func (s *Server) EnviarPeticion(ctx context.Context, msj *pb.Message) (*pb.Messa
 		return &msg, nil
 	}
 	if estado == "buscada" {
-		mi_fecha, _ = time.Parse("02-01-2006 15:04", timestamp)
+		mi_fecha, _ := time.Parse("02-01-2006 15:04", timestamp)
 		split_msj := strings.Split(msj.body, "_") 
-		fecha_emisor, _ = time.Parse("02-01-2006 15:04", split_msj[0])
+		fecha_emisor, _ := time.Parse("02-01-2006 15:04", split_msj[0])
 		if fecha_emisor.Before(mi_fecha) {
 			msg := pb.Message {
 				body: "ok",
