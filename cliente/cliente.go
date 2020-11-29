@@ -118,6 +118,7 @@ func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.ChatCliDnClient
                 log.Fatalf("%v.CloseAndRecv() tuvo el error %v, quiero %v", stream, err, nil)
         }
         log.Printf("Route summary: %v", reply)
+        cancel()
 
 }
 
