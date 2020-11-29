@@ -4,6 +4,7 @@ import(
 		"strings"
 		"math/rand"
 		"log"
+		"io"
 		"io/ioutil"
 		"strconv"
         "fmt"
@@ -561,7 +562,7 @@ func (s *Server) ChunkaDN(stream pb.ChatCliDn_ChunkaDNServer) error {
 		if err != nil {
 			return err
 		}
-		cola_chunks_de_cliente = append(cola_chunks_de_cliente, chunk)
+		cola_chunks_de_cliente = append(cola_chunks_de_cliente, *chunk)
 	}
 }
 
@@ -575,8 +576,8 @@ Retorno:
 	- Retorna un mensaje de exito junto a la ip del DN que almaceno el chunk
 */
 func (s *Server) ChunkEntreDN(ctx context.Context, chunkcito *pb.Chunk) (*pb.Message, error) {
-	almacenarChunk(&chunkcito)
-	fmt.Println("Se ha almacenado el chunk:\n    {nombreLibro: " + chunkcito.GetNombreLibro() + ",\n    totalPartes: " + chunkcito.GetTotalPartes() + ",\n    parte: " + chunkcito.GetParte() + ",\n    datos: " + chunkcito.GetDatos() + "}")
+	almacenarChunk(chunkcito)
+	fmt.Println("Se ha almacenado el chunk:\n    {nombreLibro: " + chunkcito.GetNombreLibro() + ",\n    totalPartes: " + chunkcito.GetTotalPartes() + ",\n    parte: " + chunkcito.GetParte() + "}")
 
 	msj := pb.Message{
 		Body: "Chunk recibido y almacenado#" + mi_ip,
