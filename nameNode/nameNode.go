@@ -126,8 +126,17 @@ func (s *Server) pedirCatalogo(ctx context.Context, message *pb.Message) (*pb.Me
         return &msj, nil
 
 }
+/*
+Funcion: mensajeExito
+Parametro:
+	- Recibe las conexiones de los datanodes
+Descripcion:
+	- Printea que se pudo conectar a alguno de ellos
+Retorno:
+	- Nada
+*/
 func mensajeExito(c1 pb.ChatCliDnClient, c2 pb.ChatCliDnClient, c3 pb.ChatCliDnClient){
-        fmt.Println("Conexion realizada")
+        fmt.Println("Conexion realizada con algun data node")
 }
 /*
 Funcion: propuestaCentralizado
