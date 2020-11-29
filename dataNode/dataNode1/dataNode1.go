@@ -101,7 +101,7 @@ Descripcion:
 Retorno:
 	- No hay
 */
-func propuestaEntreTres(c2 *pb.NewChatCliDnClient, c3 *pb.NewChatCliDnClient) {
+func propuestaEntreTres(c2 pb.ChatCliDn, c3 pb.ChatCliDn) {
 	msg2 := pb.Message {
 		Body: "m",
 	}
@@ -157,7 +157,7 @@ Descripcion:
 Retorno:
 	- No hay
 */
-func propuestaEntreDos(c pb.NewChatCliDnClient) {
+func propuestaEntreDos(c pb.ChatCliDn) {
 	msg := pb.Message {
 		Body: "m",
 	}
@@ -302,6 +302,9 @@ Retorno:
 */
 func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 	var conn *grpc.ClientConn
+	var se_pudo2, se_pudo3 bool
+	se_pudo2 = true
+	se_pudo3 = true
 	conn, err := grpc.Dial("10.6.40.152:50001", grpc.WithInsecure())
 	if err != nil {
 			log.Fatalf("did not connect: %s", err)
