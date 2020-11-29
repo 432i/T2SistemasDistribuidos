@@ -72,7 +72,7 @@ func recuperarLibro(nombreLibro string) []string{
         return final
 }
 /*
-Funcion: pedirCatalogo
+Funcion: obtenerCatalogo
 Parametro:
 	- Nada
 Descripcion:
@@ -80,7 +80,7 @@ Descripcion:
 Retorno:
 	- Retorna un string con el catalogo de libros disponibles
 */
-func pedirCatalogo() string{
+func obtenerCatalogo() string{
         catalogo := "Libros disponibles: \n"
         file, err := os.Open("log.txt")
         if err != nil {
