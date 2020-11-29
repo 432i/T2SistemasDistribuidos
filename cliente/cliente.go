@@ -31,10 +31,12 @@ func conexionDN(ip string) pb.ChatCliDnClient{
         conn, err := grpc.Dial(ip+puerto, grpc.WithInsecure())
         if err != nil {
                 log.Fatalf("did not connect: %s", err)
+        }else{
+                fmt.Println("Conexion realizada correctamente con el Data Node de IP "+ip+"\n")
         }
         defer conn.Close()
         c := pb.NewChatCliDnClient(conn)
-        fmt.Println("Conexion realizada correctamente con el Data Node de IP "+ip+"\n")
+        
         return c
 }
 /*
@@ -51,10 +53,12 @@ func conexionNN() pb.ChatCliDnClient{
         conn, err := grpc.Dial("10.6.40.152:50001", grpc.WithInsecure())
         if err != nil {
                 log.Fatalf("did not connect: %s", err)
+        }else{
+                fmt.Println("Conexion realizada correctamente con el Name Node\n")
         }
         defer conn.Close()
         c := pb.NewChatCliDnClient(conn)
-        fmt.Println("Conexion realizada correctamente con el Name Node\n")
+        
         return c
 }
 /*
@@ -219,7 +223,7 @@ func rearmarLibro(nombreLibro string, cantPartes int){
                 //ioutil.WriteFile(newFileName, chunkBufferBytes, os.ModeAppend)
 
                 n, err := file.Write(chunkBufferBytes)
-                fmt.Println("Written ", n, " bytes")
+                fmt.Println("Escritos ", n, " bytes en el disco")
                 if err != nil {
                         fmt.Println(err)
                                         os.Exit(1)
