@@ -92,6 +92,7 @@ func almacenarChunk(chunkcito pb.Chunk) {
 			os.Exit(1)
 	}
 	ioutil.WriteFile(fileName, chunkcito.GetDatos(), os.ModeAppend)
+	escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), mi_ip)
 }
 
 /*
