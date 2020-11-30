@@ -182,8 +182,6 @@ func rearmarLibro(nombreLibro string, cantPartes int){
 
                 //read a chunk
                 currentChunkFileName := nombreLibro + "#" + strconv.FormatUint((j+1), 10)
-                fmt.Println("axel succioname la pichula")
-                fmt.Println(currentChunkFileName)
                 newFileChunk, err := os.Open(currentChunkFileName)
 
                 if err != nil {
@@ -271,7 +269,7 @@ func main(){
                                 fmt.Fprintln(os.Stderr, err)
                                 return
                         }
-                        fmt.Println("Ingrese el algoritmo que desea usar: 'centralizado' o 'distribuido' y presione Enter")
+                        fmt.Println("Ingrese el algoritmo que desea usar: 'centralizado' o 'distribuido' y presione Enter: \n")
                         _, err1 := fmt.Scanln(&tipoAlgoritmo)
                         if err1 != nil {
                                 fmt.Fprintln(os.Stderr, err)
@@ -321,7 +319,7 @@ func main(){
                                 }
                                 if respuesta2 == "2"{
                                         var nombre string
-                                        fmt.Println("Ingrese el nombre del libro que desea descargar sin extension y presione Enter")
+                                        fmt.Println("Ingrese el nombre del libro que desea descargar sin extension y presione Enter: \n")
                                         _, err := fmt.Scanln(&nombre)
                                         if err != nil {
                                                 fmt.Fprintln(os.Stderr, err)
