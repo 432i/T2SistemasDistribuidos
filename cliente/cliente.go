@@ -328,8 +328,8 @@ func main(){
                                         direcciones := pedirDirecciones(nombre, cNN)
                                         //recorrer las direcciones ips para ir pidiendo los chunks
                                         cont := 0
-                                        //fmt.Println(len(direcciones))
-                                        //fmt.Println(direcciones)
+                                        fmt.Println(len(direcciones))
+                                        fmt.Println(direcciones)
                                         for _, direccion := range direcciones {
                                                 if direccion == "10.6.40.149"{
                                                         msj := pb.Message{
