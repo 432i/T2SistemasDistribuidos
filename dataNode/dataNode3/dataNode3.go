@@ -338,7 +338,7 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 	partes, _:= strconv.Atoi(cantPartes)
 	i := 0
 	for i < partes{
-		propuesta := "DN3#DN2DN3#"+nombreLibro //le enviamos la propuesta inicial donde asumimos q los demas datanodes estan activos
+		propuesta := "DN3#"+cantPartes+"#"+nombreLibro //le enviamos la propuesta inicial donde asumimos q los demas datanodes estan activos
 		//Formato: De_Donde_Envia#Demas_Nodos
 		msj := pb.Message {
 			Body: propuesta,

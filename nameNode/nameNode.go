@@ -156,6 +156,7 @@ func (s *Server) PropuestaCentralizado(ctx context.Context, message *pb.Message)
         split := strings.Split(message.GetBody(), "#")
         emisor := split[0]                              //de donde se envia la propuesta
         nombreLibro := split[2]
+        cantPartes := split[1]
 
         if nombreLibroACTUAL != nombreLibro && cont != 0{
                 msj := pb.Message{
@@ -211,8 +212,14 @@ func (s *Server) PropuestaCentralizado(ctx context.Context, message *pb.Message)
         }
         mensajeExito(c1, c2, c3) //printea
 
+        cantidadPartes, err := strconv.Atoi(cantPartes)
+        if err != nil {
+                fmt.Println("error en la cantidad de partes")
+        }
         cont +=1
-
+        if cantidadPartes == cont {
+                cont = 0
+        }
         if emisor == "DN1"{
                 nombreLibroACTUAL = nombreLibro
                 if se_pudo2 && se_pudo3{
