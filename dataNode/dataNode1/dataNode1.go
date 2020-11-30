@@ -525,7 +525,7 @@ Descripcion:
 Retorno:
 	- Un chunk
 */
-func (s *Server) pedirChunk(ctx context.Context, msj *pb.Message) (*pb.Chunk, error) {
+func (s *Server) PedirChunk(ctx context.Context, msj *pb.Message) (*pb.Chunk, error) {
 	split := strings.Split(msj.GetBody(), "#")
 	nombreLibro := split[0]
 	parte := split[1]

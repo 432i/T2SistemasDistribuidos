@@ -18,10 +18,10 @@ service ChatCliDn {
     rpc ChunkaDN(stream Chunk) returns (Message){}
     rpc MaquinaFunciona(Message) returns (Message){}
     rpc ChunksDirecciones(Message) returns (Message){}
-    rpc escribirLog(Message) returns (Message){}
+    rpc EscribirLog(Message) returns (Message){}
     rpc ChunkEntreDN(Chunk) returns (Message) {}
-    rpc pedirChunk(Message) returns (Chunk){}
-    rpc pedirCatalogo(Message) returns (Message){}
+    rpc PedirChunk(Message) returns (Chunk){}
+    rpc PedirCatalogo(Message) returns (Message){}
     rpc EnviarPeticion(Message) returns (Message){}
-    rpc propuestaCentralizado(Message) returns (Message){}
+    rpc PropuestaCentralizado(Message) returns (Message){}
 }
