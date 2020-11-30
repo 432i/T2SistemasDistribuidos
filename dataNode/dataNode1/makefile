@@ -1,2 +1,2 @@
 make:
-	go run nameNode1.go
+	go run dataNode1.go

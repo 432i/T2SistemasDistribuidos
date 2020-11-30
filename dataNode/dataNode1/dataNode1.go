@@ -612,7 +612,7 @@ func (s *Server) ChunkaDN(stream pb.ChatCliDn_ChunkaDNServer) error {
 			return err
 		}
 		cola_chunks_de_cliente = append(cola_chunks_de_cliente, *chunk)
-		fmt.Println("Se recibió el chunk:\n    Nombre del Libro: " + chunk.NombreLibro + "\n    Parte del libro" + chunk.Parte + "\n    Cantidad de partes:" + chunk.TotalPartes + "}")
+		fmt.Println("Se recibió el chunk:\n    Nombre del Libro: " + chunk.NombreLibro + "\n    Parte del libro: " + chunk.Parte + "\n    Cantidad de partes: " + chunk.TotalPartes)
 	}
 }
 
