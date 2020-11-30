@@ -327,11 +327,13 @@ func main(){
                                         }
                                         direcciones := pedirDirecciones(nombre, cNN)
                                         //recorrer las direcciones ips para ir pidiendo los chunks
-                                        cont := 1
+                                        cont := 0
+                                        //fmt.Println(len(direcciones))
+                                        //fmt.Println(direcciones)
                                         for _, direccion := range direcciones {
                                                 if direccion == "10.6.40.149"{
                                                         msj := pb.Message{
-                                                                Body: nombre+"#"+strconv.Itoa(cont), //nombreLibro#parte
+                                                                Body: nombre+"#"+strconv.Itoa(cont+1), //nombreLibro#parte
                                                         }
                                                         response, err := cDN1.PedirChunk(context.Background(), &msj)
                                                         if err != nil{
@@ -341,7 +343,7 @@ func main(){
                                                         }
                 
                                                         //escribir chunk en disco
-                                                        fileName := nombre+"#"+strconv.Itoa(cont)
+                                                        fileName := nombre+"#"+strconv.Itoa(cont+1)
                                                         _, err3 := os.Create(fileName)
                                                         if err3 != nil {
                                                                 fmt.Println(err)
@@ -353,7 +355,7 @@ func main(){
                                                 }
                                                 if direccion == "10.6.40.150"{
                                                         msj := pb.Message{
-                                                                Body: nombre+"#"+strconv.Itoa(cont), //nombreLibro#parte
+                                                                Body: nombre+"#"+strconv.Itoa(cont+1), //nombreLibro#parte
                                                         }
                                                         response, err := cDN2.PedirChunk(context.Background(), &msj)
                                                         if err != nil{
@@ -363,7 +365,7 @@ func main(){
                                                         }
                 
                                                         //escribir chunk en disco
-                                                        fileName := nombre+"#"+strconv.Itoa(cont)
+                                                        fileName := nombre+"#"+strconv.Itoa(cont+1)
                                                         _, err4 := os.Create(fileName)
                                                         if err4 != nil {
                                                                 fmt.Println(err)
@@ -375,7 +377,7 @@ func main(){
                                                 }
                                                 if direccion == "10.6.40.151"{
                                                         msj := pb.Message{
-                                                                Body: nombre+"#"+strconv.Itoa(cont), //nombreLibro#parte
+                                                                Body: nombre+"#"+strconv.Itoa(cont+1), //nombreLibro#parte
                                                         }
                                                         response, err := cDN3.PedirChunk(context.Background(), &msj)
                                                         if err != nil{
@@ -385,7 +387,7 @@ func main(){
                                                         }
                 
                                                         //escribir chunk en disco
-                                                        fileName := nombre+"#"+strconv.Itoa(cont)
+                                                        fileName := nombre+"#"+strconv.Itoa(cont+1)
                                                         _, err5 := os.Create(fileName)
                                                         if err5 != nil {
                                                                 fmt.Println(err)
