@@ -374,41 +374,41 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 			c2 := pb.NewChatCliDnClient(connDN2)
 			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
 
-			connDN3, err3 := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
+			connDN3, err3 := grpc.Dial("10.6.40.149:50001", grpc.WithInsecure())
 			if err3 != nil {
 				fmt.Println("Error al conectar.")
 				//se_pudo3 = false
 			}
 			defer connDN3.Close()
 			c3 := pb.NewChatCliDnClient(connDN2)
-			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
+			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.149")
 
 			propuestaEntreTres(c2, c3)
 
 		}
-		if response.Body == "DN2"{ //se reparte entre 2 y 1
+		if response.Body == "DN1"{ //se reparte entre 3 y 1
 
-			connDN2, err2 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
+			connDN2, err2 := grpc.Dial("10.6.40.149:50001", grpc.WithInsecure())
 			if err2 != nil {
 				fmt.Println("Error al conectar.")
 				//se_pudo2 = false
 			}
 			defer connDN2.Close()
 			c2 := pb.NewChatCliDnClient(connDN2)
-			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
+			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.149")
 
 			propuestaEntreDos(c2)
 		}
-		if response.Body == "DN3"{ //se reparte entre 3 y 1
+		if response.Body == "DN2"{ //se reparte entre 3 y 2
 
-			connDN3, err3 := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
+			connDN3, err3 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
 			if err3 != nil {
 				fmt.Println("Error al conectar.")
 				//se_pudo3 = false
 			}
 			defer connDN3.Close()
 			c3 := pb.NewChatCliDnClient(connDN3)
-			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
+			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.150")
 
 			propuestaEntreDos(c3)
 
