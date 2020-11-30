@@ -578,6 +578,7 @@ func (s *Server) ChunkaDN(stream pb.ChatCliDn_ChunkaDNServer) error {
 		}
 		cola_chunks_de_cliente = append(cola_chunks_de_cliente, *chunk)
 	}
+	return nil
 }
 
 /*
