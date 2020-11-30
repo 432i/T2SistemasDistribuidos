@@ -421,12 +421,14 @@ func escucharListaChunks() {
 			i, _ := strconv.Atoi(cola_chunks_de_cliente[0].TotalPartes)
 			if len(cola_chunks_de_cliente) >= i {
 				if tipoAlgoritmo == "distribuido" {
+					fmt.Println("A")
 					tiempoactual := time.Now()
 					timestamp = tiempoactual.Format("02-01-2006 15:04")
 					estado = "buscada"
 					generarPropuesta(cola_chunks_de_cliente[0].GetTotalPartes())
 				}
 				if tipoAlgoritmo == "centralizado" {
+					fmt.Println("B")
 					generarPropuestaCentralizado(cola_chunks_de_cliente[0].GetTotalPartes(), cola_chunks_de_cliente[0].GetNombreLibro())
 				}
 			}
