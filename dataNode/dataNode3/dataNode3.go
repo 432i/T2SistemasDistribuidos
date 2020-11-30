@@ -376,7 +376,7 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 				//se_pudo3 = false
 			}
 			defer connDN3.Close()
-			c3 := pb.NewChatCliDnClient(connDN2)
+			c3 := pb.NewChatCliDnClient(connDN3)
 			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.149")
 
 			propuestaEntreTres(c2, c3)
