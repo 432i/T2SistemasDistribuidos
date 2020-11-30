@@ -220,6 +220,7 @@ func (s *Server) PropuestaCentralizado(ctx context.Context, message *pb.Message)
         if cantidadPartes == cont {
                 cont = 0
         }
+        
         if emisor == "DN1"{
                 nombreLibroACTUAL = nombreLibro
                 if se_pudo2 && se_pudo3{
