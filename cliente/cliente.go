@@ -311,6 +311,7 @@ func main(){
                                         response, err := cNN.PedirCatalogo(context.Background(), &msj)
                                         if err != nil{
                                                 fmt.Println("Error al enviar la solicitud del catalogo")
+                                                log.Fatalf("%s", err)
                                                 break
                                         }
                                         log.Printf("%s", response.Body)
