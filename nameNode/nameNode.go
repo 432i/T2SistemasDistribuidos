@@ -168,7 +168,7 @@ func (s *Server) PropuestaCentralizado(ctx context.Context, message *pb.Message)
                 Body: "m",
         }
 
-        connDN1, err1 := grpc.Dial("10.6.40.149", grpc.WithInsecure())
+        connDN1, err1 := grpc.Dial("10.6.40.149:50001", grpc.WithInsecure())
         if err1 != nil {
                 se_pudo1 = false
         }
@@ -182,7 +182,7 @@ func (s *Server) PropuestaCentralizado(ctx context.Context, message *pb.Message)
                 fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
         }
         
-        connDN2, err2 := grpc.Dial("10.6.40.150", grpc.WithInsecure())
+        connDN2, err2 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
         if err2 != nil {
                 se_pudo2 = false
         }
@@ -196,7 +196,7 @@ func (s *Server) PropuestaCentralizado(ctx context.Context, message *pb.Message)
                 fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
         }
 
-        connDN3, err3 := grpc.Dial("10.6.40.151", grpc.WithInsecure())
+        connDN3, err3 := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
         if err3 != nil {
                 se_pudo3 = false
         }
@@ -209,7 +209,7 @@ func (s *Server) PropuestaCentralizado(ctx context.Context, message *pb.Message)
                 fmt.Println(fun3.Body)
                 fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
         }
-        mensajeExito(c1, c2, c3)
+        mensajeExito(c1, c2, c3) //printea
 
         cont +=1
 
