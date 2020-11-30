@@ -328,6 +328,7 @@ func (s *Server) escribirLog(ctx context.Context, message *pb.Message) (*pb.Mess
         msj := pb.Message{
                 Body: "Chunk guardado en el log correctamente",
         }
+        fmt.Println("Escrito en el log correctamente")
         return &msj, nil
 }
 /*
