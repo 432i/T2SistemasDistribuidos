@@ -421,17 +421,16 @@ func escucharListaChunks() {
 	for { 
 		if len(cola_chunks_de_cliente) != 0 {
 			if tipoAlgoritmo == "distribuido" {
-				fmt.Println("A")
+				fmt.Println("El algotirmo utilizado es distribuido")
 				tiempoactual := time.Now()
 				timestamp = tiempoactual.Format("02-01-2006 15:04")
 				estado = "buscada"
 				generarPropuesta(cola_chunks_de_cliente[0].GetTotalPartes())
 			}
 			if tipoAlgoritmo == "centralizado" {
-				fmt.Println("B")
+				fmt.Println("El algotirmo utilizado es centralizado")
 				generarPropuestaCentralizado(cola_chunks_de_cliente[0].GetTotalPartes(), cola_chunks_de_cliente[0].GetNombreLibro())
 			}
-			fmt.Println("C")
 		}
 	}
 }
