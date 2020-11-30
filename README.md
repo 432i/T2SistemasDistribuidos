@@ -1,4 +1,4 @@
-# T2SistemasDistribuidos
+
 # Tarea 2 del ramo Sistema Distribuidos
 ## Comenzando 🚀
 
