@@ -269,8 +269,7 @@ func generarPropuesta(cantPartes string) {
 				fmt.Println(msj3.Body)
 				estado = "tomada"
 				propuestaEntreTres(c2, c3)
-			}
-			if estado == "tomada" {
+			} else if estado == "tomada" {
 				propuestaEntreTres(c2, c3)
 			}
 		} else if (se_pudo2 == true && se_pudo3 == false) {
@@ -283,8 +282,7 @@ func generarPropuesta(cantPartes string) {
 				fmt.Println(msj2.Body)
 				estado = "tomada"
 				propuestaEntreDos(c2)
-			}
-			if estado == "tomada" {
+			} else if estado == "tomada" {
 				propuestaEntreDos(c2)
 			}
 		} else if (se_pudo2 == false && se_pudo3 == true) {
@@ -297,8 +295,7 @@ func generarPropuesta(cantPartes string) {
 				fmt.Println(msj3.Body)
 				estado = "tomada"
 				propuestaEntreDos(c3)
-			}
-			if estado == "tomada" {
+			} else if estado == "tomada" {
 				propuestaEntreDos(c3)
 			}
 		} else {
