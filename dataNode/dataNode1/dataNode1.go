@@ -420,7 +420,7 @@ func escucharListaChunks() {
 			fmt.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 			fmt.Println(i)
 			fmt.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-			if len(cola_chunks_de_cliente) >= i {
+			if len(cola_chunks_de_cliente) <= i {
 				if tipoAlgoritmo == "distribuido" {
 					tiempoactual := time.Now()
 					timestamp = tiempoactual.Format("02-01-2006 15:04")
