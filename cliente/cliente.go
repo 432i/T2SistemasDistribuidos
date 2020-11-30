@@ -140,6 +140,7 @@ func pedirDirecciones(nombreLibro string, c pb.ChatCliDnClient) []string{
                 //break
         }
         partesIPS := strings.Split(response.Body, " # ") //parte 1 en la ip de la posicion 0, parte 2 en la posicion 1, etc
+        partesIPS := partesIPS[:len(partesIPS)-1]
         return partesIPS
 }
 /*
@@ -328,8 +329,8 @@ func main(){
                                         direcciones := pedirDirecciones(nombre, cNN)
                                         //recorrer las direcciones ips para ir pidiendo los chunks
                                         cont := 0
-                                        fmt.Println(len(direcciones))
-                                        fmt.Println(direcciones)
+                                        //fmt.Println(len(direcciones))
+                                        //fmt.Println(direcciones)
                                         for _, direccion := range direcciones {
                                                 if direccion == "10.6.40.149"{
                                                         msj := pb.Message{
