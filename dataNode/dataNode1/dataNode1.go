@@ -531,6 +531,7 @@ Retorno:
 	- Un chunk
 */
 func (s *Server) PedirChunk(ctx context.Context, msj *pb.Message) (*pb.Chunk, error) {
+	
 	split := strings.Split(msj.GetBody(), "#")
 	nombreLibro := split[0]
 	parte := split[1]
@@ -552,7 +553,13 @@ func (s *Server) PedirChunk(ctx context.Context, msj *pb.Message) (*pb.Chunk, er
 	// we are not going to rely on previous data and constant
 	var chunkSize int64 = chunkInfo.Size()
 	chunkBufferBytes := make([]byte, chunkSize)
-	newFileChunk.Read(chunkBufferBytes)
+	reader := bufio.NewReader(newFileChunk)
+	_, err = reader.Read(chunkBufferBytes)
+
+	if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+	}
 	chunko := pb.Chunk{
 		NombreLibro: nombreLibro,
 		TotalPartes: "0",
@@ -561,7 +568,7 @@ func (s *Server) PedirChunk(ctx context.Context, msj *pb.Message) (*pb.Chunk, er
 		Algoritmo: "0",
 	}
 
-	chunkBufferBytes = nil
+	//chunkBufferBytes = nil
 
 	return &chunko, nil
 }
