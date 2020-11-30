@@ -402,6 +402,12 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 			almacenarChunk(cola_chunks_de_cliente[0])
 			
 		}
+		if len(cola_chunks_de_cliente) == 1 {
+			cola_chunks_de_cliente = make([]pb.Chunk, 0)
+		} else {
+			cola_chunks_de_cliente = cola_chunks_de_cliente[1:]
+		}
+
 		i += 1
 	}
 	
