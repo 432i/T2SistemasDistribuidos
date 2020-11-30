@@ -2,7 +2,7 @@ package main
 import(
         "bufio"
         "io/ioutil"
-        //"math/rand"
+        "math/rand"
         "math"
         "strconv"
         "os"
@@ -182,8 +182,6 @@ func rearmarLibro(nombreLibro string, cantPartes int){
 
                 //read a chunk
                 currentChunkFileName := nombreLibro + "#" + strconv.FormatUint((j+1), 10)
-                fmt.Println("axel succioname la pichula")
-                fmt.Println(currentChunkFileName)
                 newFileChunk, err := os.Open(currentChunkFileName)
 
                 if err != nil {
@@ -265,20 +263,20 @@ func main(){
                 if strings.Compare("1", respuesta) == 0{
                         var nombre string
                         var tipoAlgoritmo string
-                        fmt.Println("Ingrese el nombre del libro sin extension y presione Enter")
+                        fmt.Println("Ingrese el nombre del libro sin extension y presione Enter: \n")
                         _, err := fmt.Scanln(&nombre)
                         if err != nil {
                                 fmt.Fprintln(os.Stderr, err)
                                 return
                         }
-                        fmt.Println("Ingrese el algoritmo que desea usar: 'centralizado' o 'distribuido' y presione Enter")
+                        fmt.Println("Ingrese el algoritmo que desea usar: 'centralizado' o 'distribuido' y presione Enter: \n")
                         _, err1 := fmt.Scanln(&tipoAlgoritmo)
                         if err1 != nil {
                                 fmt.Fprintln(os.Stderr, err)
                                 return
                         }
                         //DN elegido aleatoriamente
-                        i := 0  ////// ÑAKSDÑLASKDLASKDLASKDLÑAAAAAAAAAAAAAAAAAAAAAAAAAAKSD ARREGLAR AKI AL FINAL PORFAVOR!!!!!!!!!!!!!!!!!!!!! rand.Intn(3)rand.Intn(3)rand.Intn(3)rand.Intn(3)
+                        i := rand.Intn(3)
                         if i == 0{
                                 fmt.Println("Enviando chunks al data node 1")
                                 enviarChunks(tipoAlgoritmo, nombre, cDN1)
@@ -321,7 +319,7 @@ func main(){
                                 }
                                 if respuesta2 == "2"{
                                         var nombre string
-                                        fmt.Println("Ingrese el nombre del libro que desea descargar sin extension y presione Enter")
+                                        fmt.Println("Ingrese el nombre del libro que desea descargar sin extension y presione Enter: \n")
                                         _, err := fmt.Scanln(&nombre)
                                         if err != nil {
                                                 fmt.Fprintln(os.Stderr, err)
