@@ -416,7 +416,7 @@ func escucharListaChunks() {
 	//var prop int
 	for { 
 		if len(cola_chunks_de_cliente) != 0 {
-			i, err := strconv.Atoi(cola_chunks_de_cliente[0].cantPartes)
+			i, err := strconv.Atoi(cola_chunks_de_cliente[0].totalPartes)
 			if len(cola_chunks_de_cliente) >= i {
 				if tipoAlgoritmo == "distribuido" {
 					tiempoactual := time.Now()
