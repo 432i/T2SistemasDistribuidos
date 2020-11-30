@@ -416,14 +416,17 @@ func escucharListaChunks() {
 	//var prop int
 	for { 
 		if len(cola_chunks_de_cliente) != 0 {
-			if tipoAlgoritmo == "distribuido" {
-				tiempoactual := time.Now()
-				timestamp = tiempoactual.Format("02-01-2006 15:04")
-				estado = "buscada"
-				generarPropuesta(cola_chunks_de_cliente[0].GetTotalPartes())
-			}
-			if tipoAlgoritmo == "centralizado" {
-				generarPropuestaCentralizado(cola_chunks_de_cliente[0].GetTotalPartes(), cola_chunks_de_cliente[0].GetNombreLibro())
+			i, err := strconv.Atoi(cola_chunks_de_cliente[0].cantPartes)
+			if len(cola_chunks_de_cliente) >= i {
+				if tipoAlgoritmo == "distribuido" {
+					tiempoactual := time.Now()
+					timestamp = tiempoactual.Format("02-01-2006 15:04")
+					estado = "buscada"
+					generarPropuesta(cola_chunks_de_cliente[0].GetTotalPartes())
+				}
+				if tipoAlgoritmo == "centralizado" {
+					generarPropuestaCentralizado(cola_chunks_de_cliente[0].GetTotalPartes(), cola_chunks_de_cliente[0].GetNombreLibro())
+				}
 			}
 		}
 	}
@@ -565,7 +568,6 @@ Retorno:
 	- Retorna un stream de exito cuando se recibe o un error si falla la recuperacion del stream
 */
 func (s *Server) ChunkaDN(stream pb.ChatCliDn_ChunkaDNServer) error {
-	//var listaChunks []pb.Chunk
 	for {
 		chunk, err := stream.Recv()
 		tipoAlgoritmo = chunk.GetAlgoritmo()
@@ -578,12 +580,7 @@ func (s *Server) ChunkaDN(stream pb.ChatCliDn_ChunkaDNServer) error {
 			return err
 		}
 		cola_chunks_de_cliente = append(cola_chunks_de_cliente, *chunk)
-		//listaChunks = append(listaChunks, *chunk)
 	}
-	/*cola_chunks_de_cliente = append(cola_chunks_de_cliente, listaChunks...)
-	return stream.SendAndClose(&pb.Message {
-		Body: "Stream recibido",
-	})*/
 }
 
 /*
