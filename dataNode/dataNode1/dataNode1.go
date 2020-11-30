@@ -210,7 +210,7 @@ func generarPropuesta(cantPartes string) {
 	se_pudo3 = true
 	partes, _:= strconv.Atoi(cantPartes)
 	//var connDN2, connDN3 *grpc.ClientConn
-
+	fmt.Printf("Largo: " + cantPartes)
 	i := 0
 	for i < partes {
 		mensajito := pb.Message {
@@ -238,7 +238,8 @@ func generarPropuesta(cantPartes string) {
 			fmt.Println(fun3.Body)
 			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
 		}
-		
+		fmt.Println(se_pudo2)
+		fmt.Println(se_pudo3)
 		if (se_pudo2 == true && se_pudo3 == true) {
 			if estado == "buscada" {
 				msj2, _ := c2.EnviarPeticion(context.Background(), &mensajito)
@@ -284,6 +285,7 @@ func generarPropuesta(cantPartes string) {
 				propuestaEntreDos(c3)
 			}
 		} else {
+			fmt.Println("OJALA ENTRE A FALSE FALSE")
 			estado = "tomada"
 			almacenarChunk(cola_chunks_de_cliente[0])
 		}
@@ -418,7 +420,6 @@ func escucharListaChunks() {
 		if len(cola_chunks_de_cliente) != 0 {
 			i, _ := strconv.Atoi(cola_chunks_de_cliente[0].TotalPartes)
 			if len(cola_chunks_de_cliente) >= i {
-				fmt.Printf("Largo de la cola: %d\n", len(cola_chunks_de_cliente))
 				if tipoAlgoritmo == "distribuido" {
 					tiempoactual := time.Now()
 					timestamp = tiempoactual.Format("02-01-2006 15:04")
