@@ -135,7 +135,7 @@ func pedirDirecciones(nombreLibro string, c pb.ChatCliDnClient) []string{
         }
         response, err := c.ChunksDirecciones(context.Background(), &msj)
         if err != nil{
-                fmt.Println("Error al enviar la orden")
+                fmt.Println("Error al enviar la orden de las ips de los datanodes")
                 log.Fatalf("%s", err)
                 //break
         }
@@ -335,7 +335,8 @@ func main(){
                                                         }
                                                         response, err := cDN1.PedirChunk(context.Background(), &msj)
                                                         if err != nil{
-                                                                fmt.Println("Error al enviar la solicitud del chunk")
+                                                                fmt.Println("Error al enviar la solicitud del chunk al data node 1")
+                                                                log.Fatalf("%s", err)
                                                                 break
                                                         }
                 
@@ -356,7 +357,8 @@ func main(){
                                                         }
                                                         response, err := cDN2.PedirChunk(context.Background(), &msj)
                                                         if err != nil{
-                                                                fmt.Println("Error al enviar la solicitud del chunk")
+                                                                fmt.Println("Error al enviar la solicitud del chunk al data node 2")
+                                                                log.Fatalf("%s", err)
                                                                 break
                                                         }
                 
@@ -370,13 +372,15 @@ func main(){
                                                         // write/save buffer to disk
                                                         ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
                                                         
-                                                }else{
+                                                }
+                                                if direccion == "10.6.40.151"{
                                                         msj := pb.Message{
                                                                 Body: nombre+"#"+strconv.Itoa(cont), //nombreLibro#parte
                                                         }
                                                         response, err := cDN3.PedirChunk(context.Background(), &msj)
                                                         if err != nil{
-                                                                fmt.Println("Error al enviar la solicitud del chunk")
+                                                                fmt.Println("Error al enviar la solicitud del chunk al data node 3")
+                                                                log.Fatalf("%s", err)
                                                                 break
                                                         }
                 
