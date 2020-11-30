@@ -278,11 +278,14 @@ func main(){
                         //DN elegido aleatoriamente
                         i := 0  ////// ÑAKSDÑLASKDLASKDLASKDLÑAAAAAAAAAAAAAAAAAAAAAAAAAAKSD ARREGLAR AKI AL FINAL PORFAVOR!!!!!!!!!!!!!!!!!!!!! rand.Intn(3)rand.Intn(3)rand.Intn(3)rand.Intn(3)
                         if i == 0{
+                                fmt.Println("Enviando chunks al data node 1")
                                 enviarChunks(tipoAlgoritmo, nombre, cDN1)
                         }
                         if i == 1{
+                                fmt.Println("Enviando chunks al data node 2")
                                 enviarChunks(tipoAlgoritmo, nombre, cDN2)
                         }else{
+                                fmt.Println("Enviando chunks al data node 3")
                                 enviarChunks(tipoAlgoritmo, nombre, cDN3)
                         }
 
