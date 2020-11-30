@@ -580,6 +580,9 @@ func (s *Server) ChunkaDN(stream pb.ChatCliDn_ChunkaDNServer) error {
 		listaChunks = append(listaChunks, *chunk)
 	}
 	cola_chunks_de_cliente = append(cola_chunks_de_cliente, listaChunks...)
+	return stream.SendAndClose(&pb.Message {
+		Body: "Stream recibido",
+	})
 }
 
 /*
