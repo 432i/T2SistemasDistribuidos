@@ -244,7 +244,7 @@ func generarPropuesta(cantPartes string) {
 
 		connDN3, _ := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
 		defer connDN3.Close()
-		c3 := pb.NewChatCliDnClient(connDN2)
+		c3 := pb.NewChatCliDnClient(connDN3)
 		fun3, errFunc3 := c3.MaquinaFunciona(context.Background(), &mensajito)
 		if errFunc3 != nil {
 			se_pudo3 = false
