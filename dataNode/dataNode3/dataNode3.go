@@ -379,7 +379,7 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 			c3 := pb.NewChatCliDnClient(connDN3)
 			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.149")
 
-			propuestaEntreTres(c2, c3)
+			propuestaEntreTres(c3, c2)
 
 		}
 		if response.Body == "DN1"{ //se reparte entre 3 y 1
