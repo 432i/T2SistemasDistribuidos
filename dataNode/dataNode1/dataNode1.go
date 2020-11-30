@@ -4,6 +4,7 @@ import(
 		"strings"
 		"math/rand"
 		"log"
+		"bufio"
 		"io"
 		"io/ioutil"
 		"strconv"
