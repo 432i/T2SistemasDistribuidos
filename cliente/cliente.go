@@ -101,14 +101,14 @@ func enviarChunks(tipoAlgoritmo string, nombreLibro string, c pb.ChatCliDnClient
                 
                 //enviamos el chunk correspondiente
 
-                chunko := pb.Chunk{
+                chunko := &pb.Chunk{
                         NombreLibro: nombreLibro,
                         TotalPartes: strconv.Itoa(int(totalPartsNum)),
                         Parte: strconv.Itoa(int(i+1)),
                         Datos: partBuffer,
                         Algoritmo: tipoAlgoritmo,
                 }
-                stream.Send(&chunko) //envio del chunk
+                stream.Send(chunko) //envio del chunk
         }
 
         reply, err := stream.CloseAndRecv()
