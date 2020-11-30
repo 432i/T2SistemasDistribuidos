@@ -419,7 +419,9 @@ func escucharListaChunks() {
 	for { 
 		if len(cola_chunks_de_cliente) != 0 {
 			i, _ := strconv.Atoi(cola_chunks_de_cliente[0].TotalPartes)
+			fmt.Println(tipoAlgoritmo)
 			if len(cola_chunks_de_cliente) >= i {
+				fmt.Println(tipoAlgoritmo)
 				if tipoAlgoritmo == "distribuido" {
 					fmt.Println("A")
 					tiempoactual := time.Now()
@@ -431,6 +433,7 @@ func escucharListaChunks() {
 					fmt.Println("B")
 					generarPropuestaCentralizado(cola_chunks_de_cliente[0].GetTotalPartes(), cola_chunks_de_cliente[0].GetNombreLibro())
 				}
+				fmt.Println("C")
 			}
 		}
 	}
@@ -575,6 +578,7 @@ func (s *Server) ChunkaDN(stream pb.ChatCliDn_ChunkaDNServer) error {
 	for {
 		chunk, err := stream.Recv()
 		tipoAlgoritmo = chunk.GetAlgoritmo()
+		fmt.Println(tipoAlgoritmo)
 		if err == io.EOF {
 			return stream.SendAndClose(&pb.Message {
 			Body: "Stream recibido",
