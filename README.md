@@ -1,5 +1,6 @@
 
 # Tarea 2 del ramo Sistema Distribuidos
+## https://github.com/432i/T2SistemasDistribuidos
 ## Comenzando 🚀
 
 ## 1. Entrar a la máquina correspondiente:
