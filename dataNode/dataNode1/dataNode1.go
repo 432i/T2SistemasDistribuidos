@@ -573,12 +573,12 @@ func (s *Server) ChunkaDN(stream pb.ChatCliDn_ChunkaDNServer) error {
 			Body: "Stream recibido",
 			})
 		}
-		if err != nil {
+		/*if err != nil {
 			return err
-		}
+		}*/
 		cola_chunks_de_cliente = append(cola_chunks_de_cliente, *chunk)
 	}
-	return nil
+	//return nil
 }
 
 /*
