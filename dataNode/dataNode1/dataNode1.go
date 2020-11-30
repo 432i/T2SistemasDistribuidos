@@ -55,8 +55,8 @@ Retorno:
 	- No hay
 */
 func escribirLogNN(nombre string, cantPartes string, parte string, ip string) {
-	var conn *grpc.ClientConn
-	conn, err := grpc.Dial("10.6.40.152:50001", grpc.WithInsecure())
+	//var conn *grpc.ClientConn
+	conn, err := grpc.Dial("10.6.40.152:50002", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println("Error al establecer conexion con el NameNode")
 	}
