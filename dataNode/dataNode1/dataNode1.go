@@ -20,7 +20,7 @@ type Server struct {
 }
 
 var mi_ip = "10.6.40.149"
-var cola_chunks_de_cliente []*pb.Chunk
+var cola_chunks_de_cliente []pb.Chunk
 var cola_espera []string
 var estado = "liberada"
 var timestamp = " "
@@ -582,7 +582,7 @@ func (s *Server) ChunkaDN(stream pb.ChatCliDn_ChunkaDNServer) error {
 		if err != nil {
 			return err
 		}
-		cola_chunks_de_cliente = append(cola_chunks_de_cliente, chunk)
+		cola_chunks_de_cliente = append(cola_chunks_de_cliente, *chunk)
 		fmt.Printf("Tamaño de la cola: %d\n", len(cola_chunks_de_cliente))
 	}
 }
