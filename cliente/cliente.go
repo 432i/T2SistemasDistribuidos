@@ -2,7 +2,7 @@ package main
 import(
         "bufio"
         "io/ioutil"
-        //"math/rand"
+        "math/rand"
         "math"
         "strconv"
         "os"
@@ -276,7 +276,7 @@ func main(){
                                 return
                         }
                         //DN elegido aleatoriamente
-                        i := 0//rand.Intn(3)
+                        i := rand.Intn(3)
                         if i == 0{
                                 fmt.Println("Enviando chunks al data node 1")
                                 enviarChunks(tipoAlgoritmo, nombre, cDN1)
