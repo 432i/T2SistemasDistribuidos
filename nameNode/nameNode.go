@@ -431,11 +431,24 @@ func serverNN() {
 		log.Fatalf("failed to serve s2: %v", err)
 	}
 }
+func serverNN2() {
+	//-----------------------------------------------------------------> ServerNN
+	lis, err := net.Listen("tcp", ":50002")
+	if err != nil {
+		log.Fatalf("failed to listen2: %v", err)
+	}
+	s := grpc.NewServer()
+	pb.RegisterChatCliDnServer(s, &Server{})
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve s2: %v", err)
+	}
+}
 
 func main(){
         crearTxt()
         var respuesta string
         go serverNN()
+        go serverNN2()
         fmt.Println("Ingrese 432 y presione Enter para salir del programa")
 	for{
 		_, err := fmt.Scanln(&respuesta)
