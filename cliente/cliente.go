@@ -280,8 +280,7 @@ func main(){
                         if i == 0{
                                 fmt.Println("Enviando chunks al data node 1")
                                 enviarChunks(tipoAlgoritmo, nombre, cDN1)
-                        }
-                        if i == 1{
+                        }else if i == 1{
                                 fmt.Println("Enviando chunks al data node 2")
                                 enviarChunks(tipoAlgoritmo, nombre, cDN2)
                         }else{
