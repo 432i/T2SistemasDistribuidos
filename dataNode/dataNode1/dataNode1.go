@@ -536,23 +536,23 @@ func (s *Server) PedirChunk(ctx context.Context, msj *pb.Message) (*pb.Chunk, er
 	parte := split[1]
 
 	//seleccionamos el archivo del directorio
-	 //read a chunk
+	//read a chunk
 	 newFileChunk, err := os.Open(msj.GetBody())
-	 if err != nil {
+	if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+	}
+	defer newFileChunk.Close()
+	chunkInfo, err := newFileChunk.Stat()
+	if err != nil {
 			 fmt.Println(err)
 			 os.Exit(1)
-	 }
-	 defer newFileChunk.Close()
-	 chunkInfo, err := newFileChunk.Stat()
-	 if err != nil {
-			 fmt.Println(err)
-			 os.Exit(1)
-	 }
-	 // calculate the bytes size of each chunk
-	 // we are not going to rely on previous data and constant
-	 var chunkSize int64 = chunkInfo.Size()
-	 chunkBufferBytes := make([]byte, chunkSize)
-
+	}
+	// calculate the bytes size of each chunk
+	// we are not going to rely on previous data and constant
+	var chunkSize int64 = chunkInfo.Size()
+	chunkBufferBytes := make([]byte, chunkSize)
+	newFileChunk.Read(chunkBufferBytes)
 	chunko := pb.Chunk{
 		NombreLibro: nombreLibro,
 		TotalPartes: "0",
