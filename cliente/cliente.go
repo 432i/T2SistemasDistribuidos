@@ -182,7 +182,8 @@ func rearmarLibro(nombreLibro string, cantPartes int){
 
                 //read a chunk
                 currentChunkFileName := nombreLibro + "#" + strconv.FormatUint((j+1), 10)
-
+                fmt.Println("axel succioname la pichula")
+                fmt.Println(currentChunkFileName)
                 newFileChunk, err := os.Open(currentChunkFileName)
 
                 if err != nil {
@@ -225,7 +226,7 @@ func rearmarLibro(nombreLibro string, cantPartes int){
                 fmt.Println("Escritos ", n, " bytes en el disco")
                 if err != nil {
                         fmt.Println(err)
-                                        os.Exit(1)
+                        os.Exit(1)
                 }
 
                 file.Sync() //flush to disk
