@@ -565,7 +565,7 @@ Retorno:
 	- Retorna un stream de exito cuando se recibe o un error si falla la recuperacion del stream
 */
 func (s *Server) ChunkaDN(stream pb.ChatCliDn_ChunkaDNServer) error {
-	var listaChunks []pb.Chunk
+	//var listaChunks []pb.Chunk
 	for {
 		chunk, err := stream.Recv()
 		tipoAlgoritmo = chunk.GetAlgoritmo()
@@ -577,12 +577,13 @@ func (s *Server) ChunkaDN(stream pb.ChatCliDn_ChunkaDNServer) error {
 		if err != nil {
 			return err
 		}
-		listaChunks = append(listaChunks, *chunk)
+		cola_chunks_de_cliente = append(cola_chunks_de_cliente, *chunk)
+		//listaChunks = append(listaChunks, *chunk)
 	}
-	cola_chunks_de_cliente = append(cola_chunks_de_cliente, listaChunks...)
+	/*cola_chunks_de_cliente = append(cola_chunks_de_cliente, listaChunks...)
 	return stream.SendAndClose(&pb.Message {
 		Body: "Stream recibido",
-	})
+	})*/
 }
 
 /*
