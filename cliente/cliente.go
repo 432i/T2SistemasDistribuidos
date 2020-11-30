@@ -181,7 +181,7 @@ func rearmarLibro(nombreLibro string, cantPartes int){
         for j := uint64(0); j < uint64(cantPartes); j++ {
 
                 //read a chunk
-                currentChunkFileName := nombreLibro + "#" + strconv.FormatUint(j+1, 10)
+                currentChunkFileName := nombreLibro + "#" + strconv.FormatUint((j+1), 10)
 
                 newFileChunk, err := os.Open(currentChunkFileName)
 
@@ -351,7 +351,7 @@ func main(){
                                                                 os.Exit(1)
                                                         }
                                                         // write/save buffer to disk
-                                                        ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
+                                                        ioutil.WriteFile(fileName, response.Datos, os.ModeAppend)
                                                         
                                                 }
                                                 if direccion == "10.6.40.150"{
@@ -373,7 +373,7 @@ func main(){
                                                                 os.Exit(1)
                                                         }
                                                         // write/save buffer to disk
-                                                        ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
+                                                        ioutil.WriteFile(fileName, response.Datos, os.ModeAppend)
                                                         
                                                 }
                                                 if direccion == "10.6.40.151"{
@@ -395,7 +395,7 @@ func main(){
                                                                 os.Exit(1)
                                                         }
                                                         // write/save buffer to disk
-                                                        ioutil.WriteFile(fileName, response.GetDatos(), os.ModeAppend)
+                                                        ioutil.WriteFile(fileName, response.Datos, os.ModeAppend)
                                                         
                                                 }
                                                 cont += 1
