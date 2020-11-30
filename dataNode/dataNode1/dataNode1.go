@@ -418,23 +418,18 @@ func escucharListaChunks() {
 	//var prop int
 	for { 
 		if len(cola_chunks_de_cliente) != 0 {
-			i, _ := strconv.Atoi(cola_chunks_de_cliente[0].TotalPartes)
-			fmt.Println(tipoAlgoritmo)
-			if len(cola_chunks_de_cliente) >= i {
-				fmt.Println(tipoAlgoritmo)
-				if tipoAlgoritmo == "distribuido" {
-					fmt.Println("A")
-					tiempoactual := time.Now()
-					timestamp = tiempoactual.Format("02-01-2006 15:04")
-					estado = "buscada"
-					generarPropuesta(cola_chunks_de_cliente[0].GetTotalPartes())
-				}
-				if tipoAlgoritmo == "centralizado" {
-					fmt.Println("B")
-					generarPropuestaCentralizado(cola_chunks_de_cliente[0].GetTotalPartes(), cola_chunks_de_cliente[0].GetNombreLibro())
-				}
-				fmt.Println("C")
+			if tipoAlgoritmo == "distribuido" {
+				fmt.Println("A")
+				tiempoactual := time.Now()
+				timestamp = tiempoactual.Format("02-01-2006 15:04")
+				estado = "buscada"
+				generarPropuesta(cola_chunks_de_cliente[0].GetTotalPartes())
 			}
+			if tipoAlgoritmo == "centralizado" {
+				fmt.Println("B")
+				generarPropuestaCentralizado(cola_chunks_de_cliente[0].GetTotalPartes(), cola_chunks_de_cliente[0].GetNombreLibro())
+			}
+			fmt.Println("C")
 		}
 	}
 }
