@@ -94,7 +94,6 @@ func almacenarChunk(chunkcito pb.Chunk) {
 			os.Exit(1)
 	}
 	ioutil.WriteFile(fileName, chunkcito.GetDatos(), os.ModeAppend)
-	escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), mi_ip)
 	fmt.Println("Se ha almacenado el chunk")
 }
 
@@ -227,7 +226,7 @@ func generarPropuesta(cantPartes string) {
 	i := 0
 	for i < partes {
 		mensajito := pb.Message {
-			Body: timestamp + "_DN1",
+			Body: timestamp + "_DN2",
 		}
 
 

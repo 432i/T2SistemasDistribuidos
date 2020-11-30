@@ -94,7 +94,6 @@ func almacenarChunk(chunkcito pb.Chunk) {
 			os.Exit(1)
 	}
 	ioutil.WriteFile(fileName, chunkcito.GetDatos(), os.ModeAppend)
-	escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), mi_ip)
 	fmt.Println("Se ha almacenado el chunk")
 }
 
@@ -199,6 +198,7 @@ func propuestaEntreDos(c pb.ChatCliDnClient) {
 		if j == 0 {
 			fmt.Println("El chunk se almacenara en esta maquina")
 			almacenarChunk(chunkcito)
+			escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.149")
 		} else {
 			fmt.Println("El chunk se almacenara en el Nodo con el que se pudo establecer conexion")
 			msg, _ := c.ChunkEntreDN(context.Background(), &chunkcito)

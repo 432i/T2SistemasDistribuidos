@@ -94,7 +94,6 @@ func almacenarChunk(chunkcito pb.Chunk) {
 			os.Exit(1)
 	}
 	ioutil.WriteFile(fileName, chunkcito.GetDatos(), os.ModeAppend)
-	escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), mi_ip)
 	fmt.Println("Se ha almacenado el chunk")
 }
 
@@ -123,18 +122,18 @@ func propuestaEntreTres(c2 pb.ChatCliDnClient, c3 pb.ChatCliDnClient) {
 		Algoritmo: cola_chunks_de_cliente[0].GetAlgoritmo(),
 	}
 
-	if cola_chunks_de_cliente[0].GetParte() == "1" {
+	if chunkcito.Parte == "1" {
 		fmt.Println("El chunk se almacenara en esta maquina")
 		almacenarChunk(chunkcito)
 		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.151")
 	}
-	if cola_chunks_de_cliente[0].GetParte() == "2" {
+	if chunkcito.Parte == "2" {
 		fmt.Println("El chunk se almacenara en el Nodo con IP 10.6.40.149")
 		msg2, _ := c2.ChunkEntreDN(context.Background(), &chunkcito)
 		fmt.Println(msg2.Body)
 		escribirLogNN(chunkcito.GetNombreLibro(), chunkcito.GetTotalPartes(), chunkcito.GetParte(), "10.6.40.149")
 	}
-	if cola_chunks_de_cliente[0].GetParte() == "3" {
+	if chunkcito.Parte == "3" {
 		fmt.Println("El chunk se almacenara en el Nodo con IP 10.6.40.150")
 		msg3, _ := c3.ChunkEntreDN(context.Background(), &chunkcito)
 		fmt.Println(msg3.Body)
@@ -227,7 +226,7 @@ func generarPropuesta(cantPartes string) {
 	i := 0
 	for i < partes {
 		mensajito := pb.Message {
-			Body: timestamp + "_DN1",
+			Body: timestamp + "_DN3",
 		}
 
 
@@ -238,7 +237,7 @@ func generarPropuesta(cantPartes string) {
 		if errFunc2 != nil {
 			se_pudo2 = false
 		} else {
-			fmt.Println(fun2.Body)
+			fmt.Println(fun2.Body) //Exito
 			fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.149")
 		}
 
