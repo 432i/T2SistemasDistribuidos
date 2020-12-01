@@ -17,6 +17,7 @@
 
 ## 3. Escribir make y presionar enter en la consola para ejecutar el código
 ## Consideraciones (leer antes):
+La maquina que es seleccionada para recibir el stream de chunks no puede ser apagada en ningun momento ni antes de que se envien los chunks
 Asumimos que no existiran dos libros que se llamen igual y que los libros no pueden tener caracteres especiales (nombre_libro por ejemplo). Se acepta nombreLibro.
 Se deben ejecutar primero los data nodes, luego el name node y al final el cliente para un correcto funcionamiento
 
