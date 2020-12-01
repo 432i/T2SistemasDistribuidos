@@ -268,6 +268,7 @@ func generarPropuesta(cantPartes string) {
 		defer connDN2.Close()
 		c2 := pb.NewChatCliDnClient(connDN2)
 		fun2, errFunc2 := c2.MaquinaFunciona(context.Background(), &mensajito)
+		mensajesDistribuido += 1
 		if errFunc2 != nil {
 			se_pudo2 = false
 		} else {
@@ -280,6 +281,7 @@ func generarPropuesta(cantPartes string) {
 		defer connDN3.Close()
 		c3 := pb.NewChatCliDnClient(connDN3)
 		fun3, errFunc3 := c3.MaquinaFunciona(context.Background(), &mensajito)
+		mensajesDistribuido += 1
 		if errFunc3 != nil {
 			se_pudo3 = false
 		} else {
