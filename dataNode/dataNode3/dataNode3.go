@@ -302,6 +302,7 @@ func generarPropuesta(cantPartes string) {
 			fmt.Println("No se pudo establecer conexion con ningun otro DN, por lo que el chunk se almacenara en esta maquina")
 			estado = "tomada"
 			almacenarChunk(cola_chunks_de_cliente[0])
+			escribirLogNN(cola_chunks_de_cliente[0].GetNombreLibro(), cola_chunks_de_cliente[0].GetTotalPartes(), cola_chunks_de_cliente[0].GetParte(), "10.6.40.151")
 		}
 		if len(cola_chunks_de_cliente) == 1 {
 			cola_chunks_de_cliente = make([]pb.Chunk, 0)
@@ -412,6 +413,7 @@ func generarPropuestaCentralizado(cantPartes string, nombreLibro string){
 		if response.Body == "tu"{ //te dejas todos los chunks
 
 			almacenarChunk(cola_chunks_de_cliente[0])
+			escribirLogNN(cola_chunks_de_cliente[0].GetNombreLibro(), cola_chunks_de_cliente[0].GetTotalPartes(), cola_chunks_de_cliente[0].GetParte(), "10.6.40.151")
 			
 		}
 		if len(cola_chunks_de_cliente) == 1 {
