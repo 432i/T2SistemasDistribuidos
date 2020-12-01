@@ -635,6 +635,7 @@ func main(){
 	var respuesta string
 	go serverDN1()
 	go escucharListaChunks()
+	//fmt.Println("[ CONEXION ACTIVA ]")
 	fmt.Println("Ingrese 432 y presione Enter para salir del programa")
 	for{
 		_, err := fmt.Scanln(&respuesta)

@@ -31,8 +31,6 @@ func conexionDN(ip string) (pb.ChatCliDnClient, *grpc.ClientConn){
         conn, err := grpc.Dial(ip+puerto, grpc.WithInsecure())
         if err != nil {
                 log.Fatalf("did not connect: %s", err)
-        }else{
-                fmt.Println("Conexion realizada correctamente con el Data Node de IP "+ip+"\n")
         }
         //defer conn.Close()
         c := pb.NewChatCliDnClient(conn)
@@ -53,8 +51,6 @@ func conexionNN() (pb.ChatCliDnClient, *grpc.ClientConn){
         conn, err := grpc.Dial("10.6.40.152:50001", grpc.WithInsecure())
         if err != nil {
                 log.Fatalf("did not connect: %s", err)
-        }else{
-                fmt.Println("Conexion realizada correctamente con el Name Node\n")
         }
         //defer conn.Close()
         c := pb.NewChatCliDnClient(conn)

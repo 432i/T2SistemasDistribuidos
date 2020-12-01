@@ -126,18 +126,7 @@ func (s *Server) PedirCatalogo(ctx context.Context, message *pb.Message) (*pb.Me
         return &msj, nil
 
 }
-/*
-Funcion: mensajeExito
-Parametro:
-	- Recibe las conexiones de los datanodes
-Descripcion:
-	- Printea que se pudo conectar a alguno de ellos
-Retorno:
-	- Nada
-*/
-func mensajeExito(c1 pb.ChatCliDnClient, c2 pb.ChatCliDnClient, c3 pb.ChatCliDnClient){
-        fmt.Println("Conexion realizada con algun data node")
-}
+
 /*
 Funcion: propuestaCentralizado
 Parametro:
@@ -180,7 +169,7 @@ func (s *Server) PropuestaCentralizado(ctx context.Context, message *pb.Message)
                 se_pudo1 = false
         } else {
                 fmt.Println(fun1.Body)
-                fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
+                //fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
         }
         
         connDN2, err2 := grpc.Dial("10.6.40.150:50001", grpc.WithInsecure())
@@ -194,7 +183,7 @@ func (s *Server) PropuestaCentralizado(ctx context.Context, message *pb.Message)
                 se_pudo2 = false
         } else {
                 fmt.Println(fun2.Body)
-                fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
+                //fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
         }
 
         connDN3, err3 := grpc.Dial("10.6.40.151:50001", grpc.WithInsecure())
@@ -208,9 +197,9 @@ func (s *Server) PropuestaCentralizado(ctx context.Context, message *pb.Message)
                 se_pudo3 = false
         } else {
                 fmt.Println(fun3.Body)
-                fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
+                //fmt.Println("Conexion realizada correctamente con el Data Node de IP 10.6.40.151")
         }
-        mensajeExito(c1, c2, c3) //printea
+        //mensajeExito(c1, c2, c3) //printea
 
         cantidadPartes, err := strconv.Atoi(cantPartes)
         if err != nil {
@@ -218,6 +207,7 @@ func (s *Server) PropuestaCentralizado(ctx context.Context, message *pb.Message)
         }
         cont +=1
         if cantidadPartes == cont {
+                fmt.Println("[ Libro guardado en el log ]")
                 cont = 0
         }
         
@@ -445,6 +435,7 @@ func main(){
         crearTxt()
         var respuesta string
         go serverNN()
+        fmt.Println("[ CONEXION ACTIVA ]")
         fmt.Println("Ingrese 432 y presione Enter para salir del programa")
 	for{
 		_, err := fmt.Scanln(&respuesta)
