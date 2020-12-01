@@ -327,6 +327,14 @@ func (s *Server) EscribirLog(ctx context.Context, message *pb.Message) (*pb.Mess
                 Body: "Chunk guardado en el log correctamente",
         }
         fmt.Println("Escrito en el log correctamente")
+
+        cantidadPartes, err := strconv.Atoi(cantPartes)
+        if err != nil {
+                fmt.Println("error en la cantidad de partes")
+        }
+        if cantitdadPartes == cont{
+                fmt.Println("[ Libro completo guardado en el log ]")
+        }
         return &msj, nil
 }
 /*
