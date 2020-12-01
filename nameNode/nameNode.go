@@ -207,7 +207,7 @@ func (s *Server) PropuestaCentralizado(ctx context.Context, message *pb.Message)
         }
         cont +=1
         if cantidadPartes == cont {
-                fmt.Println("[ Libro guardado en el log ]")
+        
                 cont = 0
         }
         
