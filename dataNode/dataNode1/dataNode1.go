@@ -494,6 +494,7 @@ func escucharListaChunks() {
 				tpoInicial := time.Now()
 				generarPropuesta(cola_chunks_de_cliente[0].GetTotalPartes())
 				tpoFinal := time.Since(tpoInicial)
+				fmt.Printf("Se realizaron %d mensajes para el algoritmo distribuido", mensajesDistribuido)
 				fmt.Printf("El algoritmo distribuido demoro: %s\n", tpoFinal)
 			}
 			if tipoAlgoritmo == "centralizado" {
@@ -501,6 +502,7 @@ func escucharListaChunks() {
 				tpoInicial := time.Now()
 				generarPropuestaCentralizado(cola_chunks_de_cliente[0].GetTotalPartes(), cola_chunks_de_cliente[0].GetNombreLibro())
 				tpoFinal :=	time.Since(tpoInicial)
+				fmt.Printf("Se realizaron %d mensajes para el algoritmo centralizado", mensajesCentralizado)
 				fmt.Printf("El algoritmo centralizado demoro: %s\n", tpoFinal)
 			}
 		}
