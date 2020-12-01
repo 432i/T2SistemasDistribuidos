@@ -332,7 +332,7 @@ func (s *Server) EscribirLog(ctx context.Context, message *pb.Message) (*pb.Mess
         if err != nil {
                 fmt.Println("error en la cantidad de partes")
         }
-        if cantitdadPartes == cont{
+        if cantidadPartes == cont{
                 fmt.Println("[ Libro completo guardado en el log ]")
         }
         return &msj, nil
