@@ -26,8 +26,8 @@ var cola_espera []string
 var estado = "liberada"
 var timestamp = " "
 var tipoAlgoritmo = "" //centralizado o distribuido
-mensajesDistribuido := 0
-mensajesCentralizado := 0
+var mensajesDistribuido = 0
+var mensajesCentralizado = 0
 
 /*
 Funcion: Find
