@@ -21,6 +21,13 @@ La maquina que es seleccionada para recibir el stream de chunks no puede ser apa
 Asumimos que no existiran dos libros que se llamen igual y que los libros no pueden tener caracteres especiales (nombre_libro por ejemplo). Se acepta nombreLibro.
 Se deben ejecutar primero los data nodes, luego el name node y al final el cliente para un correcto funcionamiento
 
+Por otra parte, y dado lo mencionado anteriormente, a continuacion se presenta como nosotros interpretamos la tarea:
+En primer lugar, la propuesta realizada, ya sea para Distribuido o Centralizado, la realizamos por cada chunk (esto lo pueden notar en las funciones generarPropuesta y generarPropuestaCentralizado, donde hay un for que itera en las partes de un stream), ya que pensamos que en el proceso de envío de un libro, puede ocurrir que algún data node se caiga entre medio del envío de los chunks mismos, lo que suponemos que es algo que puede pasar en la realidad, servidores tipo data nodes distribuidos no necesariamente en el mismo lugar fisico y que por causas externas se apaguen repentinamente. Ante esto, puede suceder que algunos chunks se hayan almacenado en data nodes que en algún momento estuvieron encendidos, y que por lo tanto, para poder recuperar el libro, se deban restablecer (es decir, que vuelvan a funcionar, como un proceso de recuperacion real (?)
+
+Por esta misma razón, no pudimos implementar directamente la medición de tiempo solo entre la escritura del log (ya que como nuestro proceso se hace por chunk, golang no permite hacer sumas de tiempo entre variables de tipo time.Time -la funcion encargada de sumar recibe un tipo time.Duration y no se puede convertir de time.Time a time.Duration para lograrlo-), así que, a modo de compensación, optamos por medir el tiempo que se demora cada opción de reparticion (distribuida vs centralizada) desde que se recibía el stream de un libro hasta que este se lograba almacenar en los data nodes.
+
+A modo de aclaración, nos percatamos de que nuestra interpretación difería con la de otros compañeros demasiado tarde como para poder cambiar toda la logica del código
+
 
 Antes de hacerlo se deben exportar variables, para esto escribir los siguientes comandos en consola:
 - export GOROOT=/usr/local/go
